@@ -33,7 +33,7 @@ contract BNBrocket is BNBrocket_state{
 	}
 
 	function invest(address payable referrer, uint256 investAmt) external {
-		require(investAmt >= INVEST_MIN_AMOUNT);
+		require(investAmt >= INVEST_MIN_AMOUNT, 'insufficient deposit');
 		token.transferFrom(msg.sender,address(this),investAmt);
 
 		token.transfer(devAddress,(investAmt.mul(DEV_FEE)).div(PERCENTS_DIVIDER));
