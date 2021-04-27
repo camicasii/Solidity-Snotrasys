@@ -9,20 +9,20 @@ contract BNBrocket_state{
 	uint256[3] internal REFERRAL_PERCENTS = [50, 20, 10];
 	uint256 constant internal INVEST_MIN_AMOUNT = 200 finney;
 	uint256 constant internal ROI_BASE = 80;
-	uint256 constant internal COMUNITY_BONUS = 5;
+	uint256 constant internal COMUNITY_BONUS = 10;
 	uint256 constant internal MAX_COMUNITY_BONUS = 80;
 	uint256 constant internal DEV_FEE = 100;
 	uint256 constant internal SECURE_FEE = 20;
 	uint256 constant internal MIN_WITHDRAW = 200 finney;
-	uint256 constant internal WITHDRAW_FEE_PERCENT = 100;
+	uint256 constant internal WITHDRAW_FEE_PERCENT = 50;
 	uint256 constant internal HOLD_PERCENT = 5;
 	uint256 constant internal MAX_HOLD_PERCENT = 60;
 	uint256 constant internal BONUS_POOL = 1;
-	uint256 constant internal MAX_BONUS_POOL = 100;
-	uint256 constant internal POOL_DIVIDER = 800 ether;
+	uint256 constant internal MAX_BONUS_POOL = 80;
+	uint256 constant internal POOL_DIVIDER = 200 ether;
 	uint256 constant internal MAX_PROFIT = 2000;
 	uint256 constant internal PERCENTS_DIVIDER = 1000;
-	uint256 constant internal TIME_STEP = 1 minutes;
+	uint256 constant internal TIME_STEP = 1 days;
 
 	uint256 internal initDate;
 
