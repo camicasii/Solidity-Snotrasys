@@ -1,0 +1,23 @@
+{
+  "TotalIncome": {
+    "content": "Total income: based on your tarrif plan (from 5% to 8% daily)"
+  },
+  "BasicInterestRate": {
+    "content": "Basic interest rate: +0.4% every 24 hours - only for new deposits"
+  },
+  "DaysReductionPlan":{
+    "content": "Days reduction plan: Plans length reduces - 0.25 days every day."
+  },
+  "AuctionBonus":{
+    "content": "Auction Bonus: Earn +0.005% per participation."
+  },
+  "RefBonus":{
+    "content": "Ref Bonus: Earn an Additional +0.1% for every 10 users you invite."
+  },
+  "MinimalDeposit":{
+  "content": "Minimal deposit: 1 CAKE, no maximal limit"
+  },
+  "Earning":{
+  "content": "Earning every moment, withdraw any time (if you use capitalization of interest you can only after end of your  deposit)"
+  }
+}
