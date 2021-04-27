@@ -394,26 +394,4 @@ contract BNBrocket is BNBrocket_state{
 		return pool;
 	}
 
-	//debug function:
-	function getRoibase(address addr) external view returns(uint256[] memory){
-		User memory user = users[addr];
-		uint256 len = user.depositsLength;
-		uint256[] memory rois = new uint256[] (len);
-		for(uint256 i = 0; i < len; i++) {
-			rois[i] = getDepositRoi(users[addr].deposits[i]);
-		}
-		return rois;
-	}
-
-	//debug function:
-	function getlastmaxprofit(address addr) external view returns(uint256[] memory){
-		User memory user = users[addr];
-		uint256 len = user.depositsLength;
-		uint256[] memory profit = new uint256[] (len);
-		for(uint256 i = 0; i < len; i++) {
-			profit[i] = getMaxprofit(users[addr].deposits[i]);
-		}
-		return profit;
-	}
-
 }
