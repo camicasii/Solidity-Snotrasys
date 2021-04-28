@@ -10,7 +10,7 @@ contract BNBrocket_state{
 	uint256 constant internal ROI_BASE = 20;
 	uint256 constant internal COMUNITY_BONUS = 2;
 	uint256 constant internal MAX_COMUNITY_BONUS = 100;
-	uint256 constant internal DEV_FEE = 100;
+	uint256 constant internal INVEST_FEE = 100;
 	uint256 constant internal SECURE_FEE = 20;
 	uint256 constant internal MIN_WITHDRAW = 1;
 	uint256 constant internal WITHDRAW_FEE_PERCENT = 100;
@@ -31,6 +31,10 @@ contract BNBrocket_state{
 	uint256 internal totalDeposits;
 	uint256 internal totalReinvested;
 
+
+	address payable public partnerAdress;
+	address payable public partnerAltAdress;
+	address payable public marketingAdress;
 	address payable public devAddress;
 	address payable public secureAddress;
 

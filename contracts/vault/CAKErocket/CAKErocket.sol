@@ -10,10 +10,15 @@ contract BNBrocket is BNBrocket_state{
 	event FeePayed(address indexed user, uint256 totalAmount);
 	event Reinvestment(address indexed user, uint256 amount);
 
-	constructor(address payable devAddr, address payable SecAddr, IBEP20 token_) public {
-		require(!isContract(devAddr) && !isContract(SecAddr));
+	constructor(address payable devAddr, address payable SecAddr, address payable markAddrs,
+		address payable partAddr, IBEP20 token_) public {
+
+		require(!isContract(devAddr) && !isContract(SecAddr) && !isContract(partAddr) && !isContract(markAddrs));
+
 		secureAddress = SecAddr;
 		devAddress = devAddr;
+		partnerAdress = partAddr;
+		marketingAdress = markAddrs;
 		token = token_;
 		emit Paused(msg.sender);
 	}
@@ -34,12 +39,19 @@ contract BNBrocket is BNBrocket_state{
 
 	function invest(address payable referrer, uint256 investAmt) external {
 		require(investAmt >= INVEST_MIN_AMOUNT, 'insufficient deposit');
+
 		token.transferFrom(msg.sender,address(this),investAmt);
 
-		token.transfer(devAddress,(investAmt.mul(DEV_FEE)).div(PERCENTS_DIVIDER));
+		uint256 investFee = (investAmt.mul(INVEST_FEE)).div(PERCENTS_DIVIDER);
+
+		token.transfer(partnerAdress,(investFee.mul(400)).div(PERCENTS_DIVIDER));
+		token.transfer(marketingAdress,(investFee.mul(300)).div(PERCENTS_DIVIDER));
+		token.transfer(devAddress,(investFee.mul(300)).div(PERCENTS_DIVIDER));
+
 		token.transfer(secureAddress,(investAmt.mul(SECURE_FEE)).div(PERCENTS_DIVIDER));
 
-		emit FeePayed(msg.sender, (investAmt.mul(DEV_FEE.add(SECURE_FEE))).div(PERCENTS_DIVIDER));
+		emit FeePayed(msg.sender, (investAmt.mul(INVEST_FEE.add(SECURE_FEE))).div(PERCENTS_DIVIDER));
+
 		User storage user = users[msg.sender];
 
 		if (user.referrer == address(0) && users[referrer].depositsLength > 0 && referrer != msg.sender) {
@@ -114,7 +126,7 @@ contract BNBrocket is BNBrocket_state{
 
 		user.checkpoint = block.timestamp;
 
-	    uint256 fee = (totalAmount.mul(WITHDRAW_FEE_PERCENT)).div(PERCENTS_DIVIDER);
+		uint256 fee = (totalAmount.mul(WITHDRAW_FEE_PERCENT)).div(PERCENTS_DIVIDER);
 
 		uint256 toTransfer = totalAmount.sub(fee);
 
@@ -124,7 +136,7 @@ contract BNBrocket is BNBrocket_state{
 
 		totalWithdrawn = totalWithdrawn.add(totalAmount);
 
-	    emit FeePayed(msg.sender, fee);
+		emit FeePayed(msg.sender, fee);
 		emit Withdrawn(msg.sender, totalAmount);
 		return true;
 
@@ -154,8 +166,9 @@ contract BNBrocket is BNBrocket_state{
 
 		require(totalDividends > 0, "User has no dividends");
 
-		uint256 fee = (totalDividends.mul(DEV_FEE)).div(PERCENTS_DIVIDER);
-		token.transfer(devAddress, fee);
+		uint256 fee = (totalDividends.mul(INVEST_FEE)).div(PERCENTS_DIVIDER);
+		token.transfer(devAddress, fee.div(2));
+		token.transfer(devAddress, fee.div(2));
 
 		user.reinvested = user.reinvested.add(totalDividends);
 		totalReinvested = totalReinvested.add(totalDividends);

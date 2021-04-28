@@ -5,13 +5,13 @@ import "../../token/IBEP20.sol";
 
 contract BNBrocket_state{
 	using SafeMath for uint256;
-    IBEP20 public token;
+	IBEP20 public token;
 	uint256[3] internal REFERRAL_PERCENTS = [50, 20, 10];
 	uint256 constant internal INVEST_MIN_AMOUNT = 200 finney;
 	uint256 constant internal ROI_BASE = 80;
 	uint256 constant internal COMUNITY_BONUS = 10;
 	uint256 constant internal MAX_COMUNITY_BONUS = 80;
-	uint256 constant internal DEV_FEE = 100;
+	uint256 constant internal INVEST_FEE = 100;
 	uint256 constant internal SECURE_FEE = 20;
 	uint256 constant internal MIN_WITHDRAW = 200 finney;
 	uint256 constant internal WITHDRAW_FEE_PERCENT = 50;
@@ -32,6 +32,8 @@ contract BNBrocket_state{
 	uint256 internal totalDeposits;
 	uint256 internal totalReinvested;
 
+	address payable public partnerAdress;
+	address payable public marketingAdress;
 	address payable public devAddress;
 	address payable public secureAddress;
 
