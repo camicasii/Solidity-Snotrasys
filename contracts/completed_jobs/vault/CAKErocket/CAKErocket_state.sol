@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
-import "../../utils/math/SafeMath.sol";
-import "../../token/IBEP20.sol";
+import "../../../resources/utils/math/SafeMath.sol";
+import "../../../resources/token/IBEP20.sol";
 
 contract BNBrocket_state{
 	using SafeMath for uint256;
