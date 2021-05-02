@@ -12,7 +12,6 @@ contract HoldersRoi {
 		bool registered;
 	}
 
-	//mapping(uint256 => mapping(address => User)) public users;
 	mapping(address => User) public users;
 	mapping(uint256 => address) public userAddrs;
 	uint256 public usersCount;
