@@ -1,6 +1,7 @@
 #
 bin/contracts
 bin/*.json
+contracts/completed_jobs/artifacts/*.json
 
 # Logs
 logs
