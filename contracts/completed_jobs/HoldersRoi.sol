@@ -9,7 +9,6 @@ contract HoldersRoi {
 
 	struct User {
 		uint256 checkpoint;
-		bool registered;
 	}
 
 	mapping(address => User) public users;
@@ -38,13 +37,16 @@ contract HoldersRoi {
 	}
 
 	modifier checkUser_(address addr) {
-		require(users[addr].checkpoint > 0 && (block.timestamp.sub(users[addr].checkpoint)).div(WITHDRAW_COOLDOWN) >= 1, "try again later");
+		require(isUser(users[addr]) && (block.timestamp.sub(users[addr].checkpoint)).div(WITHDRAW_COOLDOWN) >= 1, "try again later");
 		_;
 	}
 
+	function isUser(User memory user_) internal pure returns(bool) {
+		return (user_.checkpoint > 0);
+	}
+
 	function register() external {
-		require(!users[msg.sender].registered, "user is already registered");
-		users[msg.sender].registered = true;
+		require(!isUser(users[msg.sender]), "user is already registered");
 		users[msg.sender].checkpoint = block.timestamp;
 		usersCount++;
 		emit Newbie(msg.sender);
