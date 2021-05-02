@@ -13,7 +13,6 @@ contract HoldersRoi {
 	}
 
 	mapping(address => User) public users;
-	mapping(uint256 => address) public userAddrs;
 	uint256 public usersCount;
 
 	uint256 constant public WITHDRAW_COOLDOWN = 1 weeks;
@@ -39,7 +38,7 @@ contract HoldersRoi {
 	}
 
 	modifier checkUser_(address addr) {
-		require(users[addr].registered && (block.timestamp.sub(users[addr].checkpoint)).div(WITHDRAW_COOLDOWN) >= 1, "try again later");
+		require(users[addr].checkpoint > 0 && (block.timestamp.sub(users[addr].checkpoint)).div(WITHDRAW_COOLDOWN) >= 1, "try again later");
 		_;
 	}
 
@@ -47,21 +46,12 @@ contract HoldersRoi {
 		require(!users[msg.sender].registered, "user is already registered");
 		users[msg.sender].registered = true;
 		users[msg.sender].checkpoint = block.timestamp;
-		userAddrs[usersCount] = msg.sender;
 		usersCount++;
 		emit Newbie(msg.sender);
 	}
 
 	function getContractBalance() public view returns (uint256) {
 		return token.balanceOf(address(this));
-	}
-
-	function getUsersBalance() public view returns (uint256) {
-		uint256 totalBalance;
-		for(uint256 i = 0; i < usersCount; i++) {
-			totalBalance = totalBalance.add(token.balanceOf(userAddrs[i]));
-		}
-		return totalBalance;
 	}
 
 	function getUserBonusPercent(address addr) public view returns (uint256) {
