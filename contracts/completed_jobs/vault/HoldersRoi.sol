@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
-import "../../../resources/utils/math/SafeMath.sol";
-import "../../../resources/token/IBEP20.sol";
+import "../../resources/utils/math/SafeMath.sol";
+import "../../resources/token/IBEP20.sol";
 
 contract HoldersRoi {
 	using SafeMath for uint256;
@@ -29,6 +29,10 @@ contract HoldersRoi {
 
 	event Newbie(address user);
 	event Withdrawn(address indexed user, uint256 amount);
+
+	constructor(IBEP20 token_) public {
+		token = token_;
+	}
 
 	modifier contractHasfunds_() {
 		require(getContractBalance() > 0, "insufficient funds");
