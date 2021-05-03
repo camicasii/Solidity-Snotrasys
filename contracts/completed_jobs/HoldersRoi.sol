@@ -124,7 +124,7 @@ contract HoldersRoi is Pausable, Ownable {
 		updatebaseReward();
 		uint256 contractBalance = getContractBalance();
 		uint256 returnPercent = getUserBonusPercent(msg.sender);
-		uint256 withdrawAmt = (rewardPerUser.mul(PERCENTS_DIVIDER.sub(MAX_USER_BONUS).add(returnPercent))).div(PERCENTS_DIVIDER);
+		uint256 withdrawAmt = rewardPerUser.mul(PERCENTS_DIVIDER.sub(MAX_USER_BONUS).add(returnPercent)).div(PERCENTS_DIVIDER);
 		users[msg.sender].checkpoint = block.timestamp;
 		if(withdrawAmt > contractBalance)
 			withdrawAmt = contractBalance;
