@@ -102,6 +102,7 @@ contract HoldersRoi is Pausable, Ownable {
 	}
 
 	function getUserBonusPercent(address addr) public view returns (uint256) {
+		require(isUser(users[msg.sender]), "address not registered");
 		uint256 userBalance = token.balanceOf(addr).div(tokenStep).mul(BONUS_HOLD_TOKEN);
 		if(userBalance > MAX_USER_BONUS)
 			userBalance = MAX_USER_BONUS;
