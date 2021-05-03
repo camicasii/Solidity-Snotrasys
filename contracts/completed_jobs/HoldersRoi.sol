@@ -21,7 +21,7 @@ contract HoldersRoi is Pausable, Ownable {
 	uint256 constant internal PERCENTS_DIVIDER = 10000;
 	uint256 constant internal BONUS_HOLD_TOKEN = 1; //0.01%
 	//warning: MAX_USER_BONUS must be less than PERCENTS_DIVIDER
-	uint256 constant internal MAX_USER_BONUS = 1000; //MAX: 10%
+	uint256 constant internal MAX_USER_BONUS = 5000; //MAX: 50%
 	uint256 constant internal TIME_UPDATE = 10 seconds; //replace for: 1 days
 
 	uint256 public lastBalanceUpdate;
