@@ -116,7 +116,12 @@ contract HoldersRoi is Pausable, Ownable {
 		}
 	}
 
-	function withdraw() external whenNotPaused contractHasfunds_ checkUser_ isHolder_ returns (bool) {
+	function tryUpdatebaseReward() external onlyOwner {
+		require(block.timestamp.sub(lastBalanceUpdate) >= TIME_UPDATE, "try again later");
+		updatebaseReward();
+	}
+
+	function withdraw() external whenNotPaused contractHasfunds_ checkUser_ returns (bool) {
 		updatebaseReward();
 		uint256 contractBalance = getContractBalance();
 		uint256 returnPercent = getUserBonusPercent(msg.sender);
