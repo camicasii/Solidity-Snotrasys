@@ -1,3 +1,8 @@
+#
+bin/contracts
+bin/*.json
+artifacts
+
 # Logs
 logs
 *.log
