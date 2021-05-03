@@ -66,8 +66,8 @@ contract HoldersRoi {
 	function withdraw() public contractHasfunds_ checkUser_(msg.sender) returns (bool) {
 		uint256 returnPercent = BASE_RETURN_PERCENT.add(getUserBonusPercent(msg.sender));
 		uint256 withdrawAmt = ((getContractBalance()).mul(returnPercent)).div(usersCount.mul(PERCENTS_DIVIDER));
-		token.transfer(msg.sender, withdrawAmt);
 		users[msg.sender].checkpoint = block.timestamp;
+		token.transfer(msg.sender, withdrawAmt);
 		emit Withdrawn(msg.sender, withdrawAmt);
 		return true;
 	}
