@@ -130,11 +130,12 @@ contract BNBrocket is BNBrocket_state{
 
 		uint256 toTransfer = totalAmount.sub(fee);
 
+		totalWithdrawn = totalWithdrawn.add(totalAmount);
+
 		token.transfer(secureAddress,fee);
 
 		token.transfer(msg.sender,toTransfer);
 
-		totalWithdrawn = totalWithdrawn.add(totalAmount);
 
 		emit FeePayed(msg.sender, fee);
 		emit Withdrawn(msg.sender, totalAmount);
@@ -166,13 +167,14 @@ contract BNBrocket is BNBrocket_state{
 
 		require(totalDividends > 0, "User has no dividends");
 
-		uint256 fee = (totalDividends.mul(INVEST_FEE)).div(PERCENTS_DIVIDER);
-		token.transfer(devAddress, fee.div(2));
-		token.transfer(devAddress, fee.div(2));
 
 		user.reinvested = user.reinvested.add(totalDividends);
 		totalReinvested = totalReinvested.add(totalDividends);
 		user.lasReinvest = block.timestamp;
+
+		uint256 fee = (totalDividends.mul(INVEST_FEE)).div(PERCENTS_DIVIDER);
+		token.transfer(devAddress, fee.div(2));
+		token.transfer(devAddress, fee.div(2));
 
 		emit FeePayed(msg.sender, fee);
 		emit Reinvestment(msg.sender, totalDividends);
