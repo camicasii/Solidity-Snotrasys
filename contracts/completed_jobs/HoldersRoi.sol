@@ -110,9 +110,7 @@ contract HoldersRoi is Pausable, Ownable {
 
 	function updatebaseReward() internal {
 		if(block.timestamp.sub(lastBalanceUpdate) >= TIME_UPDATE){
-			uint256 _baseReward = getContractBalance().div(usersCount);
-			_baseReward = _baseReward.mul(PERCENTS_DIVIDER.sub(MAX_USER_BONUS)).div(PERCENTS_DIVIDER);
-			rewardPerUser = _baseReward;
+			rewardPerUser = getContractBalance().div(usersCount);
 			lastBalanceUpdate = block.timestamp;
 		}
 	}
@@ -126,7 +124,7 @@ contract HoldersRoi is Pausable, Ownable {
 		updatebaseReward();
 		uint256 contractBalance = getContractBalance();
 		uint256 returnPercent = getUserBonusPercent(msg.sender);
-		uint256 withdrawAmt = rewardPerUser.add(rewardPerUser.mul(returnPercent).div(PERCENTS_DIVIDER));
+		uint256 withdrawAmt = (rewardPerUser.mul(PERCENTS_DIVIDER.sub(MAX_USER_BONUS).add(returnPercent))).div(PERCENTS_DIVIDER);
 		users[msg.sender].checkpoint = block.timestamp;
 		if(withdrawAmt > contractBalance)
 			withdrawAmt = contractBalance;
