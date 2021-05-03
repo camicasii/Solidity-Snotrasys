@@ -20,11 +20,11 @@ contract HoldersRoi is Pausable, Ownable {
 
 	uint256 constant internal PERCENTS_DIVIDER = 10000;
 	uint256 constant internal BONUS_HOLD_TOKEN = 1; //0.01%
-	uint256 constant internal MAX_USER_BONUS = 500; //MAX: 5%
+	uint256 constant internal MAX_USER_BONUS = 1000; //MAX: 10%
 	uint256 constant internal TIME_UPDATE = 10 seconds; //replace for: 1 days
 
 	uint256 public lastBalanceUpdate;
-	uint256 public baseReward;
+	uint256 public rewardPerUser;
 	uint256 public tokenStep;
 	uint256 public lowBalance;
 
@@ -73,7 +73,7 @@ contract HoldersRoi is Pausable, Ownable {
 		return (user_.checkpoint > 0);
 	}
 
-	// development phase only
+	// development phase only //only debug fuction
 	function setusr(uint256 newUsers) external onlyOwner returns(bool) {
 		usersCount = newUsers;
 		return true;
@@ -111,7 +111,7 @@ contract HoldersRoi is Pausable, Ownable {
 		if(block.timestamp.sub(lastBalanceUpdate) >= TIME_UPDATE){
 			uint256 _baseReward = getContractBalance().div(usersCount);
 			_baseReward = _baseReward.mul(PERCENTS_DIVIDER.sub(MAX_USER_BONUS)).div(PERCENTS_DIVIDER);
-			baseReward = _baseReward;
+			rewardPerUser = _baseReward;
 			lastBalanceUpdate = block.timestamp;
 		}
 	}
@@ -125,7 +125,7 @@ contract HoldersRoi is Pausable, Ownable {
 		updatebaseReward();
 		uint256 contractBalance = getContractBalance();
 		uint256 returnPercent = getUserBonusPercent(msg.sender);
-		uint256 withdrawAmt = baseReward.add(baseReward.mul(returnPercent).div(PERCENTS_DIVIDER));
+		uint256 withdrawAmt = rewardPerUser.add(rewardPerUser.mul(returnPercent).div(PERCENTS_DIVIDER));
 		users[msg.sender].checkpoint = block.timestamp;
 		if(withdrawAmt > contractBalance)
 			withdrawAmt = contractBalance;
