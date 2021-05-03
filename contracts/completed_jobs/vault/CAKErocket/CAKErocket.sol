@@ -167,7 +167,6 @@ contract BNBrocket is BNBrocket_state{
 
 		require(totalDividends > 0, "User has no dividends");
 
-
 		user.reinvested = user.reinvested.add(totalDividends);
 		totalReinvested = totalReinvested.add(totalDividends);
 		user.lasReinvest = block.timestamp;

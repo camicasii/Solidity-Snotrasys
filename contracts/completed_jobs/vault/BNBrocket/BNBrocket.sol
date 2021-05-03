@@ -124,6 +124,7 @@ contract BNBrocket is BNBrocket_state{
 
 		user.checkpoint = block.timestamp;
 
+		totalWithdrawn = totalWithdrawn.add(totalAmount);
 
 		uint256 fee = (totalAmount.mul(WITHDRAW_FEE_PERCENT)).div(PERCENTS_DIVIDER);
 
@@ -133,7 +134,6 @@ contract BNBrocket is BNBrocket_state{
 
 		msg.sender.transfer(toTransfer);
 
-		totalWithdrawn = totalWithdrawn.add(totalAmount);
 
 		emit FeePayed(msg.sender, fee);
 		emit Withdrawn(msg.sender, totalAmount);
@@ -163,14 +163,15 @@ contract BNBrocket is BNBrocket_state{
 			}
 		}
 
-		uint256 fee = (totalDividends.mul(INVEST_FEE)).div(PERCENTS_DIVIDER);
-
-		devAddress.transfer(fee.div(2));
-		marketingAdress.transfer(fee.div(2));
+		require(totalDividends > 0, "User has no dividends");
 
 		user.reinvested = user.reinvested.add(totalDividends);
 		totalReinvested = totalReinvested.add(totalDividends);
 		user.lasReinvest = block.timestamp;
+
+		uint256 fee = (totalDividends.mul(INVEST_FEE)).div(PERCENTS_DIVIDER);
+		devAddress.transfer(fee.div(2));
+		marketingAdress.transfer(fee.div(2));
 
 		emit FeePayed(msg.sender, fee);
 		emit Reinvestment(msg.sender, totalDividends);
