@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
-import "./CAKERocket_state.sol";
+import "./CAKErocket_state.sol";
 
 contract BNBrocket is BNBrocket_state{
 	event Newbie(address user);
@@ -10,13 +10,12 @@ contract BNBrocket is BNBrocket_state{
 	event FeePayed(address indexed user, uint256 totalAmount);
 	event Reinvestment(address indexed user, uint256 amount);
 
-	constructor(address payable devAddr, address payable SecAddr, address payable markAddrs,
+	constructor(address payable devAddr, address payable SecAddr, address payable markAddrs, address payable projectAddrs,
 		address payable partAddr, IBEP20 token_) public {
-
 		require(!isContract(devAddr) && !isContract(SecAddr) && !isContract(partAddr) && !isContract(markAddrs));
-
 		secureAddress = SecAddr;
 		devAddress = devAddr;
+		projectAdress =  projectAddrs;
 		partnerAdress = partAddr;
 		marketingAdress = markAddrs;
 		token = token_;
@@ -44,10 +43,10 @@ contract BNBrocket is BNBrocket_state{
 
 		uint256 investFee = (investAmt.mul(INVEST_FEE)).div(PERCENTS_DIVIDER);
 
-		token.transfer(partnerAdress,(investFee.mul(400)).div(PERCENTS_DIVIDER));
-		token.transfer(marketingAdress,(investFee.mul(300)).div(PERCENTS_DIVIDER));
+		token.transfer(partnerAdress,(investFee.mul(300)).div(PERCENTS_DIVIDER));
 		token.transfer(devAddress,(investFee.mul(300)).div(PERCENTS_DIVIDER));
-
+		token.transfer(marketingAdress,(investFee.mul(200)).div(PERCENTS_DIVIDER));
+		token.transfer(projectAdress,(investFee.mul(200)).div(PERCENTS_DIVIDER));
 		token.transfer(secureAddress,(investAmt.mul(SECURE_FEE)).div(PERCENTS_DIVIDER));
 
 		emit FeePayed(msg.sender, (investAmt.mul(INVEST_FEE.add(SECURE_FEE))).div(PERCENTS_DIVIDER));
@@ -171,10 +170,9 @@ contract BNBrocket is BNBrocket_state{
 		totalReinvested = totalReinvested.add(totalDividends);
 		user.lasReinvest = block.timestamp;
 
-		uint256 fee = (totalDividends.mul(INVEST_FEE)).div(PERCENTS_DIVIDER);
-		token.transfer(devAddress, fee.div(2));
-		token.transfer(devAddress, fee.div(2));
-
+		uint256 fee = totalDividends.mul(INVEST_FEE).div(PERCENTS_DIVIDER).div(2);
+		token.transfer(devAddress, fee);
+		token.transfer(marketingAdress, fee);
 		emit FeePayed(msg.sender, fee);
 		emit Reinvestment(msg.sender, totalDividends);
 		return true;

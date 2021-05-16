@@ -1,0 +1,14 @@
+{
+  "telegram": {
+    "title": "Telegram",
+    "url": "http://localhost:3000"
+  },
+  "support": {
+    "title": "Support",
+    "url": "http://localhost:3000"
+  },
+  "audit":{
+    "title": "Audit",
+    "url": "http://localhost:3000"
+  }
+}
