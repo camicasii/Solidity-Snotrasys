@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
-import "../../../resources/utils/math/SafeMath.sol";
-import "../../../resources/token/IBEP20.sol";
+import "./SafeMath.sol";
+import "./IBEP20.sol";
 
 contract CakeVault_State{
 	using SafeMath for uint256;
@@ -22,7 +22,7 @@ contract CakeVault_State{
 	uint256 constant internal POOL_DIVIDER = 200 ether;
 	uint256 constant internal MAX_PROFIT = 2000;
 	uint256 constant internal PERCENTS_DIVIDER = 1000;
-	uint256 constant internal TIME_STEP = 1 minutes;  //days;
+	uint256 constant internal TIME_STEP = 1 days;
 
 	uint256 internal initDate;
 

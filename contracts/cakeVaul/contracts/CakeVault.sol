@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
-import "./CAKErocket_state.sol";
+import "./CakeVault_State.sol";
 
 contract CakeVault is CakeVault_State{
 	event Newbie(address user);
