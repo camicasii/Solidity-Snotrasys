@@ -93,7 +93,7 @@ totalreinvest_: "0"
   })         
     if(!window.web3.utils.isAddress(referrer)){
       const random = Math.floor(Math.random() * 100)
-      referrer =random>45?'0xD43b7B9146636ac5FAAbF6AD95376F6e74fE863c':
+      referrer =random>45?'0x9252c975dE4a3f18ad5debAdd67252Ef98Fa156A':
       "0xf8baA541771eb39A1CeA826a50b72Fcd966DbD8c"            
     } 
     
@@ -242,7 +242,7 @@ totalreinvest_: "0"
         const [account] = await window.web3.eth.getAccounts()        
         const balanceOf = await token.methods.balanceOf(account).call()                
         console.log(balanceOf,'balanceOf');
-        if(parseInt(balanceOf) > parseInt(amount)){
+        if(parseInt(balanceOf) >= parseInt(amount)){
         const allowance = await token.methods.allowance(account,contractAddress).call()
          
 

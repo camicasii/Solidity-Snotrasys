@@ -822,5 +822,5 @@ export const abiContract =[
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
-];
+]
 

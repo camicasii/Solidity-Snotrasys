@@ -30,7 +30,7 @@ const HeroSection = ( {load} ) => {
          <Text bold className='px-3'>{balance}</Text></Card>
       <Card className=" lg:inline-flex flex-col text-2xl  px-3 py-4 rounded font-bold items-center justify-center      
       ">
-        <a href={process.env.REACT_APP_CONTRACT_URL}>
+        <a href={process.env.REACT_APP_CONTRACT_URL} target="_blank">
         <Text bold className="text-base text-center 
         truncate px-4
         ">{process.env.REACT_APP_CONTRACT_ADDRESS}</Text>

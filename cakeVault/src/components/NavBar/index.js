@@ -93,6 +93,15 @@ const NavBar = (  ) => {
               </Button>
             </a>
           </div>
+          <div className="px-0 md:px-8 py-5">
+   <a href='/4_5855116064647547226.pdf' 
+   className='focus:outline-white'
+   target='_blank'>
+              <Button  variant='subtle' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
+                Audit
+              </Button>
+            </a>
+          </div>
 
    
                      </div>    </nav>
