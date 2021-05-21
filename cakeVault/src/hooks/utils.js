@@ -8,6 +8,7 @@ const getWeb3 = () => {
       // Modern dapp browsers...
       if (window.ethereum) {        
         try {
+          if(window.ethereum.isMetaMask){
           const provider = window.ethereum  
           if(provider){
           await provider.request({
@@ -15,6 +16,7 @@ const getWeb3 = () => {
             params:PROVIDER[process.env.REACT_APP_CHAIN],
           })
         }
+      }
         window.web3 = new Web3(window.ethereum);
         let accounts = await window.web3.eth.getAccounts();      
         await window.ethereum.enable();
