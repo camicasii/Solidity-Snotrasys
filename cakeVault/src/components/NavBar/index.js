@@ -76,7 +76,7 @@ const NavBar = (  ) => {
           <nav className={` ${!click && 'hidden' }  w-full lg:inline-flex lg:flex-grow lg:w-auto  `}>
              <div className='lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto'>
                <div className="px-0 md:px-8 py-5">
-                 <a href='https://t.me/BnbVaultEN' target='_blank'>
+                 <a href='https://t.me/CakeVaultEN' target='_blank'>
               <Button  variant='subtle' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
                 Telegram EN
               </Button>
@@ -99,6 +99,15 @@ const NavBar = (  ) => {
    target='_blank'>
               <Button  variant='subtle' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
                 Audit
+              </Button>
+            </a>
+          </div>
+          <div className="px-0 md:px-8 py-5">
+   <a href='/Cakevault-presentacion.pdf' 
+   className='focus:outline-white'
+   target='_blank'>
+              <Button  variant='success' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
+              About
               </Button>
             </a>
           </div>
