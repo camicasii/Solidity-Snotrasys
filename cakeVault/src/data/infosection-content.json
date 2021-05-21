@@ -1,0 +1,23 @@
+{
+  "TotalIncome": {
+    "content": "Total income: based on your tarrif plan (from 8% to 30% daily)"
+  },
+  "BasicInterestRate": {
+    "content": "Community Bonus +1% daily (maximun 8%) , only for new deposits"
+  },
+  "DaysReductionPlan":{
+    "content": "Daily Hold Bonus +0.5% - Maximun 6%."
+  },
+  "AuctionBonus":{
+    "content": "Pool Bonus +0.1% for every 200 cake maximum 8%."
+  },
+  "RefBonus":{
+    "content": "Ref Bonus: get Additional 5% 2% 1% for every user you invite."
+  },
+  "MinimalDeposit":{
+  "content": "Minimal deposit: 0.25 CAKE, no maximal limit"
+  },
+  "Earning":{
+  "content": "Earning every moment, withdraw and Reinvets any time , once a day"
+  }
+}
