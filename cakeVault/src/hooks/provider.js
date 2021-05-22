@@ -1,5 +1,3 @@
-
-
 const  BSCmain =[
     {
       chainId: `0x${parseInt(process.env.REACT_APP_CHAIN_ID_MAIN, 10).toString(16)}`,
@@ -28,4 +26,9 @@ const  BSCTest =[
     },
   ]
 
-  export default [BSCmain,BSCTest]
+  const PROVIDER = {
+    BSCmain,
+    BSCTest 
+  }
+  
+  export default PROVIDER

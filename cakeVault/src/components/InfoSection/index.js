@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import * as React from 'react';
 import info from "../../data/infosection-content";
 import CardPricing from "../CardPricing";
 import { Card, CardBody, CardHeader, Text } from "@pancakeswap-libs/uikit";

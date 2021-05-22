@@ -1,18 +1,18 @@
-import React,{useState} from 'react'
-import content from '../../data/navbar-content'
-import { Card, CardBody, Button, Text } from "@pancakeswap-libs/uikit";
+import * as React from 'react'
+import Link from '../Link'
+import { Button, Text } from "@pancakeswap-libs/uikit";
 const NavBar = (  ) => {
 
-    const [click, setClick] = useState(false) 
+    const [click, setClick] = React.useState(false) 
     const handleClick = () => setClick(!click)
 
-  const {telegram,support,audit} = content
+
 
   return(
 <>
         <header   className=" flex items-center flex-wrap  p-3  bg-red-200">
-       <a href="/">
-   <a className="flex items-center justify-between px-4 py-3 sm:p-0">
+       
+   <Link to="/" className="flex items-center justify-between px-4 py-3 sm:p-0">
      <div
      className='inline-flex items-center p-2 mr-4 rounded-full bg-[#C4C4C4] '  
      >
@@ -27,8 +27,8 @@ const NavBar = (  ) => {
      <Text bold
      fontSize={24}
      >Cake Vault</Text>
-   </a>
-        </a>
+   </Link>
+        
 
     
  <button
@@ -76,22 +76,23 @@ const NavBar = (  ) => {
           <nav className={` ${!click && 'hidden' }  w-full lg:inline-flex lg:flex-grow lg:w-auto  `}>
              <div className='lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto'>
                <div className="px-0 md:px-8 py-5">
-                 <a href='https://t.me/BnbVaultEN' target='_blank'>
+                 <Link href='https://t.me/BnbVaultEN' target='_blank' rel='noopener'>
               <Button  variant='subtle' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
                 Telegram EN
               </Button>
-            </a>
+            </Link>
           </div>
 
 
    <div className="px-0 md:px-8 py-5">
-   <a href='https://t.me/CakevaultES' 
+   <Link to='https://t.me/CakevaultES' 
    className='focus:outline-white'
-   target='_blank'>
+   target='_blank'
+   rel='noopener'>
               <Button  variant='subtle' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
                 Telegram ES
               </Button>
-            </a>
+            </Link>
           </div>
           <div className="px-0 md:px-8 py-5">
    <a href='/4_5855116064647547226.pdf' 

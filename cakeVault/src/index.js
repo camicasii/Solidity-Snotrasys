@@ -2,18 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import './styles/globals.css'
-import App from './App';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import {light,dark,FallingBunnies} from '@pancakeswap-libs/uikit'
+import {light} from '@pancakeswap-libs/uikit'
 import { ThemeProvider } from 'styled-components';
+import AppRouter from './router/AppRouter';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
     <ThemeProvider theme={light}>
-      <App />
+      <AppRouter />
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,

@@ -1,12 +1,13 @@
-import React,{useEffect, useState} from 'react'
+import * as React from 'react';
+import Link from '../Link'
 import { useSelector } from 'react-redux';
-import { Card, CardBody, CardHeader, Text } from "@pancakeswap-libs/uikit";
-import { getWeb3,getContracts } from "../../hooks/utils";
+import { Card,Text } from "@pancakeswap-libs/uikit";
+import { getContracts } from "../../hooks/utils";
 const HeroSection = ( {load} ) => {
   const state = useSelector(state => state.contract)
-  const [balance, setBalance] = useState('10000')
-  const [youCake, setyouCake] = useState('0')
-  useEffect(() => {    
+  const [balance, setBalance] = React.useState('10000')
+  const [youCake, setyouCake] = React.useState('0')
+  React.useEffect(() => {    
     if(state.web3Load){
     const init = async() =>{
       let [accounts] = await window.web3.eth.getAccounts();
@@ -30,11 +31,11 @@ const HeroSection = ( {load} ) => {
          <Text bold className='px-3'>{balance}</Text></Card>
       <Card className=" lg:inline-flex flex-col text-2xl  px-3 py-4 rounded font-bold items-center justify-center      
       ">
-        <a href={process.env.REACT_APP_CONTRACT_URL} target="_blank">
+        <Link to={process.env.REACT_APP_CONTRACT_URL} target="_blank" rel='noopener'>
         <Text bold className="text-base text-center 
         truncate px-4
         ">{process.env.REACT_APP_CONTRACT_ADDRESS}</Text>
-        </a>
+        </Link>
              </Card>
 
       

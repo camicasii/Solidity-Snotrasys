@@ -1,26 +1,25 @@
-//import { useState } from 'react'
-import { useState,useEffect, useRef } from "react";
+import * as React from 'react'
 import info from "../../data/card-info-content.json";
 import { useSelector,useDispatch } from 'react-redux';
-import {light,dark,FallingBunnies,CardHeader, Button,Input,Card,CardFooter
-,CardBody,Text,ToastContainer} from '@pancakeswap-libs/uikit'
-import { getWeb3,getContracts } from "../../hooks/utils";
-import { contractAddress,tokenAddress } from "../../hooks/abiHelpers";
+import { CardHeader, Button,Input,Card,CardFooter
+,CardBody,Text } from '@pancakeswap-libs/uikit'
+import {getContracts } from "../../hooks/utils";
+import { contractAddress } from "../../hooks/abiHelpers";
 import { constants } from "ethers";
-import {addToasts} from '../../redux/contract'
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import {DateTime} from 'luxon'
+import { addToasts } from '../../redux/contract'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { DateTime } from 'luxon'
 
 export default function CardPricing({title}) {
-  const [minInvest, setminInvest] = useState(true)  
-  const [refLink, setrefLink] = useState('')
-  const [update, setupdate] = useState(0)
+  const [minInvest, setminInvest] = React.useState(true)  
+  const [refLink, setrefLink] = React.useState('')
+  const [update, setupdate] = React.useState(0)
   
   const state = useSelector(state => state.contract)
     const dispatch = useDispatch()
-    const { DateOne, DateTwo, DateThree, DateFour, DateFive } = info
-    const [isPaused, setisPaused] = useState(true)
-    const [data, setData] = useState(
+    const { DateOne, DateTwo, DateThree, DateFour} = info
+    const [isPaused, setisPaused] = React.useState(true)
+    const [data, setData] = React.useState(
       {balance:0,
       deposit:0,
       withdraw:0,
@@ -31,9 +30,9 @@ export default function CardPricing({title}) {
       referrerCount:[0,0,0]
       
   })
-  const ref = useRef(0)
+  const ref = React.useRef(0)
 
-    useEffect(() => {      
+    React.useEffect(() => {      
       if(state.web3Load){  
         
          let ref = window.location.origin
@@ -41,7 +40,7 @@ export default function CardPricing({title}) {
          ref += state.address
          setrefLink(ref)
       setTimeout(async() =>{
-        const {token,smartContract} = getContracts(window.web3)
+        const {smartContract} = getContracts(window.web3)
         let [accounts] = await window.web3.eth.getAccounts()        
         const  data_ = await smartContract.methods.getUserData(accounts).call()
         const  isPaused_ = await smartContract.methods.isPaused().call()
@@ -88,7 +87,7 @@ totalreinvest_: "0"
     const {smartContract} = getContracts(window.web3) 
     let referrer =""
     new URLSearchParams(window.location.search).forEach((value,key,c)=>{      
-      if(key="ref")
+      if(key === "ref") 
       referrer=value
   })         
     if(!window.web3.utils.isAddress(referrer)){

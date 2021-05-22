@@ -34,7 +34,7 @@ export const counterSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     setLoad: (state,action) => {    
-        if(process.env.NODE_ENV=='development')
+        if(process.env.NODE_ENV==='development')
         console.log('setLoad')
       state.load = action.payload
     },    

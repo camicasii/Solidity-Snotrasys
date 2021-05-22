@@ -1,5 +1,5 @@
-import React from 'react'
-import { Card, CardBody, CardHeader, Text, Modal as MOD } from "@pancakeswap-libs/uikit";
+import * as React from 'react';
+import { Text } from "@pancakeswap-libs/uikit";
 
 export default function Modal({onClose}) {
     return (

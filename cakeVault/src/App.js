@@ -1,43 +1,37 @@
-import React, { useState,useEffect } from 'react';
+import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import InfoSection from './components/InfoSection'
 import NavBar from './components/NavBar'
 import './App.css';
 import Footer from './components/Footer';
 import HeroSection from './components/HeroSection';
-import {getWeb3,getContracts} from './hooks/utils'
+import {getWeb3} from './hooks/utils'
 import {addToasts,setAddress} from './redux/contract'
-import {ToastContainer,useModal,ModalTitle,Button,ModalContainer,
-  ModalBody,ModalProvider,
-ModalHeader,
-ModalCloseButton,
-FallingBunnies
-
-} from '@pancakeswap-libs/uikit'
+import {ToastContainer,ModalContainer,FallingBunnies} from '@pancakeswap-libs/uikit'
 
 
 import  {setLoad,setWeb3Load} from './redux/contract'
 import Modal from './components/Modal';
 
 function App() {
-const [isModal, setisModal] = useState(false)
+const [isModal, setisModal] = React.useState(false)
   
    
   
-  const [toasts, settoas] = useState([])
+  const [toasts, settoas] = React.useState([])
   const state = useSelector(state => state.contract)
   const dispatch = useDispatch();  
 //load web3
-useEffect(() => {  
+React.useEffect(() => {  
   window.addEventListener("load", async () => {
     dispatch(setLoad(true));
     const state = await getWeb3()
-    if(state != undefined){
+    if(state !== undefined){
       dispatch(setWeb3Load(true))
     }})
-}, []);
+}, [dispatch]);
 
-useEffect(() => {  
+React.useEffect(() => {  
   if(state.web3Load){
     dispatch(addToasts({
       title:'wallet',
@@ -64,21 +58,23 @@ useEffect(() => {
   }
   init()
 }
-}, [state.web3Load])
+}, [dispatch,state.web3Load])
 
 //add toast
-useEffect(() => {  
-  if(state.toasts!=0)
+React.useEffect(() => {  
+  if(state.toasts!==0)
   settoas((prevToasts) => [state.toastsData, ...prevToasts]);
-}, [state.toasts])
+}, [state.toastsData,state.toasts])
 const handleRemove =(id)=>{
   settoas((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
   
 }
 
+/*
 const closeModal =()=>{
   console.log('hola');
 }
+*/
 
   return (   
     <>         
