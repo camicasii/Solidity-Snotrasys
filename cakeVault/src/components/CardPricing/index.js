@@ -297,7 +297,7 @@ totalreinvest_: "0"
       }
     return (      
         <Card  className=" border border-[#FDBB26] rounded 
-        
+        card2-backgrount
         
         ">
 
@@ -305,7 +305,9 @@ totalreinvest_: "0"
               w-full
               ">              
                 <span className="">
-                  <Text bold>
+                  <Text bold
+                  fontSize={24}
+                  >
                     {title}
                   </Text>
                 </span>
@@ -370,7 +372,15 @@ totalreinvest_: "0"
               type:'success'
             }))
           }>                
-              <Button size='small' color='secondary' >Copy ref Link</Button>
+              <Button size='small' color='secondary'              
+              
+              >
+                <div 
+                className='text-purple-500'
+                >
+                Copy ref Link  
+                </div>
+                </Button>
               </CopyToClipboard>
                <Text small className='truncate w-72 px-5' color='grey' >{refLink}</Text>            
             </div>

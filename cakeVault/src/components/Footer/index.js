@@ -22,11 +22,10 @@ const Footer = (  ) => (
 				<Text bold>Pancake Vault</Text></h3>
   
 					</a>
-
-				</div>
-
+									</div>			
 	
 			</div>
+
         
 
 		

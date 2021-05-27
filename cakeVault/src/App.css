@@ -37,3 +37,22 @@
     transform: translateY(0px);
   }
 }
+
+.background-app{
+  background-image: url('./asset/cake-bg.svg');
+  background-size: 20%; 
+}
+
+.card-backgrount{
+  background-image: url('./asset/cake-bg.svg');  
+  background-size: cover;
+background-position: center;
+  background-repeat: no-repeat;
+}
+
+.card2-backgrount{
+  background-image: url('./asset/ticket-bg.svg');  
+  background-size: cover;
+background-position: center;
+  background-repeat: no-repeat;
+}

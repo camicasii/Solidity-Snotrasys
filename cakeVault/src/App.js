@@ -18,6 +18,7 @@ FallingBunnies
 
 import  {setLoad,setWeb3Load} from './redux/contract'
 import Modal from './components/Modal';
+import HazeCripto from './components/HazeCripto';
 
 function App() {
 const [isModal, setisModal] = useState(false)
@@ -82,10 +83,14 @@ const closeModal =()=>{
 
   return (   
     <>         
- <div className="h-full bg-cover bg-center bg-fixed bg-backgrount">   
+ <div className="background-app h-full bg-cover bg-center bg-fixed bg-backgrount"
+ style={{fontFamily:'Kanit'}}
+ >   
 {!isModal?<Modal onClose={setisModal} />:<FallingBunnies size='24'/> } 
  <NavBar />  
+ 
  <HeroSection />  
+ <HazeCripto />
 <InfoSection />  
 <ToastContainer toasts={toasts} onRemove={handleRemove}/>
 <ModalContainer />

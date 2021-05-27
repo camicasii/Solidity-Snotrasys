@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
        fontFamily: {
-        sans: ['Roboto', ...defaultTheme.fontFamily.sans],
+        sans: ['Kanit','Roboto', ...defaultTheme.fontFamily.sans],
       },       
       colors: {
           'backgrount': '#B3E2FF',
