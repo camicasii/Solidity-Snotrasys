@@ -180,8 +180,6 @@ contract CakeVault is CakeVault_State{
 
 	function getNextUserAssignment(address userAddress) public view returns (uint256) {
 		uint256 checkpoint = getlastActionDate(users[userAddress]);
-		if(initDate > checkpoint)
-			checkpoint = initDate;
 		return checkpoint.add(TIME_STEP);
 	}
 
