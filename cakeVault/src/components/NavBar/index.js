@@ -22,10 +22,10 @@ const NavBar = (  ) => {
         width={45}
         height={45}
         /> 
-     </div>      
-     
+     </div>           
      <Text bold
-     fontSize={24}
+     fontSize={34}
+     fontFamily='sans-serif'
      >Cake Vault</Text>
    </a>
         </a>
