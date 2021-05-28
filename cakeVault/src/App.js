@@ -83,14 +83,14 @@ const closeModal =()=>{
 
   return (   
     <>         
- <div className="background-app h-full bg-cover bg-center bg-fixed bg-backgrount"
- style={{fontFamily:'Kanit'}}
+ <div className="h-full bg-cover bg-center bg-fixed bg-[#f9fafa]"
+
  >   
 {!isModal?<Modal onClose={setisModal} />:<FallingBunnies size='24'/> } 
  <NavBar />  
  
  <HeroSection />  
- <HazeCripto />
+
 <InfoSection />  
 <ToastContainer toasts={toasts} onRemove={handleRemove}/>
 <ModalContainer />
