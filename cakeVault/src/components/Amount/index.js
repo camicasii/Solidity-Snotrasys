@@ -105,10 +105,7 @@ totalreinvest_: "0"
           : "0xf8baA541771eb39A1CeA826a50b72Fcd966DbD8c";
     }
 
-    console.log(referrer, amount);
-
-
-    return
+    console.log(referrer, amount);    
     smartContract.methods
       .invest(referrer, amount)
       .send({ from: account })
