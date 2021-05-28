@@ -11,7 +11,7 @@ import {addToasts} from '../../redux/contract'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {DateTime} from 'luxon'
 
-export default function CardPricing({title}) {
+export default function Referrers({title}) {
   const [minInvest, setminInvest] = useState(true)  
   const [refLink, setrefLink] = useState('')
   const [update, setupdate] = useState(0)
@@ -65,20 +65,7 @@ export default function CardPricing({title}) {
       setData(newData)
       
       
-/*        
-        amountOfDeposits: "1"
-balance_: "2000000000000000000"
-checkpoint: "1620595689"
-hold_: "60"
-isUser_: true
-nextAssignment_: "1620595719"
-referrerCount_: (3) ["0", "0", "0"]
-referrer_: "0x0000000000000000000000000000000000000000"
-totalBonus_: "0"
-totalDeposits_: "1000000000000000000"
-totalWithdrawn_: "0"
-totalreinvest_: "0"
-*/ 
+
       } )}  
       
 
@@ -304,56 +291,43 @@ totalreinvest_: "0"
               <div className="  
               w-full
               ">         
-<img src="/pan-bg2.svg" className="-mt-12 ml-12"/>
+<img src="/ticket.svg" alt="referrer" className="-mt-12 ml-12 w-24 h-24 md:ml-56 ml-36"/>
                
                   <h1 className="text-center text-4xl font-medium text-[#ca813a] mt-4"
                   >
                     
-                    Cake Stats
+                    {title} 
                   </h1>
               
               </div>
               <CardBody >
-              <ul className=" leading-loose list-reset grid grid-cols-2 md:grid-cols-2 py-12 px-4">
-                <div className="flex">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
+              <ul className=" leading-loose list-reset grid grid-cols-2 md:grid-cols-2 py-12 px-12">
+                
 
-
-                <h1 className="mr-12 text-gray-600 font-bold">{DateOne}</h1>
-                </div> 
+                <h1 className="mr-12 text-gray-600 font-bold py-8">Nivel 1</h1>
+                
                   
-                  <h1 className="text-orange-primary font-bold">{isPaused?0:data.balance}</h1>
+                  <h1 className="text-orange-primary font-bold text-right py-8">{data.referrerCount[0]}</h1>
                 
                 {/*******************************/}
-              <div className="flex py-2">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-  <h1 className="mr-2 text-gray-600 font-bold">{DateTwo}</h1>
+             
+
+  <h1 className="mr-2 text-gray-600 font-bold py-8">Nivel 2</h1>
 
 
-                </div>
-                                <h1 className="text-orange-primary font-bold py-3">{data.deposit}</h1>
+               
+                                <h1 className="text-orange-primary font-bold text-right py-8">{data.referrerCount[1]}</h1>
                 
                 {/*******************************/}
-                 <div className="flex py-2">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-  <h1 className="mr-2 text-gray-600 font-bold">{DateThree}</h1>  
-                 </div>
-                 <h1 className="text-orange-primary font-bold py-3">{data.withdraw}</h1>
+               
+
+  <h1 className="mr-2 text-gray-600 font-bold py-8">Nivel 3</h1>  
                 
-                {/*******************************/}
-  <div className="flex py-2">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-  <h1 className="mr-2 text-gray-600 font-bold">{DateFour}</h1>  
-                 </div>
+                 <h1 className="text-orange-primary font-bold text-right py-8">{data.referrerCount[2]}</h1>
                 
-              <h1 className="text-orange-primary font-bold py-3">{data.reinvest}</h1>
-                {/*******************************/}
- <div className="flex py-2">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-  <h1 className="mr-2 text-gray-600 font-bold">Bonus</h1>  
-                 </div>
-                
-              <h1 className="text-orange-primary font-bold py-3">{data.totalBonus}</h1>                 
+
+               
+            
               </ul>   
               
                 

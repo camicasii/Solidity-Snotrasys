@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import content from '../../data/navbar-content'
-import { Card, CardBody, Button, Text } from "@pancakeswap-libs/uikit";
+import { Card, CardBody, Text } from "@pancakeswap-libs/uikit";
 const NavBar = (  ) => {
 
     const [click, setClick] = useState(false) 
@@ -10,111 +10,72 @@ const NavBar = (  ) => {
 
   return(
 <>
-        <header   className=" flex items-center flex-wrap  p-3  bg-red-200">
+        <header   className=" flex h-24 z-50  p-3  bg-white shadow-md">
        <a href="/">
-   <a className="flex items-center justify-between px-4 py-3 sm:p-0">
+         <a className="md:flex md:items-center  md:justify-between -px-4 py-3 sm:p-0">
      <div
-     className='inline-flex items-center p-2 mr-4 rounded-full bg-[#C4C4C4] '  
+       className='flex items-center py-2'  
      >
-     <img
+     <img 
         src='/logo.png' 
         alt="logo" 
-        width={45}
-        height={45}
+        width={65}
+        height={65}
         /> 
-     </div>           
-     <Text bold
-     fontSize={34}
-     fontFamily='sans-serif'
-     >Cake Vault</Text>
+     </div>      
+     
+     <h1 className="bg-clip-text text-transparent bg-gradient-to-l from-orange-primary to-[#FFB000] font-bold text-2xl invisible md:visible ml-4 pt-1"
+     >Cake Vault</h1>
    </a>
         </a>
 
-    
- <button
-          className=' inline-flex p-3 rounded lg:hidden text-white ml-auto hover:text-white outline-none'
-          onClick={handleClick}
-        >
-{
-          click?
-          <svg
-            className='w-6 h-6'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z'
-            />
-          </svg>
-          :
-   <svg
-            className='w-6 h-6'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z'
-            />
-          </svg>
-   }
-        </button>
+          <div >
 
+          </div> 
 
-
-
-
-          <nav className={` ${!click && 'hidden' }  w-full lg:inline-flex lg:flex-grow lg:w-auto  `}>
-             <div className='lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto'>
-               <div className="px-0 md:px-8 py-5">
-                 <a href='https://t.me/CakeVaultEN' target='_blank'>
-              <Button  variant='subtle' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
-                Telegram EN
-              </Button>
+  <nav className={` w-full inline-flex flex-grow w-auto  justify-end`}>
+            
+               <div className="px-0 md:px-8 py-7">
+                 <a href='https://t.me/CakevaultES' target='_blank'>
+              <button   className='lg:inline-flex lg:w-auto w-full px-2 py-2  rounded-full font-bold items-center justify-center bg-orange-primary text-white'>
+                <svg  xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="white">
+  <path d="M29.919 6.163l-4.225 19.925c-0.319 1.406-1.15 1.756-2.331 1.094l-6.438-4.744-3.106 2.988c-0.344 0.344-0.631 0.631-1.294 0.631l0.463-6.556 11.931-10.781c0.519-0.462-0.113-0.719-0.806-0.256l-14.75 9.288-6.35-1.988c-1.381-0.431-1.406-1.381 0.288-2.044l24.837-9.569c1.15-0.431 2.156 0.256 1.781 2.013z"/>
+</svg>
+              </button>
             </a>
           </div>
 
 
-   <div className="px-0 md:px-8 py-5">
+   <div className="px-3 md:px-8  py-7">
    <a href='https://t.me/CakevaultES' 
    className='focus:outline-white'
    target='_blank'>
-              <Button  variant='subtle' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
-                Telegram ES
-              </Button>
+              <button   className='lg:inline-flex lg:w-auto w-full px-2 py-2  rounded-full font-bold items-center justify-center bg-orange-primary text-white'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+              </button>
             </a>
           </div>
           <div className="px-0 md:px-8 py-5">
    <a href='/4_5855116064647547226.pdf' 
    className='focus:outline-white'
    target='_blank'>
-              <Button  variant='subtle' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
-                Audit
-              </Button>
-            </a>
-          </div>
-          <div className="px-0 md:px-8 py-5">
-   <a href='/Cakevault-presentacion.pdf' 
-   className='focus:outline-white'
-   target='_blank'>
-              <Button  variant='success' className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-black font-bold items-center justify-center bg-[#FDBB26]'>
-              About
-              </Button>
+              <button  className='lg:inline-flex lg:w-auto w-full px-7 py-3 rounded-full font-light text-lg text-white font-bold items-center justify-center bg-gradient-to-br from-orange-primary to-[#FFB000] '>
+                Connect Wallet
+              </button>
             </a>
           </div>
 
    
-                     </div>    </nav>
+                        </nav>
+          
+            
+              
 
+
+            
+
+   
+                        
   
   
  

@@ -8,28 +8,35 @@ const FooterIcon = () => (
 )
 
 const Footer = (  ) => (
- <footer className="bg-red-200">	
+ <footer className="bg-white">	
 		<div className="container max-w-6xl mx-auto flex items-center px-7 py-8">
 			<div className="w-full mx-auto flex flex-wrap items-center">
 				<div className="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold">
-					<a className="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="/">
+					<a className="text-gray-700 no-underline hover: hover:no-underline" href="/">
             
-			<h3 className="text-base inline-flex sm:text-left text-center text-[#FDBB26] ">
-				<Text >
-				{new Date().getFullYear()}
-				</Text> <FooterIcon />  
-				
-				<Text bold>Pancake Vault</Text></h3>
+			
+       
+        <div className="flex">
+ <img src="/footer-img.png" className="w-8 h-8" alt="footer"/>
+<h3 className="text-base inline-flex sm:text-left text-center  pl-4">
+          Copyright © {new Date().getFullYear()} Pancake Vault. Todos los derechos reservados.</h3>
+</div>
+
   
 					</a>
-									</div>			
+
+				</div>
+
 	
 			</div>
-
         
 
 		
 		</div>
 	</footer>
+        
+
+
+
 )
 export default Footer

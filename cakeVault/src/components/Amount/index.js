@@ -11,7 +11,7 @@ import {addToasts} from '../../redux/contract'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {DateTime} from 'luxon'
 
-export default function CardPricing({title}) {
+export default function Amount({title}) {
   const [minInvest, setminInvest] = useState(true)  
   const [refLink, setrefLink] = useState('')
   const [update, setupdate] = useState(0)
@@ -296,7 +296,7 @@ totalreinvest_: "0"
         setminInvest(false)
       }
     return (      
-        <div  className="shadow-lg border bg-white  rounded-xl 
+        <div  className="shadow-lg border  rounded-xl bg-white 
        
         
         ">
@@ -304,58 +304,110 @@ totalreinvest_: "0"
               <div className="  
               w-full
               ">         
-<img src="/pan-bg2.svg" className="-mt-12 ml-12"/>
+                <img src="/cakevault.svg" className="-mt-12 md:ml-56 ml-36 w-24 h-24"/>
                
-                  <h1 className="text-center text-4xl font-medium text-[#ca813a] mt-4"
+                  <h1 className="text-center text-4xl font-medium  text-[#ca813a] mt-4"
                   >
                     
-                    Cake Stats
-                  </h1>
+                   Enter amount                  </h1>
               
               </div>
               <CardBody >
               <ul className=" leading-loose list-reset grid grid-cols-2 md:grid-cols-2 py-12 px-4">
-                <div className="flex">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-
-
-                <h1 className="mr-12 text-gray-600 font-bold">{DateOne}</h1>
-                </div> 
-                  
-                  <h1 className="text-orange-primary font-bold">{isPaused?0:data.balance}</h1>
+                            
                 
-                {/*******************************/}
-              <div className="flex py-2">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-  <h1 className="mr-2 text-gray-600 font-bold">{DateTwo}</h1>
+                <Text>Referrers</Text>                
+                <Text fontSize='1'><span>L1-{data.referrerCount[0]}</span>,
+                <span>L2-{data.referrerCount[1]}</span>,
+                <span>L3-{data.referrerCount[2]}</span>
+                 </Text>
+                
+              </ul>             
 
+              <div  className="my-5 text-sm">
+                <label htmlFor="amount" className="text-left">
+                  <Text bold>Enter amount:</Text>
+                </label>
+                <Input
+                  ref={ref}
+                  type="number"
+                  autoFocus
+                  onChange={onChange}
+                  autoComplete="off"
+                  name="amountPlanOne"
+                  min={0.25}
+                  className="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                  placeholder='0.25'
+                />
+                </div>
+ <CardFooter className="flex flex-wrap justify-center text-center mt-3">
+                  <Button className="bg-gradient-to-br from-orange-primary to-[#FFB000] rounded-full text-white text-2xl font-semibold px-4 py-2 mb-5 " 
+
+                  disabled={minInvest}
+                  onClick={handleSubmit}
+                    type="button"             
+                  >
+                    Stake Cake
+                  </Button>
+                </CardFooter>
+                {data.isUser?
+              <div className='w-auto'>  
+
+              <div text={refLink} className='mb-5'>
+              <CopyToClipboard text={refLink} className='mb-2'
+          onCopy={() =>
+            dispatch(addToasts({
+              title:'Copy',
+              description:'Success',
+              type:'success'
+            }))
+          }>                
+              <Button size='small' color='secondary'              
+              
+              >
+                <div 
+                className='text-purple-500'
+                >
+                Copy ref Link  
+                </div>
+                </Button>
+              </CopyToClipboard>
+               <Text small className='truncate w-72 px-5' color='grey' >{refLink}</Text>            
+            </div>
+
+                <div className='grid grid-cols-1 px-20'>
+                <Button  className="bg-gradient-to-br from-orange-primary to-[#FFB000] rounded-full text-white text-2xl font-semibold px-4 py-2 mb-5 "
+                enable={isPaused}
+                  onClick={withdrawn}
+                    type="button"             
+                  >
+                    withdraw
+                  </Button>
+                  <Button  className="bg-gradient-to-br from-orange-primary to-[#FFB000] rounded-full text-white text-2xl font-semibold px-4 py-2 mb-5 "
+                  enable={isPaused}
+                  onClick={reinvest}
+                    type="button"             
+                  >
+                    reinvest
+                  </Button>
 
                 </div>
-                                <h1 className="text-orange-primary font-bold py-3">{data.deposit}</h1>
-                
-                {/*******************************/}
-                 <div className="flex py-2">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-  <h1 className="mr-2 text-gray-600 font-bold">{DateThree}</h1>  
-                 </div>
-                 <h1 className="text-orange-primary font-bold py-3">{data.withdraw}</h1>
-                
-                {/*******************************/}
-  <div className="flex py-2">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-  <h1 className="mr-2 text-gray-600 font-bold">{DateFour}</h1>  
-                 </div>
-                
-              <h1 className="text-orange-primary font-bold py-3">{data.reinvest}</h1>
-                {/*******************************/}
- <div className="flex py-2">
-<img src="/money.png" className="w-8 h-8 mr-2"/>
-  <h1 className="mr-2 text-gray-600 font-bold">Bonus</h1>  
-                 </div>
-                
-              <h1 className="text-orange-primary font-bold py-3">{data.totalBonus}</h1>                 
-              </ul>   
-              
+              </div>: <div className='grid grid-cols-1 px-20'><Button className="bg-gradient-to-br from-orange-primary to-[#FFB000] rounded-full text-white text-2xl font-semibold px-4 py-2 mb-5 disabled:opacity-30" disabled
+                disabled={isPaused}
+                  onClick={withdrawn}
+                    type="button"             
+                  >
+                    withdraw
+                  </Button>
+                  <Button className="bg-gradient-to-br from-orange-primary to-[#FFB000] rounded-full text-white text-2xl font-semibold px-4 py-2 mb-5 disabled:opacity-30"  disabled
+                  disabled={isPaused}
+                  onClick={reinvest}
+                    type="button"             
+                  >
+                    reinvest
+                  </Button>
+</div>
+                }
                 
                 </CardBody>
                
