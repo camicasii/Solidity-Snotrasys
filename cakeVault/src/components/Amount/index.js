@@ -313,17 +313,7 @@ totalreinvest_: "0"
               
               </div>
               <CardBody >
-              <ul className=" leading-loose list-reset grid grid-cols-2 md:grid-cols-2 py-12 px-4">
-                            
-                
-                <Text>Referrers</Text>                
-                <Text fontSize='1'><span>L1-{data.referrerCount[0]}</span>,
-                <span>L2-{data.referrerCount[1]}</span>,
-                <span>L3-{data.referrerCount[2]}</span>
-                 </Text>
-                
-              </ul>             
-
+                       
               <div  className="my-5 text-sm">
                 <label htmlFor="amount" className="text-left">
                   <Text bold>Enter amount:</Text>
