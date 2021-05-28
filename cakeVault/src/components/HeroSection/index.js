@@ -32,13 +32,13 @@ const HeroSection = ( {load} ) => {
   <div className="md:px-0 px-16 sm:py-0 py-8 ml-3 sm:mr-3 mr-0">
         <div className=" rounded-lg shadow bg-white px-2 py-2     
       ">
-        <a href="https://hazecrypto.net/cakevault/" target="_blank">
+       
           <img className="w-20 h-20 absolute -mt-9 transform md:scale-110 duration-700" src="/tarro.png"/>
         <h1 bold className="font-semibold text-lg text-center ml-2 pl-16 px-2 py-4 text-gray-400
         
           ">Your balance Cake : <span className="text-orange-primary">{youCake}</span></h1>
 
-        </a>
+       
              </div>
     <img className="md:w-[111px] w-[120px] h-[35px] absolute -mt-1 ml-4 transform md:scale-110 duration-700" src="/border-b.png"/>
     <img className="md:w-[125px] w-[183px] h-[35px] absolute ml-32 -mt-1 transform md:scale-110 duration-700" src="/border-b.png"/>
