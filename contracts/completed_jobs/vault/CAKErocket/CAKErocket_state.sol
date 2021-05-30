@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
-import "../../../resources/utils/math/SafeMath.sol";
-import "../../../resources/token/IBEP20.sol";
+import 'contracts/resources/utils/math/SafeMath.sol';
+import 'contracts/resources/token/IBEP20.sol';
 
 contract CakeVault_State{
 	using SafeMath for uint256;
@@ -33,7 +33,7 @@ contract CakeVault_State{
 	uint256 internal totalReinvested;
 
 	address public partnerAdress;
-	
+
 	address public marketingAdress;
 	address public projectAdress;
 	address public devAddress;

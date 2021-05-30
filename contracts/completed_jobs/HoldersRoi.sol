@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "../resources/utils/math/SafeMath.sol";
-import "../resources/utils/Ownable.sol";
-import "../resources/utils/Pausable.sol";
-import "../resources/token/IBEP20.sol";
+import "contracts/resources/utils/math/SafeMath.sol";
+import "contracts/resources/utils/Ownable.sol";
+import "contracts/resources/utils/Pausable.sol";
+import "contracts/resources/token/IBEP20.sol";
 
 contract HoldersRoi is Pausable, Ownable {
 	using SafeMath for uint256;
