@@ -11,7 +11,7 @@ contract FomoStake2 {
     using SafeMath for uint256;
 
     uint256 public LAUNCH_TIME;
-    uint256[] public REFERRAL_PERCENTS = [50, 25, 5];
+    uint256[3] public REFERRAL_PERCENTS = [50, 25, 5];
     uint256 public constant INVEST_MIN_AMOUNT = 0.05 ether;
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant PERCENTS_DIVIDER = 1000;
@@ -22,7 +22,6 @@ contract FomoStake2 {
     uint256 public constant PROJECT_FEE = 50;
 
     uint256 public totalStaked;
-    uint256 public totalRefBonus;
 
     struct Plan {
         uint256 time;
@@ -125,35 +124,25 @@ contract FomoStake2 {
         plans.push(Plan(28, 50));
     }
 
-    function invest(address referrer, uint8 plan)
-        public
-        payable
-        whenNotPaused
-    {
+    function invest(address referrer, uint8 plan) public payable whenNotPaused {
         require(msg.value >= INVEST_MIN_AMOUNT);
         require(plan < 6, "Invalid plan");
 
-        marketingAddress.transfer(
-            msg.value.mul(MARKETING_FEE).div(PERCENTS_DIVIDER)
-        );
-        projectAddress.transfer(
-            msg.value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER)
-        );
+        marketingAddress.transfer(msg.value.mul(MARKETING_FEE).div(PERCENTS_DIVIDER));
 
-        emit FeePayed(
-            msg.sender,
-            msg.value.mul(MARKETING_FEE.add(PROJECT_FEE)).div(PERCENTS_DIVIDER)
-        );
+        projectAddress.transfer(msg.value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER));
+
+        emit FeePayed(msg.sender, msg.value.mul(MARKETING_FEE.add(PROJECT_FEE)).div(PERCENTS_DIVIDER));
 
         User storage user = users[msg.sender];
-
+		uint256 referalLength = REFERRAL_PERCENTS.length;
         if (user.referrer == address(0)) {
             if (referrer != msg.sender) {
                 user.referrer = referrer;
             }
 
             address upline = user.referrer;
-            for (uint256 i = 0; i < 3; i++) {
+            for (uint256 i; i < referalLength; i++) {
                 if (upline != address(0)) {
                     users[upline].levels[i] = users[upline].levels[i].add(1);
                     upline = users[upline].referrer;
@@ -163,16 +152,11 @@ contract FomoStake2 {
 
         if (user.referrer != address(0)) {
             address upline = user.referrer;
-            for (uint256 i = 0; i < 3; i++) {
+            for (uint256 i; i < referalLength; i++) {
                 if (upline != address(0)) {
-                    uint256 amount =
-                        msg.value.mul(REFERRAL_PERCENTS[i]).div(
-                            PERCENTS_DIVIDER
-                        );
+                    uint256 amount = msg.value.mul(REFERRAL_PERCENTS[i]).div(PERCENTS_DIVIDER);
                     users[upline].bonus = users[upline].bonus.add(amount);
-                    users[upline].totalBonus = users[upline].totalBonus.add(
-                        amount
-                    );
+                    users[upline].totalBonus = users[upline].totalBonus.add(amount);
                     emit RefBonus(upline, msg.sender, i, amount);
                     upline = users[upline].referrer;
                 } else break;
@@ -184,8 +168,7 @@ contract FomoStake2 {
             emit Newbie(msg.sender);
         }
 
-        (uint256 percent, uint256 profit, , uint256 finish) =
-            getResult(plan, msg.value);
+        (uint256 percent, uint256 profit, , uint256 finish) = getResult(plan, msg.value);
         user.deposits.push(
             Deposit(
                 plan,
@@ -230,7 +213,7 @@ contract FomoStake2 {
 
         user.checkpoint = block.timestamp;
 
-        for (uint256 i = 0; i < user.deposits.length; i++) {
+        for (uint256 i; i < user.deposits.length; i++) {
             if (user.checkpoint < user.deposits[i].finish) {
                 if (user.deposits[i].plan < 3) {
                     user.deposits[i].force = false;
@@ -276,11 +259,7 @@ contract FomoStake2 {
         return address(this).balance;
     }
 
-    function getPlanInfo(uint8 plan)
-        public
-        view
-        returns (uint256 time, uint256 percent)
-    {
+    function getPlanInfo(uint8 plan) public view returns (uint256 time, uint256 percent) {
         time = plans[plan].time;
         percent = plans[plan].percent;
     }
@@ -298,16 +277,13 @@ contract FomoStake2 {
         }
     }
 
-    function getResult(uint8 plan, uint256 deposit)
-        public
-        view
+    function getResult(uint8 plan, uint256 deposit) public view
         returns (
             uint256 percent,
             uint256 profit,
             uint256 current,
             uint256 finish
-        )
-    {
+        ) {
         percent = getPercent(plan);
 
         if (plan < 3) {
@@ -315,7 +291,7 @@ contract FomoStake2 {
                 plans[plan].time
             );
         } else if (plan < 6) {
-            for (uint256 i = 0; i < plans[plan].time; i++) {
+            for (uint256 i; i < plans[plan].time; i++) {
                 profit = profit.add(
                     (deposit.add(profit)).mul(percent).div(PERCENTS_DIVIDER)
                 );
@@ -326,16 +302,12 @@ contract FomoStake2 {
         finish = current.add(getDecreaseDays(plans[plan].time));
     }
 
-    function getUserDividends(address userAddress)
-        public
-        view
-        returns (uint256)
-    {
+    function getUserDividends(address userAddress) public view returns (uint256) {
         User memory user = users[userAddress];
 
         uint256 totalAmount;
 
-        for (uint256 i = 0; i < user.deposits.length; i++) {
+        for (uint256 i; i < user.deposits.length; i++) {
             if (user.checkpoint < user.deposits[i].finish) {
                 if (user.deposits[i].plan < 3) {
                     uint256 share =
@@ -352,8 +324,7 @@ contract FomoStake2 {
                             ? user.deposits[i].finish
                             : block.timestamp;
                     if (from < to) {
-                        uint256 planTime =
-                            plans[user.deposits[i].plan].time.mul(TIME_STEP);
+                        uint256 planTime = plans[user.deposits[i].plan].time.mul(TIME_STEP);
                         uint256 redress =
                             planTime.div(
                                 getDecreaseDays(
@@ -416,10 +387,7 @@ contract FomoStake2 {
     }
 
     function getUserAvailable(address userAddress) public view returns (uint256) {
-        return
-            getUserReferralBonus(userAddress).add(
-                getUserDividends(userAddress)
-            );
+        return getUserReferralBonus(userAddress).add(getUserDividends(userAddress));
     }
 
     function getUserAmountOfDeposits(address userAddress) public view returns (uint256) {
@@ -431,7 +399,7 @@ contract FomoStake2 {
     }
 
     function getUserTotalDeposits(address userAddress) public view returns (uint256 amount) {
-        for (uint256 i = 0; i < users[userAddress].deposits.length; i++) {
+        for (uint256 i; i < users[userAddress].deposits.length; i++) {
             amount = amount.add(users[userAddress].deposits[i].amount);
         }
     }
