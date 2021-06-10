@@ -4,9 +4,10 @@
 
 // SPDX-License-Identifier: MIT
 
-pragma solidity =0.7.0;
+pragma solidity ^0.8.0;
+import '../../resources/utils/math/SafeMath.sol';
 
-contract FomoStake {
+contract FomoStake2 {
     using SafeMath for uint256;
 
     uint256 public LAUNCH_TIME;
@@ -54,6 +55,7 @@ contract FomoStake {
 
     address payable public marketingAddress;
     address payable public projectAddress;
+	address payable public devAddress;
 
     event Newbie(address user);
     event NewDeposit(
@@ -80,25 +82,40 @@ contract FomoStake {
     );
     event FeePayed(address indexed user, uint256 totalAmount);
 
-    modifier beforeStarted() {
-        require(block.timestamp >= LAUNCH_TIME, "!beforeStarted");
-        _;
-    }
+	event Unpaused(address account);
 
-    constructor(address payable marketingAddr, address payable projectAddr)
-        public
-    {
+	modifier onlyOwner() {
+		require(devAddress == msg.sender, "Ownable: caller is not the owner");
+		_;
+	}
+
+	modifier whenNotPaused() {
+		require(!isPaused(), "Pausable: paused");
+		_;
+	}
+
+	modifier whenPaused() {
+		require(isPaused(), "Pausable: not paused");
+		_;
+	}
+
+	function unpause() external whenPaused onlyOwner{
+		LAUNCH_TIME = block.timestamp;
+		emit Unpaused(msg.sender);
+	}
+
+	function isPaused() public view returns(bool) {
+		return (LAUNCH_TIME == 0);
+	}
+
+    constructor(address payable marketingAddr, address payable projectAddr, address payable devAddr) {
         require(!isContract(marketingAddr), "!marketingAddr");
         require(!isContract(projectAddr), "!projectAddr");
+		require(!isContract(devAddr), "!devAddr");
 
         marketingAddress = marketingAddr;
         projectAddress = projectAddr;
-
-        if (getChainID() == 97) {
-            LAUNCH_TIME = block.timestamp; // Test Network
-        } else {
-            LAUNCH_TIME = 1616590800;
-        }
+		devAddress = devAddr;
 
         plans.push(Plan(14, 80));
         plans.push(Plan(21, 65));
@@ -111,7 +128,7 @@ contract FomoStake {
     function invest(address referrer, uint8 plan)
         public
         payable
-        beforeStarted()
+        whenNotPaused
     {
         require(msg.value >= INVEST_MIN_AMOUNT);
         require(plan < 6, "Invalid plan");
@@ -193,20 +210,20 @@ contract FomoStake {
         );
     }
 
-    function withdraw() public beforeStarted() {
+    function withdraw() public whenNotPaused {
         User storage user = users[msg.sender];
 
         uint256 totalAmount = getUserDividends(msg.sender);
 
         uint256 referralBonus = getUserReferralBonus(msg.sender);
         if (referralBonus > 0) {
-            user.bonus = 0;
+            delete user.bonus;
             totalAmount = totalAmount.add(referralBonus);
         }
 
         require(totalAmount > 0, "User has no dividends");
 
-        uint256 contractBalance = address(this).balance;
+        uint256 contractBalance = getContractBalance();
         if (contractBalance < totalAmount) {
             totalAmount = contractBalance;
         }
@@ -223,22 +240,21 @@ contract FomoStake {
             }
         }
 
-        msg.sender.transfer(totalAmount);
+        payable(msg.sender).transfer(totalAmount);
 
         emit Withdrawn(msg.sender, totalAmount);
     }
 
-    function forceWithdraw(uint256 index) public beforeStarted() {
+    function forceWithdraw(uint256 index) public whenNotPaused {
         User storage user = users[msg.sender];
 
         require(index < user.deposits.length, "Invalid index");
         require(user.deposits[index].force == true, "Force is false");
 
         uint256 depositAmount = user.deposits[index].amount;
-        uint256 penaltyAmount =
-            depositAmount.mul(PENALTY_STEP).div(PERCENTS_DIVIDER);
+        uint256 penaltyAmount = depositAmount.mul(PENALTY_STEP).div(PERCENTS_DIVIDER);
 
-        msg.sender.transfer(depositAmount.sub(penaltyAmount));
+       payable(msg.sender).transfer(depositAmount.sub(penaltyAmount));
 
         penaltyDeposits[msg.sender].push(user.deposits[index]);
 
@@ -512,53 +528,11 @@ contract FomoStake {
         finish = penaltyDeposits[userAddress][index].finish;
     }
 
-    function getChainID() public pure returns (uint256) {
-        uint256 id;
-        assembly {
-            id := chainid()
-        }
-        return id;
-    }
-
     function isContract(address addr) internal view returns (bool) {
         uint256 size;
         assembly {
             size := extcodesize(addr)
         }
         return size > 0;
-    }
-}
-
-library SafeMath {
-    function add(uint256 a, uint256 b) internal pure returns (uint256) {
-        uint256 c = a + b;
-        require(c >= a, "SafeMath: addition overflow");
-
-        return c;
-    }
-
-    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-        require(b <= a, "SafeMath: subtraction overflow");
-        uint256 c = a - b;
-
-        return c;
-    }
-
-    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
-        if (a == 0) {
-            return 0;
-        }
-
-        uint256 c = a * b;
-        require(c / a == b, "SafeMath: multiplication overflow");
-
-        return c;
-    }
-
-    function div(uint256 a, uint256 b) internal pure returns (uint256) {
-        require(b > 0, "SafeMath: division by zero");
-        uint256 c = a / b;
-
-        return c;
     }
 }
