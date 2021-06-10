@@ -380,38 +380,22 @@ contract FomoStake2 {
         uint256 decreaseDays = pastDays.mul(DECREASE_DAY_STEP);
         uint256 minimumDays = planTime.mul(TIME_STEP).sub(decreaseDays);
 
-        if (planTime.mul(TIME_STEP).sub(decreaseDays) < limitDays) {
+        if (minimumDays < limitDays) {
             return limitDays;
         }
 
         return minimumDays;
     }
 
-    function getUserCheckpoint(address userAddress)
-        public
-        view
-        returns (uint256)
-    {
+    function getUserCheckpoint(address userAddress) public view returns (uint256) {
         return users[userAddress].checkpoint;
     }
 
-    function getUserReferrer(address userAddress)
-        public
-        view
-        returns (address)
-    {
+    function getUserReferrer(address userAddress) public view returns (address) {
         return users[userAddress].referrer;
     }
 
-    function getUserDownlineCount(address userAddress)
-        public
-        view
-        returns (
-            uint256,
-            uint256,
-            uint256
-        )
-    {
+    function getUserDownlineCount(address userAddress) public view returns (uint256, uint256, uint256) {
         return (
             users[userAddress].levels[0],
             users[userAddress].levels[1],
@@ -419,80 +403,46 @@ contract FomoStake2 {
         );
     }
 
-    function getUserReferralBonus(address userAddress)
-        public
-        view
-        returns (uint256)
-    {
+    function getUserReferralBonus(address userAddress) public view returns (uint256) {
         return users[userAddress].bonus;
     }
 
-    function getUserReferralTotalBonus(address userAddress)
-        public
-        view
-        returns (uint256)
-    {
+    function getUserReferralTotalBonus(address userAddress) public view returns (uint256) {
         return users[userAddress].totalBonus;
     }
 
-    function getUserReferralWithdrawn(address userAddress)
-        public
-        view
-        returns (uint256)
-    {
+    function getUserReferralWithdrawn(address userAddress) public view returns (uint256) {
         return users[userAddress].totalBonus.sub(users[userAddress].bonus);
     }
 
-    function getUserAvailable(address userAddress)
-        public
-        view
-        returns (uint256)
-    {
+    function getUserAvailable(address userAddress) public view returns (uint256) {
         return
             getUserReferralBonus(userAddress).add(
                 getUserDividends(userAddress)
             );
     }
 
-    function getUserAmountOfDeposits(address userAddress)
-        public
-        view
-        returns (uint256)
-    {
+    function getUserAmountOfDeposits(address userAddress) public view returns (uint256) {
         return users[userAddress].deposits.length;
     }
 
-    function getUserAmountOfPenaltyDeposits(address userAddress)
-        public
-        view
-        returns (uint256)
-    {
+    function getUserAmountOfPenaltyDeposits(address userAddress) public view returns (uint256) {
         return penaltyDeposits[userAddress].length;
     }
 
-    function getUserTotalDeposits(address userAddress)
-        public
-        view
-        returns (uint256 amount)
-    {
+    function getUserTotalDeposits(address userAddress) public view returns (uint256 amount) {
         for (uint256 i = 0; i < users[userAddress].deposits.length; i++) {
             amount = amount.add(users[userAddress].deposits[i].amount);
         }
     }
 
-    function getUserDepositInfo(address userAddress, uint256 index)
-        public
-        view
-        returns (
-            uint8 plan,
-            uint256 percent,
+    function getUserDepositInfo(address userAddress, uint256 index) public view returns (uint8 plan, uint256 percent,
             uint256 amount,
             uint256 profit,
             uint256 start,
             uint256 finish,
             bool force
-        )
-    {
+        ) {
         User memory user = users[userAddress];
 
         require(index < user.deposits.length, "Invalid index");
@@ -506,18 +456,14 @@ contract FomoStake2 {
         force = user.deposits[index].force;
     }
 
-    function getUserPenaltyDepositInfo(address userAddress, uint256 index)
-        public
-        view
-        returns (
+    function getUserPenaltyDepositInfo(address userAddress, uint256 index) public view returns (
             uint8 plan,
             uint256 percent,
             uint256 amount,
             uint256 profit,
             uint256 start,
             uint256 finish
-        )
-    {
+        ) {
         require(index < penaltyDeposits[userAddress].length, "Invalid index");
 
         plan = penaltyDeposits[userAddress][index].plan;
