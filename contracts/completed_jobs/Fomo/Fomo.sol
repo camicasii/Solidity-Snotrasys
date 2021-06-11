@@ -15,8 +15,8 @@ contract FomoStake2 {
     uint256 public constant INVEST_MIN_AMOUNT = 0.05 ether;
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant PERCENTS_DIVIDER = 1000;
-    uint256 public constant TIME_STEP = 1 days;
-    uint256 public constant DECREASE_DAY_STEP = 0.5 days;
+    uint256 public constant TIME_STEP = 1 minutes;
+    uint256 public constant DECREASE_DAY_STEP = 0.5 minutes;
     uint256 public constant PENALTY_STEP = 700;
     uint256 public constant MARKETING_FEE = 50;
     uint256 public constant PROJECT_FEE = 50;
@@ -274,7 +274,7 @@ contract FomoStake2 {
     }
 
     function getPercent(uint8 plan) public view returns (uint256) {
-        if (block.timestamp > LAUNCH_TIME) {
+        if (!isPaused()) {
             return plans[plan].percent.add(PERCENT_STEP.mul(block.timestamp.sub(LAUNCH_TIME)).div(TIME_STEP));
         } else {
             return plans[plan].percent;
@@ -334,7 +334,7 @@ contract FomoStake2 {
 
                         totalAmount = totalAmount.add(share.mul(to.sub(from)).mul(redress).div(TIME_STEP));
                     }
-                } else if (block.timestamp > user.deposits[i].finish) {
+                } else if (block.timestamp >= user.deposits[i].finish) {
                     totalAmount = totalAmount.add(user.deposits[i].profit);
                 }
             }
