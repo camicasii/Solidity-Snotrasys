@@ -15,8 +15,8 @@ contract FomoStake2 {
     uint256 public constant INVEST_MIN_AMOUNT = 0.05 ether;
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant PERCENTS_DIVIDER = 1000;
-    uint256 public constant TIME_STEP = 1 minutes;
-    uint256 public constant DECREASE_DAY_STEP = 0.5 minutes;
+    uint256 public constant TIME_STEP = 2 seconds;//1 days;descomentar esto
+    uint256 public constant DECREASE_DAY_STEP = 1 seconds;//0.5 days;descomentar esto
     uint256 public constant PENALTY_STEP = 700;
     uint256 public constant MARKETING_FEE = 50;
     uint256 public constant PROJECT_FEE = 50;
@@ -29,7 +29,8 @@ contract FomoStake2 {
         bool locked;
     }
 
-    Plan[] internal plans;
+    mapping(uint256 => Plan) plans;
+    uint256 public plansLength;
 
     struct Deposit {
         uint8 plan;
@@ -44,13 +45,14 @@ contract FomoStake2 {
     struct User {
         Deposit[] deposits;
         uint256 checkpoint;
-        address referrer;
+        address payable referrer;
         uint256[3] levels;
         uint256 bonus;
         uint256 totalBonus;
+		uint256 withdraw;
     }
 
-    mapping(address => User) internal users;
+    mapping(address => User) public users;
     mapping(address => Deposit[]) internal penaltyDeposits;
 
     address payable public marketingAddress;
@@ -117,17 +119,40 @@ contract FomoStake2 {
         projectAddress = projectAddr;
 		devAddress = devAddr;
 
-        plans.push(Plan(14, 80, false));
-        plans.push(Plan(21, 65, false));
-        plans.push(Plan(28, 50, false));
-        plans.push(Plan(14, 80, true));
-        plans.push(Plan(21, 65, true));
-        plans.push(Plan(28, 50, true));
+
+        plans[0].time = 14;
+        plans[0].percent = 80;
+
+
+        plans[1].time = 21;
+        plans[1].percent = 65;
+
+
+        plans[2].time = 28;
+        plans[2].percent = 50;
+
+
+        plans[3].time = 14;
+        plans[3].percent = 80;
+        plans[3].locked = true;
+
+
+        plans[4].time = 21;
+        plans[4].percent = 65;
+        plans[4].locked = true;
+
+
+        plans[5].time = 28;
+        plans[5].percent = 50;
+        plans[5].locked = true;
+
+        plansLength = 6;
+
     }
 
-    function invest(address referrer, uint8 plan) external payable whenNotPaused {
+    function invest(address payable referrer, uint8 plan) external payable whenNotPaused {
         require(msg.value >= INVEST_MIN_AMOUNT, "insufficient deposit");
-        require(plan < plans.length, "Invalid plan");
+        require(plan < plansLength, "Invalid plan");
 
         marketingAddress.transfer(msg.value.mul(MARKETING_FEE).div(PERCENTS_DIVIDER));
 
@@ -198,7 +223,7 @@ contract FomoStake2 {
         User storage user = users[msg.sender];
 
         uint256 totalAmount = getUserDividends(msg.sender);
-
+        user.withdraw = user.withdraw.add(totalAmount);
         uint256 referralBonus = getUserReferralBonus(msg.sender);
 
         if (referralBonus > 0) {
@@ -263,17 +288,22 @@ contract FomoStake2 {
     }
 
     function getPlanInfo(uint8 plan) external view returns (uint256 time, uint256 percent, bool locked) {
+        require(plan < plansLength, "Invalid plan");
         Plan memory tempPlan = plans[plan];
         time = tempPlan.time;
         percent = tempPlan.percent;
         locked = tempPlan.locked;
     }
 
-    function getPlans() external view returns (Plan[] memory) {
-        return plans;
+    function getPlans() external view returns (Plan[] memory _plans) {
+        _plans = new Plan[] (plansLength);
+        for(uint256 i; i < plansLength; i++) {
+            _plans[i] = plans[i];
+        }
     }
 
     function getPercent(uint8 plan) public view returns (uint256) {
+        require(plan < plansLength, "Invalid plan");
         if (!isPaused()) {
             return plans[plan].percent.add(PERCENT_STEP.mul(block.timestamp.sub(LAUNCH_TIME)).div(TIME_STEP));
         } else {
@@ -289,7 +319,7 @@ contract FomoStake2 {
             uint256 finish
         ) {
 
-		require(plan < plans.length, "Invalid plan");
+		require(plan < plansLength, "Invalid plan");
 
         Plan memory tempPlan = plans[plan];
         percent = getPercent(plan);
