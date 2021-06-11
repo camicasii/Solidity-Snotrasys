@@ -21,7 +21,7 @@ contract FomoStake2 {
     uint256 public constant MARKETING_FEE = 50;
     uint256 public constant PROJECT_FEE = 50;
 
-	uint256 private constant LIMIT_DAYS = 5;
+	uint256 public constant LIMIT_DAYS = 5;
 
     uint256 public totalStaked;
 
@@ -127,7 +127,7 @@ contract FomoStake2 {
     }
 
     function invest(address referrer, uint8 plan) external payable whenNotPaused {
-        require(msg.value >= INVEST_MIN_AMOUNT);
+        require(msg.value >= INVEST_MIN_AMOUNT, "insufficient deposit");
         require(plan < 6, "Invalid plan");
 
         marketingAddress.transfer(msg.value.mul(MARKETING_FEE).div(PERCENTS_DIVIDER));
