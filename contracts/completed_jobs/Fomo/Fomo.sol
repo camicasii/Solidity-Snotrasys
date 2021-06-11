@@ -28,6 +28,7 @@ contract FomoStake2 {
     struct Plan {
         uint256 time;
         uint256 percent;
+        bool locked;
     }
 
     Plan[] internal plans;
@@ -118,12 +119,12 @@ contract FomoStake2 {
         projectAddress = projectAddr;
 		devAddress = devAddr;
 
-        plans.push(Plan(14, 80));
-        plans.push(Plan(21, 65));
-        plans.push(Plan(28, 50));
-        plans.push(Plan(14, 80));
-        plans.push(Plan(21, 65));
-        plans.push(Plan(28, 50));
+        plans.push(Plan(14, 80, false));
+        plans.push(Plan(21, 65, false));
+        plans.push(Plan(28, 50, false));
+        plans.push(Plan(14, 80, true));
+        plans.push(Plan(21, 65, true));
+        plans.push(Plan(28, 50, true));
     }
 
     function invest(address referrer, uint8 plan) external payable whenNotPaused {
@@ -262,9 +263,11 @@ contract FomoStake2 {
         return address(this).balance;
     }
 
-    function getPlanInfo(uint8 plan) external view returns (uint256 time, uint256 percent) {
-        time = plans[plan].time;
-        percent = plans[plan].percent;
+    function getPlanInfo(uint8 plan) external view returns (uint256 time, uint256 percent, bool locked) {
+        Plan memory tempPlan = plans[plan];
+        time = tempPlan.time;
+        percent = tempPlan.percent;
+        locked = tempPlan.locked;
     }
 
     function getPlans() external view returns (Plan[] memory) {
