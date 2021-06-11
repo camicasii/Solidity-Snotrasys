@@ -21,8 +21,6 @@ contract FomoStake2 {
     uint256 public constant MARKETING_FEE = 50;
     uint256 public constant PROJECT_FEE = 50;
 
-	uint256 public constant LIMIT_DAYS = 5;
-
     uint256 public totalStaked;
 
     struct Plan {
@@ -129,7 +127,7 @@ contract FomoStake2 {
 
     function invest(address referrer, uint8 plan) external payable whenNotPaused {
         require(msg.value >= INVEST_MIN_AMOUNT, "insufficient deposit");
-        require(plan < 6, "Invalid plan");
+        require(plan < plans.length, "Invalid plan");
 
         marketingAddress.transfer(msg.value.mul(MARKETING_FEE).div(PERCENTS_DIVIDER));
 
@@ -219,7 +217,8 @@ contract FomoStake2 {
 
         for (uint256 i; i < user.deposits.length; i++) {
             if (user.checkpoint < user.deposits[i].finish) {
-                if (user.deposits[i].plan < 3) {
+                Plan memory tempPlan = plans[user.deposits[i].plan];
+                if (!tempPlan.locked) {
                     user.deposits[i].force = false;
                 } else if (block.timestamp > user.deposits[i].finish) {
                     user.deposits[i].force = false;
@@ -276,12 +275,7 @@ contract FomoStake2 {
 
     function getPercent(uint8 plan) public view returns (uint256) {
         if (block.timestamp > LAUNCH_TIME) {
-            return
-                plans[plan].percent.add(
-                    PERCENT_STEP.mul(block.timestamp.sub(LAUNCH_TIME)).div(
-                        TIME_STEP
-                    )
-                );
+            return plans[plan].percent.add(PERCENT_STEP.mul(block.timestamp.sub(LAUNCH_TIME)).div(TIME_STEP));
         } else {
             return plans[plan].percent;
         }
@@ -294,11 +288,15 @@ contract FomoStake2 {
             uint256 current,
             uint256 finish
         ) {
+
+		require(plan < plans.length, "Invalid plan");
+
+        Plan memory tempPlan = plans[plan];
         percent = getPercent(plan);
 
-        if (plan < 3) {
+        if (!tempPlan.locked) {
             profit = deposit.mul(percent).div(PERCENTS_DIVIDER).mul(plans[plan].time);
-        } else if (plan < 6) {
+        } else {
             for (uint256 i; i < plans[plan].time; i++) {
                 profit = profit.add(deposit.add(profit).mul(percent).div(PERCENTS_DIVIDER));
             }
@@ -315,7 +313,8 @@ contract FomoStake2 {
 
         for (uint256 i; i < user.deposits.length; i++) {
             if (user.checkpoint < user.deposits[i].finish) {
-                if (user.deposits[i].plan < 3) {
+                Plan memory tempPlan = plans[user.deposits[i].plan];
+                if (!tempPlan.locked) {
                     uint256 share =
                         user.deposits[i]
                             .amount
@@ -331,8 +330,7 @@ contract FomoStake2 {
                             : block.timestamp;
                     if (from < to) {
                         uint256 planTime = plans[user.deposits[i].plan].time.mul(TIME_STEP);
-                        uint256 redress =
-                            planTime.div(getDecreaseDays(plans[user.deposits[i].plan].time));
+                        uint256 redress = planTime.div(getDecreaseDays(plans[user.deposits[i].plan].time));
 
                         totalAmount = totalAmount.add(share.mul(to.sub(from)).mul(redress).div(TIME_STEP));
                     }
@@ -346,7 +344,7 @@ contract FomoStake2 {
     }
 
     function getDecreaseDays(uint256 planTime) public view returns (uint256) {
-        uint256 limitDays = LIMIT_DAYS.mul(TIME_STEP);
+        uint256 limitDays = PERCENT_STEP.mul(TIME_STEP);
         uint256 pastDays = block.timestamp.sub(LAUNCH_TIME).div(TIME_STEP);
         uint256 decreaseDays = pastDays.mul(DECREASE_DAY_STEP);
         uint256 minimumDays = planTime.mul(TIME_STEP).sub(decreaseDays);
