@@ -14,6 +14,7 @@ contract FomoStake2 {
     uint256[3] public REFERRAL_PERCENTS = [50, 25, 5];
     uint256 public constant INVEST_MIN_AMOUNT = 0.05 ether;
     uint256 public constant PERCENT_STEP = 5;
+    uint256 public constant WITHDRAW_FEE_PERCENT = 100;
     uint256 public constant PERCENTS_DIVIDER = 1000;
     uint256 public constant TIME_STEP = 2 seconds;//1 days;descomentar esto
     uint256 public constant DECREASE_DAY_STEP = 1 seconds;//0.5 days;descomentar esto
@@ -224,12 +225,6 @@ contract FomoStake2 {
 
         uint256 totalAmount = getUserDividends(msg.sender);
         user.withdraw = user.withdraw.add(totalAmount);
-        uint256 referralBonus = getUserReferralBonus(msg.sender);
-
-        if (referralBonus > 0) {
-            delete user.bonus;
-            totalAmount = totalAmount.add(referralBonus);
-        }
 
         require(totalAmount > 0, "User has no dividends");
 
@@ -251,9 +246,15 @@ contract FomoStake2 {
             }
         }
 
-        payable(msg.sender).transfer(totalAmount);
+		uint256 fee = totalAmount.mul(WITHDRAW_FEE_PERCENT).div(PERCENTS_DIVIDER);
+
+		uint256 toTransfer = totalAmount.sub(fee);
+
+        payable(msg.sender).transfer(toTransfer);
 
         emit Withdrawn(msg.sender, totalAmount);
+		emit FeePayed(msg.sender, fee);
+
     }
 
     function forceWithdraw(uint256 index) external whenNotPaused {
@@ -400,6 +401,14 @@ contract FomoStake2 {
 
     function getUserReferralBonus(address userAddress) public view returns (uint256) {
         return users[userAddress].bonus;
+    }
+
+    function withdrawReferralBonus() external {
+		User storage user = users[msg.sender];
+		uint256 referralBonus = getUserReferralBonus(msg.sender);
+		require(referralBonus > 0, "User has no dividends");
+        delete user.bonus;
+        payable(msg.sender).transfer(referralBonus);
     }
 
     function getUserReferralTotalBonus(address userAddress) external view returns (uint256) {
