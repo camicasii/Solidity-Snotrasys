@@ -16,8 +16,8 @@ contract FomoStake2 {
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant WITHDRAW_FEE_PERCENT = 100;
     uint256 public constant PERCENTS_DIVIDER = 1000;
-    uint256 public constant TIME_STEP = 2 seconds;//1 days;descomentar esto
-    uint256 public constant DECREASE_DAY_STEP = 1 seconds;//0.5 days;descomentar esto
+    uint256 public constant TIME_STEP = 10 seconds;//1 days;descomentar esto
+    uint256 public constant DECREASE_DAY_STEP = 5 seconds;//0.5 days;descomentar esto
     uint256 public constant PENALTY_STEP = 700;
     uint256 public constant MARKETING_FEE = 50;
     uint256 public constant PROJECT_FEE = 50;
@@ -171,21 +171,12 @@ contract FomoStake2 {
             address upline = user.referrer;
             for (uint256 i; i < referalLength; i++) {
                 if (upline != address(0)) {
-                    users[upline].levels[i] = users[upline].levels[i].add(1);
-                    upline = users[upline].referrer;
-                } else break;
-            }
-        }
-
-        if (user.referrer != address(0)) {
-            address upline = user.referrer;
-            for (uint256 i; i < referalLength; i++) {
-                if (upline != address(0)) {
-                    uint256 amount = msg.value.mul(REFERRAL_PERCENTS[i]).div(PERCENTS_DIVIDER);
-                    users[upline].bonus = users[upline].bonus.add(amount);
-                    users[upline].totalBonus = users[upline].totalBonus.add(amount);
-                    emit RefBonus(upline, msg.sender, i, amount);
-                    upline = users[upline].referrer;
+					uint256 amount = msg.value.mul(REFERRAL_PERCENTS[i]).div(PERCENTS_DIVIDER);
+					users[upline].bonus = users[upline].bonus.add(amount);
+					users[upline].totalBonus = users[upline].totalBonus.add(amount);
+					users[upline].levels[i] = users[upline].levels[i].add(1);
+					emit RefBonus(upline, msg.sender, i, amount);
+					upline = users[upline].referrer;
                 } else break;
             }
         }
@@ -361,7 +352,7 @@ contract FomoStake2 {
                             : block.timestamp;
                     if (from < to) {
                         uint256 planTime = plans[user.deposits[i].plan].time.mul(TIME_STEP);
-                        uint256 redress = planTime.div(getDecreaseDays(plans[user.deposits[i].plan].time));
+                        uint256 redress = planTime.div(user.deposits[i].finish.sub(user.deposits[i].start));
 
                         totalAmount = totalAmount.add(share.mul(to.sub(from)).mul(redress).div(TIME_STEP));
                     }
