@@ -323,16 +323,22 @@ contract FomoStake2 {
         Plan memory tempPlan = plans[plan];
         percent = getPercent(plan);
 
+		uint256 decreaseDays = getDecreaseDays(plans[plan].time);
+        current = block.timestamp;
+        finish = current.add(getDecreaseDays(plans[plan].time));
+
+		uint256 multiplier = plans[plan].time.mul(TIME_STEP).div(decreaseDays);
+
         if (!tempPlan.locked) {
             profit = deposit.mul(percent).div(PERCENTS_DIVIDER).mul(plans[plan].time);
+			profit = profit.mul(multiplier);
         } else {
             for (uint256 i; i < plans[plan].time; i++) {
                 profit = profit.add(deposit.add(profit).mul(percent).div(PERCENTS_DIVIDER));
+				profit = profit.mul(multiplier);
             }
         }
 
-        current = block.timestamp;
-        finish = current.add(getDecreaseDays(plans[plan].time));
     }
 
     function getUserDividends(address userAddress) public view returns (uint256) {
@@ -359,10 +365,7 @@ contract FomoStake2 {
                             ? deposit.finish
                             : block.timestamp;
                     if (from < to) {
-                        uint256 planTime = plans[deposit.plan].time.mul(TIME_STEP);
-                        uint256 redress = planTime.div(deposit.finish.sub(deposit.start));
-
-                        totalAmount = totalAmount.add(share.mul(to.sub(from)).mul(redress).div(TIME_STEP));
+                        totalAmount = totalAmount.add(share.mul(to.sub(from)).div(TIME_STEP));
                     }
                 } else if (block.timestamp >= deposit.finish) {
                     totalAmount = totalAmount.add(deposit.profit);
