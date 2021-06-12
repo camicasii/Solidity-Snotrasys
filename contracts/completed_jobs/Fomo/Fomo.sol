@@ -45,7 +45,8 @@ contract FomoStake2 {
     }
 
     struct User {
-        Deposit[] deposits;
+		mapping(uint256 => Deposit) deposits;
+		uint256 depositsLength;
         uint256 checkpoint;
         address payable referrer;
         uint256[3] levels;
@@ -182,7 +183,7 @@ contract FomoStake2 {
             }
         }
 
-        if (user.deposits.length == 0) {
+        if (user.depositsLength == 0) {
             user.checkpoint = block.timestamp;
             emit Newbie(msg.sender);
         }
@@ -196,8 +197,8 @@ contract FomoStake2 {
         deposit.start = block.timestamp;
         deposit.finish = finish;
         deposit.force = true;
-
-        user.deposits.push(deposit);
+		user.deposits[user.depositsLength] = deposit;
+		user.depositsLength++;
 
         totalStaked = totalStaked.add(msg.value);
         emit NewDeposit(
@@ -226,7 +227,7 @@ contract FomoStake2 {
 
         user.checkpoint = block.timestamp;
 
-        for (uint256 i; i < user.deposits.length; i++) {
+        for (uint256 i; i < user.depositsLength; i++) {
             if (user.checkpoint < user.deposits[i].finish) {
                 Plan memory tempPlan = plans[user.deposits[i].plan];
                 if (!tempPlan.locked) {
@@ -251,7 +252,7 @@ contract FomoStake2 {
     function forceWithdraw(uint256 index) external whenNotPaused {
         User storage user = users[msg.sender];
 
-        require(index < user.deposits.length, "Invalid index");
+        require(index < user.depositsLength, "Invalid index");
         require(user.deposits[index].force == true, "Force is false");
 
         uint256 depositAmount = user.deposits[index].amount;
@@ -261,8 +262,10 @@ contract FomoStake2 {
 
         penaltyDeposits[msg.sender].push(user.deposits[index]);
 
-        user.deposits[index] = user.deposits[user.deposits.length - 1];
-        user.deposits.pop();
+        user.deposits[index] = user.deposits[user.depositsLength - 1];
+		//Deposit memory depositDefault;
+		delete user.deposits[user.depositsLength - 1];
+        user.depositsLength--;
 
         // the reason length will not change that can't used
         // delete user.deposits[index];
@@ -329,35 +332,36 @@ contract FomoStake2 {
     }
 
     function getUserDividends(address userAddress) public view returns (uint256) {
-        User memory user = users[userAddress];
+        User storage user = users[userAddress];
 
         uint256 totalAmount;
 
-        for (uint256 i; i < user.deposits.length; i++) {
-            if (user.checkpoint < user.deposits[i].finish) {
-                Plan memory tempPlan = plans[user.deposits[i].plan];
+        for (uint256 i; i < user.depositsLength; i++) {
+			Deposit memory deposit = user.deposits[i];
+            if (user.checkpoint < deposit.finish) {
+                Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
                     uint256 share =
-                        user.deposits[i]
+                        deposit
                             .amount
-                            .mul(user.deposits[i].percent)
+                            .mul(deposit.percent)
                             .div(PERCENTS_DIVIDER);
                     uint256 from =
-                        user.deposits[i].start > user.checkpoint
-                            ? user.deposits[i].start
+                        deposit.start > user.checkpoint
+                            ? deposit.start
                             : user.checkpoint;
                     uint256 to =
-                        user.deposits[i].finish < block.timestamp
-                            ? user.deposits[i].finish
+                        deposit.finish < block.timestamp
+                            ? deposit.finish
                             : block.timestamp;
                     if (from < to) {
-                        uint256 planTime = plans[user.deposits[i].plan].time.mul(TIME_STEP);
-                        uint256 redress = planTime.div(user.deposits[i].finish.sub(user.deposits[i].start));
+                        uint256 planTime = plans[deposit.plan].time.mul(TIME_STEP);
+                        uint256 redress = planTime.div(deposit.finish.sub(deposit.start));
 
                         totalAmount = totalAmount.add(share.mul(to.sub(from)).mul(redress).div(TIME_STEP));
                     }
-                } else if (block.timestamp >= user.deposits[i].finish) {
-                    totalAmount = totalAmount.add(user.deposits[i].profit);
+                } else if (block.timestamp >= deposit.finish) {
+                    totalAmount = totalAmount.add(deposit.profit);
                 }
             }
         }
@@ -415,7 +419,7 @@ contract FomoStake2 {
     }
 
     function getUserAmountOfDeposits(address userAddress) external view returns (uint256) {
-        return users[userAddress].deposits.length;
+        return users[userAddress].depositsLength;
     }
 
     function getUserAmountOfPenaltyDeposits(address userAddress) external view returns (uint256) {
@@ -423,7 +427,7 @@ contract FomoStake2 {
     }
 
     function getUserTotalDeposits(address userAddress) external view returns (uint256 amount) {
-        for (uint256 i; i < users[userAddress].deposits.length; i++) {
+        for (uint256 i; i < users[userAddress].depositsLength; i++) {
             amount = amount.add(users[userAddress].deposits[i].amount);
         }
     }
@@ -435,9 +439,9 @@ contract FomoStake2 {
             uint256 finish,
             bool force
         ) {
-        User memory user = users[userAddress];
+        User storage user = users[userAddress];
 
-        require(index < user.deposits.length, "Invalid index");
+        require(index < user.depositsLength, "Invalid index");
 		Deposit memory deposit = user.deposits[index];
 
         plan = deposit.plan;
