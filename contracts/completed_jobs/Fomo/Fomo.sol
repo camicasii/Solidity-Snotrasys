@@ -6,6 +6,7 @@
 
 pragma solidity ^0.8.0;
 import '../../resources/utils/math/SafeMath.sol';
+import '../../resources/utils/math/Math.sol';
 
 contract FomoStake2 {
     using SafeMath for uint256;
@@ -187,17 +188,16 @@ contract FomoStake2 {
         }
 
         (uint256 percent, uint256 profit, , uint256 finish) = getResult(plan, msg.value);
-        user.deposits.push(
-            Deposit(
-                plan,
-                percent,
-                msg.value,
-                profit,
-                block.timestamp,
-                finish,
-                true
-            )
-        );
+        Deposit memory deposit;
+        deposit.plan = plan;
+        deposit.percent = percent;
+        deposit.amount = msg.value;
+        deposit.profit = profit;
+        deposit.start = block.timestamp;
+        deposit.finish = finish;
+        deposit.force = true;
+
+        user.deposits.push(deposit);
 
         totalStaked = totalStaked.add(msg.value);
         emit NewDeposit(
@@ -297,7 +297,7 @@ contract FomoStake2 {
     function getPercent(uint8 plan) public view returns (uint256) {
         require(plan < plansLength, "Invalid plan");
         if (!isPaused()) {
-            return plans[plan].percent.add(PERCENT_STEP.mul(block.timestamp.sub(LAUNCH_TIME)).div(TIME_STEP));
+            return Math.min(plans[plan].percent.add(PERCENT_STEP.mul(block.timestamp.sub(LAUNCH_TIME)).div(TIME_STEP)), plans[plan].percent.mul(3));
         } else {
             return plans[plan].percent;
         }
