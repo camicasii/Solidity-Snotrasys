@@ -263,7 +263,7 @@ contract FomoStake2 {
         penaltyDeposits[msg.sender].push(user.deposits[index]);
 
         user.deposits[index] = user.deposits[user.depositsLength - 1];
-		//Deposit memory depositDefault;
+
 		delete user.deposits[user.depositsLength - 1];
         user.depositsLength--;
 
