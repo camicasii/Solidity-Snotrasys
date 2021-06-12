@@ -212,7 +212,7 @@ contract FomoStake2 {
         );
     }
 
-    function withdraw() external whenNotPaused {
+    function withdraw() external whenNotPaused returns (uint256) {
         User storage user = users[msg.sender];
 
         uint256 totalAmount = getUserDividends(msg.sender);
@@ -247,9 +247,10 @@ contract FomoStake2 {
         emit Withdrawn(msg.sender, totalAmount);
 		emit FeePayed(msg.sender, fee);
 
+        return toTransfer;
     }
 
-    function forceWithdraw(uint256 index) external whenNotPaused {
+    function forceWithdraw(uint256 index) external whenNotPaused returns(uint256) {
         User storage user = users[msg.sender];
 
         require(index < user.depositsLength, "Invalid index");
@@ -257,15 +258,16 @@ contract FomoStake2 {
 
         uint256 depositAmount = user.deposits[index].amount;
     	uint256 penaltyAmount = depositAmount.mul(PENALTY_STEP).div(PERCENTS_DIVIDER);
+        uint256 toTransfer = depositAmount.sub(penaltyAmount);
 
-    	payable(msg.sender).transfer(depositAmount.sub(penaltyAmount));
+    	payable(msg.sender).transfer(toTransfer);
 
         penaltyDeposits[msg.sender].push(user.deposits[index]);
 
         user.deposits[index] = user.deposits[user.depositsLength - 1];
 
 		delete user.deposits[user.depositsLength - 1];
-        user.depositsLength--;
+        user.depositsLength = user.depositsLength.sub(1);
 
         // the reason length will not change that can't used
         // delete user.deposits[index];
@@ -276,6 +278,8 @@ contract FomoStake2 {
             penaltyAmount,
             penaltyDeposits[msg.sender].length
         );
+
+        return toTransfer;
     }
 
     function getContractBalance() public view returns (uint256) {
