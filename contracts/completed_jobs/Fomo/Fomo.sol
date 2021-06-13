@@ -19,7 +19,7 @@ contract FomoStake2 {
     uint256 public constant PERCENTS_DIVIDER = 1000;
     uint256 public constant TIME_STEP = 1 days;//10 seconds; for test
     uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
-    uint256 public constant PENALTY_STEP = 700;
+    uint256 public constant PENALTY_FEE = 700;
     uint256 public constant MARKETING_FEE = 50;
     uint256 public constant PROJECT_FEE = 50;
 
@@ -39,8 +39,8 @@ contract FomoStake2 {
         uint256 percent;
         uint256 amount;
         uint256 profit;
-        uint256 start;
-        uint256 finish;
+        uint256 initDate;
+        uint256 duration;
         bool force;
     }
 
@@ -56,7 +56,7 @@ contract FomoStake2 {
     }
 
     mapping(address => User) public users;
-    mapping(address => Deposit[]) internal penaltyDeposits;
+    mapping(address => Deposit[]) public penaltyDeposits;
 
     address payable public marketingAddress;
     address payable public projectAddress;
@@ -70,7 +70,7 @@ contract FomoStake2 {
         uint256 amount,
         uint256 profit,
         uint256 start,
-        uint256 finish
+        uint256 duration
     );
     event Withdrawn(address indexed user, uint256 amount);
     event ForceWithdrawn(
@@ -153,7 +153,7 @@ contract FomoStake2 {
 
     }
 
-    function invest(address payable referrer, uint8 plan) external payable whenNotPaused {
+    function invest(address payable referrer, uint8 plan) external payable {
         require(msg.value >= INVEST_MIN_AMOUNT, "insufficient deposit");
         require(plan < plansLength, "Invalid plan");
 
@@ -188,14 +188,14 @@ contract FomoStake2 {
             emit Newbie(msg.sender);
         }
 
-        (uint256 percent, uint256 profit, , uint256 finish) = getResult(plan, msg.value);
+        (uint256 percent, uint256 profit, uint256 initDate, uint256 duration) = getResult(plan, msg.value);
         Deposit memory deposit;
         deposit.plan = plan;
         deposit.percent = percent;
         deposit.amount = msg.value;
         deposit.profit = profit;
-        deposit.start = block.timestamp;
-        deposit.finish = finish;
+        deposit.initDate = initDate;
+        deposit.duration = duration;
         deposit.force = true;
 		user.deposits[user.depositsLength] = deposit;
 		user.depositsLength++;
@@ -207,8 +207,8 @@ contract FomoStake2 {
             percent,
             msg.value,
             profit,
-            block.timestamp,
-            finish
+            initDate,
+            duration
         );
     }
 
@@ -228,11 +228,12 @@ contract FomoStake2 {
         user.checkpoint = block.timestamp;
 
         for (uint256 i; i < user.depositsLength; i++) {
-            if (user.checkpoint < user.deposits[i].finish) {
+            uint256 finishDate = getfinishDeposit(user, user.deposits[i]);
+            if (user.checkpoint < finishDate) {
                 Plan memory tempPlan = plans[user.deposits[i].plan];
                 if (!tempPlan.locked) {
                     user.deposits[i].force = false;
-                } else if (block.timestamp > user.deposits[i].finish) {
+                } else if (block.timestamp > finishDate) {
                     user.deposits[i].force = false;
                 }
             }
@@ -250,14 +251,14 @@ contract FomoStake2 {
 
     }
 
-    function forceWithdraw(uint256 index) external whenNotPaused {
+    function forceWithdraw(uint256 index) external {
         User storage user = users[msg.sender];
 
         require(index < user.depositsLength, "Invalid index");
         require(user.deposits[index].force == true, "Force is false");
 
         uint256 depositAmount = user.deposits[index].amount;
-    	uint256 penaltyAmount = depositAmount.mul(PENALTY_STEP).div(PERCENTS_DIVIDER);
+    	uint256 penaltyAmount = depositAmount.mul(PENALTY_FEE).div(PERCENTS_DIVIDER);
         uint256 toTransfer = depositAmount.sub(penaltyAmount);
 
     	payable(msg.sender).transfer(toTransfer);
@@ -315,7 +316,7 @@ contract FomoStake2 {
             uint256 percent,
             uint256 profit,
             uint256 current,
-            uint256 finish
+            uint256 duration
         ) {
 
 		require(plan < plansLength, "Invalid plan");
@@ -323,20 +324,19 @@ contract FomoStake2 {
         Plan memory tempPlan = plans[plan];
         percent = getPercent(plan);
 
-		uint256 decreaseDays = getDecreaseDays(plans[plan].time);
         current = block.timestamp;
-        finish = current.add(decreaseDays);
+        duration = getDecreaseDays(plans[plan].time);
 
-        uint256 decreaseDaysD = decreaseDays.div(TIME_STEP);
+        uint256 durationToDays = duration.div(TIME_STEP);
 
-        percent = percent.mul(plans[plan].time.mul(TIME_STEP).div(decreaseDays));
+        percent = percent.mul(plans[plan].time.mul(TIME_STEP).div(duration));
 
         uint256 amt = deposit;
 
         if (!tempPlan.locked) {
-            profit = deposit.mul(percent).mul(decreaseDays).div(PERCENTS_DIVIDER.mul(TIME_STEP));
+            profit = deposit.mul(percent).mul(duration).div(PERCENTS_DIVIDER.mul(TIME_STEP));
         } else {
-            for (uint256 i; i < decreaseDaysD; i++) {
+            for (uint256 i; i < durationToDays; i++) {
                 profit = profit.add(amt.add(profit).mul(percent).div(PERCENTS_DIVIDER));
             }
         }
@@ -350,26 +350,20 @@ contract FomoStake2 {
 
         for (uint256 i; i < user.depositsLength; i++) {
 			Deposit memory deposit = user.deposits[i];
-            if (user.checkpoint < deposit.finish) {
+			uint256 finishDate = getfinishDeposit(user, user.deposits[i]);
+            if (user.checkpoint < finishDate) {
                 Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
-                    uint256 share =
-                        deposit
-                            .amount
-                            .mul(deposit.percent)
-                            .div(PERCENTS_DIVIDER);
-                    uint256 from =
-                        deposit.start > user.checkpoint
-                            ? deposit.start
-                            : user.checkpoint;
-                    uint256 to =
-                        deposit.finish < block.timestamp
-                            ? deposit.finish
-                            : block.timestamp;
-                    if (from < to) {
-                        totalAmount = totalAmount.add(share.mul(to.sub(from)).div(TIME_STEP));
+                    uint256 share = deposit.amount.mul(deposit.percent).div(PERCENTS_DIVIDER);
+
+                    uint256 _from = getInintDeposit(user, deposit);
+
+                    uint256 _to = getfinishDeposit(user, deposit);
+
+                    if (_from < _to) {
+                        totalAmount = totalAmount.add(share.mul(_to.sub(_from)).div(TIME_STEP));
                     }
-                } else if (block.timestamp >= deposit.finish) {
+                } else if (block.timestamp >= finishDate) {
                     totalAmount = totalAmount.add(deposit.profit);
                 }
             }
@@ -460,8 +454,8 @@ contract FomoStake2 {
         percent = deposit.percent;
         amount = deposit.amount;
         profit = deposit.profit;
-        start = deposit.start;
-        finish = deposit.finish;
+        start = getInintDeposit(user, deposit);
+        finish = getfinishDeposit(user, deposit);
         force = deposit.force;
     }
 
@@ -481,8 +475,8 @@ contract FomoStake2 {
         percent = deposit.percent;
         amount = deposit.amount;
         profit = deposit.profit;
-        start = deposit.start;
-        finish = deposit.finish;
+        start = getInintDeposit(users[userAddress], deposit);
+        finish = getfinishDeposit(users[userAddress], deposit);
     }
 
     function isContract(address addr) internal view returns (bool) {
@@ -492,4 +486,15 @@ contract FomoStake2 {
         }
         return size > 0;
     }
+
+    function getfinishDeposit(User storage user, Deposit memory deposit) internal view returns (uint256 _to) {
+        uint256 _from = getInintDeposit(user, deposit);
+        _to = _from.add(deposit.duration);
+    }
+
+    function getInintDeposit(User storage user, Deposit memory deposit) internal view returns (uint256 _from) {
+        _from = deposit.initDate > user.checkpoint ? deposit.initDate : user.checkpoint;
+        _from = LAUNCH_TIME > _from ? LAUNCH_TIME : _from;
+    }
+
 }
