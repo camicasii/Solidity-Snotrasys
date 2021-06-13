@@ -17,8 +17,8 @@ contract FomoStake2 {
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant WITHDRAW_FEE_PERCENT = 100;
     uint256 public constant PERCENTS_DIVIDER = 1000;
-    uint256 public constant TIME_STEP = 10 seconds;//1 days;descomentar esto
-    uint256 public constant DECREASE_DAY_STEP = 5 seconds;//0.5 days;descomentar esto
+    uint256 public constant TIME_STEP = 1 days;//10 seconds; for test
+    uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
     uint256 public constant PENALTY_STEP = 700;
     uint256 public constant MARKETING_FEE = 50;
     uint256 public constant PROJECT_FEE = 50;
@@ -325,17 +325,19 @@ contract FomoStake2 {
 
 		uint256 decreaseDays = getDecreaseDays(plans[plan].time);
         current = block.timestamp;
-        finish = current.add(getDecreaseDays(plans[plan].time));
+        finish = current.add(decreaseDays);
 
-		uint256 multiplier = plans[plan].time.mul(TIME_STEP).div(decreaseDays);
+        uint256 decreaseDaysD = decreaseDays.div(TIME_STEP);
+
+        percent = percent.mul(plans[plan].time.mul(TIME_STEP).div(decreaseDays));
+
+        uint256 amt = deposit;
 
         if (!tempPlan.locked) {
-            profit = deposit.mul(percent).div(PERCENTS_DIVIDER).mul(plans[plan].time);
-			profit = profit.mul(multiplier);
+            profit = deposit.mul(percent).mul(decreaseDays).div(PERCENTS_DIVIDER.mul(TIME_STEP));
         } else {
-            for (uint256 i; i < plans[plan].time; i++) {
-                profit = profit.add(deposit.add(profit).mul(percent).div(PERCENTS_DIVIDER));
-				profit = profit.mul(multiplier);
+            for (uint256 i; i < decreaseDaysD; i++) {
+                profit = profit.add(amt.add(profit).mul(percent).div(PERCENTS_DIVIDER));
             }
         }
 
@@ -380,7 +382,10 @@ contract FomoStake2 {
         uint256 limitDays = PERCENT_STEP.mul(TIME_STEP);
         uint256 pastDays = block.timestamp.sub(LAUNCH_TIME).div(TIME_STEP);
         uint256 decreaseDays = pastDays.mul(DECREASE_DAY_STEP);
-        uint256 minimumDays = planTime.mul(TIME_STEP).sub(decreaseDays);
+        uint256 minimumDays;
+		if(planTime.mul(TIME_STEP) > decreaseDays) {
+			minimumDays = planTime.mul(TIME_STEP).sub(decreaseDays);
+		}
 
         if (minimumDays < limitDays) {
             return limitDays;
