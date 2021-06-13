@@ -343,10 +343,8 @@ contract FomoStake2 {
 
     }
 
-    function getUserDividends(address userAddress) public view returns (uint256) {
+    function getUserDividends(address userAddress) public view returns (uint256 totalAmount) {
         User storage user = users[userAddress];
-
-        uint256 totalAmount;
 
         for (uint256 i; i < user.depositsLength; i++) {
 			Deposit memory deposit = user.deposits[i];
@@ -443,6 +441,7 @@ contract FomoStake2 {
             uint256 profit,
             uint256 start,
             uint256 finish,
+            uint256 duration,
             bool force
         ) {
         User storage user = users[userAddress];
@@ -456,6 +455,7 @@ contract FomoStake2 {
         profit = deposit.profit;
         start = getInintDeposit(user, deposit);
         finish = getFinishDeposit(user, deposit);
+        duration = deposit.duration;
         force = deposit.force;
     }
 
