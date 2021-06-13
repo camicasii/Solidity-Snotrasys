@@ -261,6 +261,11 @@ contract FomoStake2 {
     	uint256 penaltyAmount = depositAmount.mul(PENALTY_FEE).div(PERCENTS_DIVIDER);
         uint256 toTransfer = depositAmount.sub(penaltyAmount);
 
+        uint256 contractBalance = getContractBalance();
+        if (contractBalance < toTransfer) {
+            toTransfer = contractBalance;
+        }
+
     	payable(msg.sender).transfer(toTransfer);
 
         penaltyDeposits[msg.sender].push(user.deposits[index]);
