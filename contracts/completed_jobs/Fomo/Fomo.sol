@@ -11,7 +11,7 @@ import '../../resources/utils/math/Math.sol';
 contract FomoStake2 {
     using SafeMath for uint256;
 
-    uint256 public LAUNCH_TIME;
+    uint256 public LAUNCH_DATE;
     uint256[3] public REFERRAL_PERCENTS = [50, 25, 5];
     uint256 public constant INVEST_MIN_AMOUNT = 0.05 ether;
     uint256 public constant PERCENT_STEP = 5;
@@ -105,12 +105,12 @@ contract FomoStake2 {
 	}
 
 	function unpause() external whenPaused onlyOwner{
-		LAUNCH_TIME = block.timestamp;
+		LAUNCH_DATE = block.timestamp;
 		emit Unpaused(msg.sender);
 	}
 
 	function isPaused() public view returns(bool) {
-		return (LAUNCH_TIME == 0);
+		return (LAUNCH_DATE == 0);
 	}
 
     constructor(address payable marketingAddr, address payable projectAddr, address payable devAddr) {
@@ -228,7 +228,7 @@ contract FomoStake2 {
         user.checkpoint = block.timestamp;
 
         for (uint256 i; i < user.depositsLength; i++) {
-            uint256 finishDate = getfinishDeposit(user, user.deposits[i]);
+            uint256 finishDate = getFinishDeposit(user, user.deposits[i]);
             if (user.checkpoint < finishDate) {
                 Plan memory tempPlan = plans[user.deposits[i].plan];
                 if (!tempPlan.locked) {
@@ -305,7 +305,7 @@ contract FomoStake2 {
     function getPercent(uint8 plan) public view returns (uint256) {
         require(plan < plansLength, "Invalid plan");
         if (!isPaused()) {
-            return Math.min(plans[plan].percent.add(PERCENT_STEP.mul(block.timestamp.sub(LAUNCH_TIME)).div(TIME_STEP)), plans[plan].percent.mul(3));
+            return Math.min(plans[plan].percent.add(PERCENT_STEP.mul(block.timestamp.sub(getTempLaunchDate())).div(TIME_STEP)), plans[plan].percent.mul(3));
         } else {
             return plans[plan].percent;
         }
@@ -350,7 +350,7 @@ contract FomoStake2 {
 
         for (uint256 i; i < user.depositsLength; i++) {
 			Deposit memory deposit = user.deposits[i];
-			uint256 finishDate = getfinishDeposit(user, user.deposits[i]);
+			uint256 finishDate = getFinishDeposit(user, user.deposits[i]);
             if (user.checkpoint < finishDate) {
                 Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
@@ -358,7 +358,7 @@ contract FomoStake2 {
 
                     uint256 _from = getInintDeposit(user, deposit);
 
-                    uint256 _to = getfinishDeposit(user, deposit);
+                    uint256 _to = finishDate < block.timestamp ? finishDate : block.timestamp;
 
                     if (_from < _to) {
                         totalAmount = totalAmount.add(share.mul(_to.sub(_from)).div(TIME_STEP));
@@ -374,7 +374,7 @@ contract FomoStake2 {
 
     function getDecreaseDays(uint256 planTime) public view returns (uint256) {
         uint256 limitDays = PERCENT_STEP.mul(TIME_STEP);
-        uint256 pastDays = block.timestamp.sub(LAUNCH_TIME).div(TIME_STEP);
+        uint256 pastDays = block.timestamp.sub(getTempLaunchDate()).div(TIME_STEP);
         uint256 decreaseDays = pastDays.mul(DECREASE_DAY_STEP);
         uint256 minimumDays;
 		if(planTime.mul(TIME_STEP) > decreaseDays) {
@@ -455,7 +455,7 @@ contract FomoStake2 {
         amount = deposit.amount;
         profit = deposit.profit;
         start = getInintDeposit(user, deposit);
-        finish = getfinishDeposit(user, deposit);
+        finish = getFinishDeposit(user, deposit);
         force = deposit.force;
     }
 
@@ -476,7 +476,7 @@ contract FomoStake2 {
         amount = deposit.amount;
         profit = deposit.profit;
         start = getInintDeposit(users[userAddress], deposit);
-        finish = getfinishDeposit(users[userAddress], deposit);
+        finish = getFinishDeposit(users[userAddress], deposit);
     }
 
     function isContract(address addr) internal view returns (bool) {
@@ -487,14 +487,23 @@ contract FomoStake2 {
         return size > 0;
     }
 
-    function getfinishDeposit(User storage user, Deposit memory deposit) internal view returns (uint256 _to) {
+    function getFinishDeposit(User storage user, Deposit memory deposit) internal view returns (uint256 _to) {
         uint256 _from = getInintDeposit(user, deposit);
         _to = _from.add(deposit.duration);
     }
 
     function getInintDeposit(User storage user, Deposit memory deposit) internal view returns (uint256 _from) {
         _from = deposit.initDate > user.checkpoint ? deposit.initDate : user.checkpoint;
-        _from = LAUNCH_TIME > _from ? LAUNCH_TIME : _from;
+        _from = getTempLaunchDate() > _from ? getTempLaunchDate() : _from;
+    }
+
+    function getTempLaunchDate() internal view returns (uint256 launch) {
+        if(LAUNCH_DATE == 0) {
+            launch = block.timestamp;
+        }
+        else {
+            launch = LAUNCH_DATE;
+        }
     }
 
 }
