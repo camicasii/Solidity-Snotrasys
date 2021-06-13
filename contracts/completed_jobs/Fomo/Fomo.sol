@@ -20,8 +20,9 @@ contract FomoStake2 {
     uint256 public constant TIME_STEP = 1 days;//10 seconds; for test
     uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
     uint256 public constant PENALTY_FEE = 700;
-    uint256 public constant MARKETING_FEE = 50;
-    uint256 public constant PROJECT_FEE = 50;
+    uint256 public constant MARKETING_FEE = 40;
+    uint256 public constant PROJECT_FEE = 40;
+    uint256 public constant DEV_FEE = 40;
 
     uint256 public totalStaked;
 
@@ -161,7 +162,9 @@ contract FomoStake2 {
 
         projectAddress.transfer(msg.value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER));
 
-        emit FeePayed(msg.sender, msg.value.mul(MARKETING_FEE.add(PROJECT_FEE)).div(PERCENTS_DIVIDER));
+        devAddress.transfer(msg.value.mul(DEV_FEE).div(PERCENTS_DIVIDER));
+
+        emit FeePayed(msg.sender, msg.value.mul(MARKETING_FEE.add(PROJECT_FEE).add(DEV_FEE)).div(PERCENTS_DIVIDER));
 
         User storage user = users[msg.sender];
 		uint256 referalLength = REFERRAL_PERCENTS.length;
