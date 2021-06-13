@@ -407,7 +407,7 @@ contract FomoStake2 {
         return users[userAddress].bonus;
     }
 
-    function withdrawReferralBonus() external {
+    function withdrawReferralBonus() external whenNotPaused {
 		User storage user = users[msg.sender];
 		uint256 referralBonus = getUserReferralBonus(msg.sender);
 		require(referralBonus > 0, "User has no dividends");
