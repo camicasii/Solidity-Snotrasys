@@ -13,7 +13,7 @@ contract FomoStake2 {
 
     uint256 public LAUNCH_DATE;
     uint256[3] public REFERRAL_PERCENTS = [50, 25, 5];
-    uint256 public constant INVEST_MIN_AMOUNT = 0.05 ether;
+    uint256 public constant INVEST_MIN_AMOUNT = 0.025 ether;
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant WITHDRAW_FEE_PERCENT = 100;
     uint256 public constant PERCENTS_DIVIDER = 1000;
