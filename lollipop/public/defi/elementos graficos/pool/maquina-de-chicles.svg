@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="89" height="136.257" viewBox="0 0 89 136.257">
+  <g id="maquina-de-chicles" transform="translate(0)">
+    <path id="Trazado_11186" data-name="Trazado 11186" d="M180.745,322.951l10.462,27.936-34.775,9.891-34.775-9.891,10.462-27.936Z" transform="translate(-111.931 -234.411)" fill="#58afe1"/>
+    <path id="Trazado_11187" data-name="Trazado 11187" d="M195.654,322.951H224.63v37.827H195.654Z" transform="translate(-165.641 -234.411)" fill="#ff2308"/>
+    <ellipse id="Elipse_46" data-name="Elipse 46" cx="3.993" cy="3.993" rx="3.993" ry="3.993" transform="translate(40.508 102.128)" fill="#fff"/>
+    <path id="Trazado_11188" data-name="Trazado 11188" d="M193.365,10.021A16.5,16.5,0,0,0,178.193,0H154.45a16.5,16.5,0,0,0-15.172,10.021l-4,9.361,31.04,7.308,31.04-7.308Z" transform="translate(-121.821 0)" fill="#fc556a"/>
+    <path id="Trazado_11190" data-name="Trazado 11190" d="M161.724,70.7H99.645a44.5,44.5,0,1,0,62.079,0Z" transform="translate(-86.184 -51.314)" fill="#e1e7ec"/>
+    <path id="Trazado_11196" data-name="Trazado 11196" d="M169.91,424.849H100.36a8.044,8.044,0,0,0-8.044,8.044v3.693a8.044,8.044,0,0,0,8.044,8.044h69.55a8.044,8.044,0,0,0,8.044-8.044v-3.693A8.044,8.044,0,0,0,169.91,424.849Z" transform="translate(-90.634 -308.373)" fill="#fff"/>
+    <g id="Grupo_678" data-name="Grupo 678" transform="translate(14.893 31.612)">
+      <path id="Trazado_11191" data-name="Trazado 11191" d="M243.762,180.043c0,1.674-.99,4.066-.292,5.47,1.715,3.446,6.655,5,10.765,5a10.474,10.474,0,1,0-10.474-10.474Z" transform="translate(-215.059 -169.569)" fill="#58afe1"/>
+      <ellipse id="Elipse_47" data-name="Elipse 47" cx="10.474" cy="10.474" rx="10.474" ry="10.474" transform="translate(9.567 0)" fill="#b21061"/>
+      <ellipse id="Elipse_48" data-name="Elipse 48" cx="10.474" cy="10.474" rx="10.474" ry="10.474" transform="translate(0 10.084)" fill="#58afe1"/>
+      <ellipse id="Elipse_49" data-name="Elipse 49" cx="10.474" cy="10.474" rx="10.474" ry="10.474" transform="translate(38.272 10.084)" fill="#b21061"/>
+      <ellipse id="Elipse_50" data-name="Elipse 50" cx="10.474" cy="10.474" rx="10.474" ry="10.474" transform="translate(19.134 15.551)" fill="#fc556a"/>
+      <path id="Trazado_11197" data-name="Trazado 11197" d="M144.932,213.358A10.473,10.473,0,0,0,154.958,231.6,61.183,61.183,0,0,1,144.932,213.358Z" transform="translate(-140.502 -201.353)" fill="#58afe1"/>
+    </g>
+  </g>
+</svg>

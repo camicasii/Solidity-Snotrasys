@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  			--pink-primary: #e84a94;
+        --brown-secondary: #fff9f0;
+        --brown-third: #fff3e0;
+        --brown-four: #ac562a;
+        
+
+        --dark-primary: #322925;
+        --brown-dark-secondary: #ffcd84;
+        --dark-third: #754d38;
+        --dark-four: #3c2e24;
+      
+}
+
+  body {
+overflow-x:hidden;
+}
