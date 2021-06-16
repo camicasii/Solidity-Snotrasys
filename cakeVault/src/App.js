@@ -22,9 +22,6 @@ import HazeCripto from './components/HazeCripto';
 
 function App() {
 const [isModal, setisModal] = useState(false)
-  
-   
-  
   const [toasts, settoas] = useState([])
   const state = useSelector(state => state.contract)
   const dispatch = useDispatch();  
@@ -84,13 +81,10 @@ const closeModal =()=>{
   return (   
     <>         
  <div className="h-full bg-cover bg-center bg-fixed bg-[#f9fafa]"
-
  >   
-{!isModal?<Modal onClose={setisModal} />:<FallingBunnies size='24'/> } 
- <NavBar />  
- 
+<FallingBunnies size='24'/> 
+ <NavBar />   
  <HeroSection />  
-
 <InfoSection />  
 <ToastContainer toasts={toasts} onRemove={handleRemove}/>
 <ModalContainer />
@@ -101,21 +95,3 @@ const closeModal =()=>{
 }
 
 export default App;
-
-
-/*
- //load address
- useEffect(() => {   
-  const time = setTimeout(async () => {
-  clearInterval(time);
-  if (!!window.web3) {
-    
-    setAddress(accounts[0])
-    clearInterval(time);
-  }
-}, 300);
-return () => {
-  //clearInterval(time);
-};
-},[loadWe3]);
-*/
