@@ -18,18 +18,20 @@ module.exports = {
     extend: {
       colors:{
         'pink-primary': '#e84a94',
-        'brown-primary': '#eed9cc',
-        'brown-secondary': '#fff9f0',
-        'brown-third': '#fff3e0',
-        'brown-five':'#c58560', 
-        'brown-six': '#ffcd84',
-        'brown-seven': '#120c09',
-        'brown-eight': '#322925',
-        'brown-nine': '#d6a485',
-        'brown-ten': '#754d38',
-        'brown-eleven': '#ac562a',
-        'brown-twelve': '#1f2126',
-        'brown-thirteen': '#906e59'
+      },
+ screens: {
+        xs: '375px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1440px',
+        '3xl': '1920px',
+        print: {raw: 'print'},
+      },
+
+      lineHeight: {
+        tighter: 1.1,
       },
       margin: {
         '-full': '-100%',

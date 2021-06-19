@@ -59,18 +59,23 @@ const NavItems = ({ isStatic, isClosed, setClosed }) => {
 
     <div className="flex items-center justify-end">
       
-      <p className="text-[#f49033] dark:text-[#ed80le] dark:bg-[#3c2e24] text-lg font-medium bg-[#fff3e5] px-2 py-2 rounded-md mr-2">
-      BSC
-      </p>
+    
 
 
       <ConnectModal />
+<div className="flex sm:space-x-2 space-x-1  text-center mt-2 px-3 py-2">
+              <img src="/home/choco.svg" className="w-4"/>
+  <h1 className="text-gray-800 bg-blue-200 rounded  font-normal text-sm ">20.00</h1>
 
-      <button aria-label="config" className="text-yellow-900 dark:text-[#ffcd84] dark:bg-[#754d38] bg-[#eed9cc] px-2 py-2 rounded-md " onClick={()=> setIsOpen(!isOpen)}>
-   
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sc-fAjcbJ dGAfPP"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-  
-        </button>
+            </div>
+ <div className="flex sm:space-x-2 space-x-1  text-center mt-2 px-3 py-2">
+              <img src="/home/Recurso_1.svg" className="w-4"/>
+  <h1 className="text-gray-800 bg-pink-200 rounded  font-normal text-sm ">10.00</h1>
+
+            </div>
+      <div className="px-2">
+        <Link className="bg-gradient-to-br from-pink-500 to-red-600  md:border border-transparent text-white text-text px-3 leading-tight py-2  rounded-lg transition-colors ease-in-out duration-150">0x3f...359E</Link>
+      </div>
    
     </div>
 </div>

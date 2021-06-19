@@ -1,13 +1,11 @@
 import * as React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
-import ExchangeScreen from '../components/exchange/ExchangeScreen';
-import HomeScreen from '../components/Home/HomeScreen';
 import Loaded from '../components/loaded';
-import Eth2Screen from '../components/screen/Eth2';
-import NftScreen from '../components/screen/NftScreen';
-import SafeNftScreen from '../components/screen/SafeNftScreen';
 import useBreakpoint from '../hooks/useBreakpoint';
-const Menu = React.lazy(() => import('../components/ui/Menu')) 
+import SweetGamesScreen from '../views/SweetGames/SweetGamesScreen';
+const TradeScreen = React.lazy(()=> import ('../views/Trade/TradeScreen'));
+const Menu = React.lazy(() => import('../components/ui/Menu'));
+const HomeScreen = React.lazy(()=> import('../views/Home/HomeScreen'))
 
 
 const DashboardRoutes = (  ) => {
@@ -24,13 +22,17 @@ const DashboardRoutes = (  ) => {
     
     <div>
       <Switch>
-      <Route exact path='/exchange' component={NftScreen} />
-  <Route exact path='/exchange/safe-nft' component={SafeNftScreen} />
-      <Route exact path='/eth2' component={Eth2Screen} />
-        <Route exact path='/exchange/info/:exchangeId' component={ExchangeScreen} />
+
         <Route exact path='/home' component={HomeScreen} />
-      <Redirect to="/exchange" />
+        <Route exact path='/trade' component={TradeScreen} />
+        <Route exact path='/sweet-games' component={SweetGamesScreen} />
+      <Redirect to="/home" />
       </Switch>
+   <div className="mt-4 mb-8">
+      <img src="/home/Grupo_14634.svg" alt="logo footer" className="mx-auto "/>
+  <div className="lg:text-base sm:text-sm text-sm font-bold text-center text-gray-500 mt-2">Copyright © 2021 CandyDefi. Todos los derechos reservados.</div>
+
+    </div>
     </div>
  
 </Menu>

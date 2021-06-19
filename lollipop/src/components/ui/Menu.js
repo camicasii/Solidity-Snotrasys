@@ -47,6 +47,8 @@ export default function Menu({ children, isStatic, isClosed, setClosed }) {
         </Transition>
 
         <main className="flex-grow flex flex-col min-h-screen overflow-x-scroll">{children}</main>
+        <div>
+        </div>
       </div>
 </div>
     </>

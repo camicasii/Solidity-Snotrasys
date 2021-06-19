@@ -14,12 +14,6 @@ module.exports = {
       body: ["Inter Regular", "sans-serif"],
     },
     extend: {
-      colors:{
-        'brown-primary': '#eed9cc',
-        'brown-secondary': '#fff9f0',
-        'brown-third': '#fff3e0',
-        'brown-five':'#c58560' 
-      },
       margin: {
         '-full': '-100%',
         full: '100%',
