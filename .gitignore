@@ -112,3 +112,4 @@ build.sh
 build.tar.xz
 migrate.sh
 test
+.deps/

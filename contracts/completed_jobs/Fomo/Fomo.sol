@@ -19,7 +19,8 @@ contract FomoStake2 {
     uint256 public constant PERCENTS_DIVIDER = 1000;
     uint256 public constant TIME_STEP = 1 days;//10 seconds; for test
     uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
-    uint256 public constant PENALTY_FEE = 700;
+    uint256 public constant FORCE_PERCENT = 300;
+    uint256 public constant SECURE_ADRESS_WITHDRAW_FEE = 200;
     uint256 public constant MARKETING_FEE = 40;
     uint256 public constant PROJECT_FEE = 40;
     uint256 public constant DEV_FEE = 40;
@@ -62,6 +63,7 @@ contract FomoStake2 {
     address payable public marketingAddress;
     address payable public projectAddress;
 	address payable public devAddress;
+	address payable public secureAddress;
 
     event Newbie(address user);
     event NewDeposit(
@@ -78,7 +80,8 @@ contract FomoStake2 {
         address indexed user,
         uint256 amount,
         uint256 penaltyAmount,
-        uint256 penaltyID
+        uint256 penaltyID,
+        uint256 toSecure
     );
     event RefBonus(
         address indexed referrer,
@@ -114,14 +117,16 @@ contract FomoStake2 {
 		return (LAUNCH_DATE == 0);
 	}
 
-    constructor(address payable marketingAddr, address payable projectAddr, address payable devAddr) {
+    constructor(address payable marketingAddr, address payable projectAddr, address payable devAddr, address payable secureAddr) {
         require(!isContract(marketingAddr), "!marketingAddr");
         require(!isContract(projectAddr), "!projectAddr");
 		require(!isContract(devAddr), "!devAddr");
+        require(!isContract(secureAddr), "!secureAddr");
 
         marketingAddress = marketingAddr;
         projectAddress = projectAddr;
 		devAddress = devAddr;
+		secureAddress = secureAddr;
 
 
         plans[0].time = 14;
@@ -247,7 +252,7 @@ contract FomoStake2 {
 		uint256 toTransfer = totalAmount.sub(fee);
 
         payable(msg.sender).transfer(toTransfer);
-
+        secureAddress.transfer(fee.div(2));
         emit Withdrawn(msg.sender, totalAmount);
 		emit FeePayed(msg.sender, fee);
 
@@ -261,15 +266,10 @@ contract FomoStake2 {
         require(user.deposits[index].force == true, "Force is false");
 
         uint256 depositAmount = user.deposits[index].amount;
-    	uint256 penaltyAmount = depositAmount.mul(PENALTY_FEE).div(PERCENTS_DIVIDER);
-        uint256 toTransfer = depositAmount.sub(penaltyAmount);
-
         uint256 contractBalance = getContractBalance();
-        if (contractBalance < toTransfer) {
-            toTransfer = contractBalance;
-        }
-
-    	payable(msg.sender).transfer(toTransfer);
+        uint256 toDistribute = Math.min(depositAmount, contractBalance);
+        uint256 toUser = toDistribute.mul(FORCE_PERCENT).div(PERCENTS_DIVIDER);
+        uint256 toSecure = toDistribute.mul(SECURE_ADRESS_WITHDRAW_FEE).div(PERCENTS_DIVIDER);
 
         penaltyDeposits[msg.sender].push(user.deposits[index]);
 
@@ -281,14 +281,17 @@ contract FomoStake2 {
         // the reason length will not change that can't used
         // delete user.deposits[index];
 
+    	payable(msg.sender).transfer(toUser);
+    	secureAddress.transfer(toSecure);
+
         emit ForceWithdrawn(
             msg.sender,
             depositAmount,
-            penaltyAmount,
-            penaltyDeposits[msg.sender].length
+            toUser,
+            penaltyDeposits[msg.sender].length,
+            toSecure
         );
-
-
+    
     }
 
     function getContractBalance() public view returns (uint256) {
