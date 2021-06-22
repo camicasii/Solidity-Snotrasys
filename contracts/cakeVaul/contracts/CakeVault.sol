@@ -173,7 +173,7 @@ contract CakeVault is CakeVault_State{
 		uint256 fee = totalDividends.mul(INVEST_FEE).div(PERCENTS_DIVIDER).div(2);
 		token.transfer(devAddress, fee);
 		token.transfer(marketingAdress, fee);
-		emit FeePayed(msg.sender, fee);
+		emit FeePayed(msg.sender, fee.mul(2));
 		emit Reinvestment(msg.sender, totalDividends);
 		return true;
 	}

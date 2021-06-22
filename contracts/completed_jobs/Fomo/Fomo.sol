@@ -21,9 +21,8 @@ contract FomoStake2 {
     uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
     uint256 public constant FORCE_PERCENT = 300;
     uint256 public constant SECURE_ADRESS_WITHDRAW_FEE = 200;
-    uint256 public constant MARKETING_FEE = 40;
-    uint256 public constant PROJECT_FEE = 40;
-    uint256 public constant DEV_FEE = 40;
+    uint256 public constant INVEST_FEE = 120;
+    uint256 public constant REINVEST_FEE = 100;
 
     uint256 public totalStaked;
 
@@ -79,6 +78,9 @@ contract FomoStake2 {
         uint256 duration
     );
     event Withdrawn(address indexed user, uint256 amount);
+
+    event Reinvestment(address indexed user, uint256 amount);
+
     event ForceWithdrawn(
         address indexed user,
         uint256 amount,
@@ -166,13 +168,15 @@ contract FomoStake2 {
         require(msg.value >= INVEST_MIN_AMOUNT, "insufficient deposit");
         require(plan < plansLength, "Invalid plan");
 
-        marketingAddress.transfer(msg.value.mul(MARKETING_FEE).div(PERCENTS_DIVIDER));
+		uint256 investFee = msg.value.mul(INVEST_FEE).div(PERCENTS_DIVIDER);
+        uint256 feeToTransfer = investFee.div(3);
+        marketingAddress.transfer(feeToTransfer);
 
-        projectAddress.transfer(msg.value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER));
+        projectAddress.transfer(feeToTransfer);
 
-        devAddress.transfer(msg.value.mul(DEV_FEE).div(PERCENTS_DIVIDER));
+        devAddress.transfer(feeToTransfer);
 
-        emit FeePayed(msg.sender, msg.value.mul(MARKETING_FEE.add(PROJECT_FEE).add(DEV_FEE)).div(PERCENTS_DIVIDER));
+        emit FeePayed(msg.sender, investFee);
 
         User storage user = users[msg.sender];
 		uint256 referalLength = REFERRAL_PERCENTS.length;
@@ -298,21 +302,24 @@ contract FomoStake2 {
         );
 
     }
-/*
+
 	function reinvestment() external whenNotPaused returns(bool) {
 		User storage user = users[msg.sender];
         uint256 totalAmount;
         for (uint256 i; i < user.depositsLength; i++) {
 			Deposit memory deposit = user.deposits[i];
-			uint256 finishDate = getFinishDeposit(user, user.deposits[i]);
-            if (user.checkpoint < finishDate) {
+			uint256 finishDate = getFinishDeposit(deposit);
+            uint256 userCheckpoint = user.checkpoint;
+            uint256 currentDate = block.timestamp;
+            if (userCheckpoint < finishDate) {
                 Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
                     uint256 share = deposit.amount.mul(deposit.percent).div(PERCENTS_DIVIDER);
 
-                    uint256 _from = getInintDeposit(user, deposit);
+                    uint256 _from = getInintDeposit(deposit.initDate);
+                    _from = _from > userCheckpoint ? _from : userCheckpoint;
 
-                    uint256 _to = finishDate < block.timestamp ? finishDate : block.timestamp;
+                    uint256 _to = finishDate < currentDate ? finishDate : currentDate;
 
                     uint256 dividends;
 
@@ -320,10 +327,22 @@ contract FomoStake2 {
                         dividends = share.mul(_to.sub(_from)).div(TIME_STEP);
                         totalAmount = totalAmount.add(dividends);
                     }
-                    
-                    
-                } else if (block.timestamp >= finishDate) {
-                    totalAmount = totalAmount.add(deposit.profit);
+
+                    if(dividends > 0) {
+
+                        deposit.amount = deposit.amount.add(dividends);
+                        deposit.initDate = currentDate;
+                        deposit.percent = deposit.percent.mul(deposit.duration).mul(TIME_STEP).div(finishDate.sub(currentDate));
+                        deposit.duration = finishDate.sub(currentDate);
+                        deposit.profit = deposit.amount.mul(deposit.percent).mul(deposit.duration).div(PERCENTS_DIVIDER.mul(TIME_STEP));
+                        Deposit storage depositS = user.deposits[i];
+                        depositS.amount = deposit.amount;
+                        depositS.initDate = deposit.initDate;
+                        depositS.percent = deposit.percent;
+                        depositS.duration = deposit.duration;
+                        depositS.profit = deposit.profit;
+                    }
+
                 }
             }
         }
@@ -333,14 +352,14 @@ contract FomoStake2 {
 		user.reinvested = user.reinvested.add(totalAmount);
 		totalReinvested = totalReinvested.add(totalAmount);
 
-		uint256 fee = totalDividends.mul(INVEST_FEE).div(PERCENTS_DIVIDER).div(2);
-		token.transfer(devAddress, fee);
-		token.transfer(marketingAdress, fee);
+		uint256 fee = totalAmount.mul(REINVEST_FEE).div(PERCENTS_DIVIDER);
+        fee = Math.min(fee, getContractBalance());
+        secureAddress.transfer(fee);
+
+		emit Reinvestment(msg.sender, totalAmount);
 		emit FeePayed(msg.sender, fee);
-		emit Reinvestment(msg.sender, totalDividends);
 		return true;
 	}
-*/
 
     function getContractBalance() public view returns (uint256) {
         return address(this).balance;
@@ -388,7 +407,7 @@ contract FomoStake2 {
 
         uint256 durationToDays = duration.div(TIME_STEP);
 
-        percent = percent.mul(plans[plan].time.mul(TIME_STEP).div(duration));
+        percent = percent.mul(plans[plan].time).mul(TIME_STEP).div(duration);
 
         uint256 amt = deposit;
 
@@ -409,22 +428,22 @@ contract FomoStake2 {
 			Deposit memory deposit = user.deposits[i];
 			uint256 finishDate = getFinishDeposit(deposit);
             uint256 userCheckpoint = user.checkpoint;
-
+            uint256 currentDate = block.timestamp;
             if (userCheckpoint < finishDate) {
                 Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
                     uint256 share = deposit.amount.mul(deposit.percent).div(PERCENTS_DIVIDER);
 
                     uint256 _from = getInintDeposit(deposit.initDate);
-
                     _from = _from > userCheckpoint ? _from : userCheckpoint;
 
-                    uint256 _to = finishDate < block.timestamp ? finishDate : block.timestamp;
+
+                    uint256 _to = finishDate < currentDate ? finishDate : currentDate;
 
                     if (_from < _to) {
                         totalAmount = totalAmount.add(share.mul(_to.sub(_from)).div(TIME_STEP));
                     }
-                } else if (block.timestamp >= finishDate) {
+                } else if (currentDate >= finishDate) {
                     totalAmount = totalAmount.add(deposit.profit);
                 }
             }
