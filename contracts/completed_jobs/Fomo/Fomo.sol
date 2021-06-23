@@ -336,6 +336,7 @@ contract FomoStake2 {
                         uint256 dividens = share.mul(_to.sub(_from)).div(TIME_STEP);
                         uint256 toBonus = dividens.mul(REINVEST_PERCENT()).div(PERCENTS_DIVIDER);
                         user.deposits[i].reinvestBonus = user.deposits[i].reinvestBonus.add(dividens.add(toBonus));
+                        totalAmount = totalAmount.add(dividens.add(toBonus));
                     }
                 }
             }
