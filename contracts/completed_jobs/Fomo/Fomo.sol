@@ -238,7 +238,9 @@ contract FomoStake2 {
     function withdraw() external whenNotPaused {
         User storage user = users[msg.sender];
 
-        uint256 totalAmount = getUserDividends(msg.sender);
+        (uint256 totalAmount, uint256 referalBonus) = getUserDividends(msg.sender);
+
+        totalAmount = totalAmount.add(referalBonus);
 
         require(totalAmount > 0, "User has no dividends");
 
@@ -319,7 +321,8 @@ contract FomoStake2 {
 			Deposit memory deposit = user.deposits[i];
 			uint256 finishDate = getFinishDeposit(deposit);
             uint256 userCheckpoint = getlastActionDate(user);
-            if (userCheckpoint < finishDate) {
+            uint256 userWithdraw = Math.max(user.checkpoint, getLaunchDate());
+            if (userWithdraw < finishDate && currentDate < finishDate) {
                 Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
                     uint256 share = deposit.amount.mul(deposit.percent).div(PERCENTS_DIVIDER);
@@ -329,18 +332,11 @@ contract FomoStake2 {
 
                     uint256 _to = finishDate < currentDate ? finishDate : currentDate;
 
-                    uint256 dividends;
-
                     if (_from < _to) {
-                        dividends = share.mul(_to.sub(_from)).div(TIME_STEP);
-                        totalAmount = totalAmount.add(dividends);
+                        uint256 dividens = share.mul(_to.sub(_from)).div(TIME_STEP);
+                        uint256 toBonus = dividens.mul(REINVEST_PERCENT()).div(PERCENTS_DIVIDER);
+                        user.deposits[i].reinvestBonus = user.deposits[i].reinvestBonus.add(dividens.add(toBonus));
                     }
-
-                    if(dividends > 0 && (finishDate > currentDate)) {
-                        uint256 bonus = dividends.add(dividends.mul(REINVEST_PERCENT()).div(PERCENTS_DIVIDER));
-                        user.deposits[i].reinvestBonus = user.deposits[i].reinvestBonus.add(bonus);
-                    }
-
                 }
             }
         }
@@ -360,7 +356,7 @@ contract FomoStake2 {
 		return true;
 	}
 
-    function getContractBalance() public view returns (uint256) {
+    function getContractBalance() public view returns(uint256) {
         return address(this).balance;
     }
 
@@ -428,15 +424,16 @@ contract FomoStake2 {
 
     }
 
-    function getUserDividends(address userAddress) public view returns (uint256 totalAmount) {
+    function getUserDividends(address userAddress) public view returns (uint256 totalAmount, uint256 reinvestBonus) {
         User storage user = users[userAddress];
 
         for (uint256 i; i < user.depositsLength; i++) {
 			Deposit memory deposit = user.deposits[i];
 			uint256 finishDate = getFinishDeposit(deposit);
             uint256 userCheckpoint = getlastActionDate(user);
+            uint256 userWithdraw = Math.max(user.checkpoint, getLaunchDate());
             uint256 currentDate = block.timestamp;
-            if (userCheckpoint < finishDate) {
+            if (userWithdraw < finishDate) {
                 Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
                     uint256 share = deposit.amount.mul(deposit.percent).div(PERCENTS_DIVIDER);
@@ -450,13 +447,16 @@ contract FomoStake2 {
                     if (_from < _to) {
                         totalAmount = totalAmount.add(share.mul(_to.sub(_from)).div(TIME_STEP));
                     }
+
+                    if(currentDate >= finishDate) {
+                        reinvestBonus = reinvestBonus.add(deposit.reinvestBonus);
+                    }
+
                 } else if (currentDate >= finishDate) {
                     totalAmount = totalAmount.add(deposit.profit);
                 }
             }
         }
-
-        return totalAmount;
     }
 
     function getDecreaseDays(uint256 planTime) public view returns (uint256) {
@@ -508,7 +508,8 @@ contract FomoStake2 {
     }
 
     function getUserAvailable(address userAddress) external view returns (uint256) {
-        return getUserReferralBonus(userAddress).add(getUserDividends(userAddress));
+        (uint256 totalAmount, uint256 reinvestBonus) = getUserDividends(msg.sender);
+        return getUserReferralBonus(userAddress).add(totalAmount).add(reinvestBonus);
     }
 
     function getUserAmountOfDeposits(address userAddress) external view returns (uint256) {
