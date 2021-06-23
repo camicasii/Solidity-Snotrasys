@@ -204,7 +204,7 @@ contract CakeVault is CakeVault_State{
 		uint256 totalWithdrawn_,
 		uint256 totalDeposits_,
 		uint256 balance_,
-		uint256 roidBase,
+		uint256 roiBase,
 		uint256 bonusPool,
 		uint256 comunityBonus,
 		uint256 currentRoi,
@@ -218,7 +218,7 @@ contract CakeVault is CakeVault_State{
 		totalWithdrawn_ = totalWithdrawn;
 		totalDeposits_ = totalDeposits;
 		balance_ = getContractBalance();
-		roidBase = ROI_BASE;
+		roiBase = ROI_BASE;
 		bonusPool = getBonusPoolPercent();
 		comunityBonus = getComunityBonus();
 		currentRoi = ROI_BASE.add(comunityBonus).add(bonusPool);
