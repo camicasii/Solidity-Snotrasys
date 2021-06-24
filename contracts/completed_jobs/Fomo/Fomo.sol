@@ -62,6 +62,7 @@ contract FomoStake2 {
         uint256[3] levels;
         uint256 bonus;
         uint256 totalBonus;
+        uint256 totalStaked;
 		uint256 withdrawn;
 		uint256 reinvested;
     }
@@ -666,6 +667,17 @@ contract FomoStake2 {
 
 	function getAvailableFormReinvest(address userAddress) external view returns(uint256 available) {
 	    (available,) = getUserDividends(userAddress);
+	}
+
+	function getUserTotalStacked(address userAddress) internal view returns(uint256) {
+		User storage user = users[userAddress];
+
+		uint256 amount;
+
+		for(uint256 i = 0; i < user.depositsLength; i++) {
+			amount = amount.add(users[userAddress].deposits[i].amount);
+		}
+		return amount;
 	}
 
 }
