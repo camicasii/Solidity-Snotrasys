@@ -62,7 +62,7 @@ contract FomoStake2 {
         uint256[3] levels;
         uint256 bonus;
         uint256 totalBonus;
-		uint256 withdraw;
+		uint256 withdrawn;
 		uint256 reinvested;
     }
 
@@ -128,6 +128,11 @@ contract FomoStake2 {
 	function isPaused() public view returns(bool) {
 		return (LAUNCH_DATE == 0);
 	}
+
+    modifier isUser() {
+        require(users[msg.sender].checkpoint > 0, 'is not user');
+        _;
+    }
 
     constructor(address payable marketingAddr, address payable projectAddr, address payable devAddr, address payable secureAddr) {
         require(!isContract(marketingAddr), "!marketingAddr");
@@ -245,7 +250,7 @@ contract FomoStake2 {
 
         require(totalAmount > 0, "User has no dividends");
 
-        user.withdraw = user.withdraw.add(totalAmount);
+        user.withdrawn = user.withdrawn.add(totalAmount);
 
         uint256 contractBalance = getContractBalance();
         if (contractBalance < totalAmount) {
@@ -356,6 +361,34 @@ contract FomoStake2 {
 		emit Reinvestment(msg.sender, totalAmount);
 		emit FeePayed(msg.sender, fee);
 		return true;
+	}
+
+	function getUserData(address userAddress) external view returns(uint256 totalWithdrawn_,
+		uint256 totalDeposits_,
+		uint256 totalBonus_,
+		uint256 totalreinvest_,
+		uint256 balance_,
+		uint256 reinvestBonus,
+		uint256 amountOfDeposits,
+		uint256 checkpoint,
+		uint256 referralTotalBonus,
+		uint256 referalBonus,
+		address referrer_,
+		uint256[3] memory referrerCount_
+	){
+		User storage user = users[userAddress];
+		totalWithdrawn_ = user.withdrawn;
+		totalDeposits_ = user.depositsLength;
+		(balance_, reinvestBonus) = getUserDividends(userAddress);
+		balance_ = balance_.add(reinvestBonus);
+		totalreinvest_ = user.reinvested;
+		totalBonus_ = user.bonus;
+		amountOfDeposits = user.depositsLength;
+		checkpoint = getlastActionDate(user);
+		referrer_ = user.referrer;
+		referrerCount_ = user.levels;
+		referralTotalBonus = getUserReferralTotalBonus(userAddress);
+        referalBonus = getUserReferralBonus(userAddress);
 	}
 
     function getContractBalance() public view returns(uint256) {
@@ -496,7 +529,7 @@ contract FomoStake2 {
         return users[userAddress].bonus;
     }
 
-    function withdrawReferralBonus() external whenNotPaused {
+    function withdrawReferralBonus() external whenNotPaused isUser {
 		User storage user = users[msg.sender];
 		uint256 referralBonus = getUserReferralBonus(msg.sender);
 		require(referralBonus > 0, "User has no dividends");
@@ -504,7 +537,7 @@ contract FomoStake2 {
         payable(msg.sender).transfer(referralBonus);
     }
 
-    function getUserReferralTotalBonus(address userAddress) external view returns (uint256) {
+    function getUserReferralTotalBonus(address userAddress) public view returns (uint256) {
         return users[userAddress].totalBonus;
     }
 
@@ -629,6 +662,10 @@ contract FomoStake2 {
         checkpoint = Math.max(getLaunchDate(), checkpoint);
 
 		return checkpoint;
+	}
+
+	function getAvailableFormReinvest(address userAddress) external view returns(uint256 available) {
+	    (available,) = getUserDividends(userAddress);
 	}
 
 }
