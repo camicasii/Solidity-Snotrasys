@@ -674,7 +674,7 @@ contract FomoStake2 {
 
 		uint256 amount;
 
-		for(uint256 i = 0; i < user.depositsLength; i++) {
+		for(uint256 i; i < user.depositsLength; i++) {
 			amount = amount.add(users[userAddress].deposits[i].amount);
 		}
 		return amount;
