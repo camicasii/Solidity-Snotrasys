@@ -17,8 +17,8 @@ contract FomoStake2 {
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant WITHDRAW_FEE_PERCENT = 100;
     uint256 public constant PERCENTS_DIVIDER = 1000;
-    uint256 public constant TIME_STEP = 4 seconds;//1 days;//10 seconds; for test
-    uint256 public constant DECREASE_DAY_STEP = 2 seconds;//0.5 days;//5 seconds; for test
+    uint256 public constant TIME_STEP = 1 days;//10 seconds; for test
+    uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
     uint256 public constant FORCE_PERCENT = 300;
     uint256 public constant SECURE_ADRESS_WITHDRAW_FEE = 200;
     uint256 public constant INVEST_FEE = 120;
@@ -36,9 +36,10 @@ contract FomoStake2 {
         uint256 time;
         uint256 percent;
         bool locked;
+        uint256 returnPercent;
     }
 
-    mapping(uint256 => Plan) plans;
+    mapping(uint256 => Plan) internal plans;
     uint256 public plansLength;
 
     struct Deposit {
@@ -361,18 +362,21 @@ contract FomoStake2 {
         return address(this).balance;
     }
 
-    function getPlanInfo(uint256 plan) public view returns (uint256 time, uint256 percent, bool locked) {
+    function getPlanInfo(uint256 plan) public view returns (uint256 time, uint256 percent, bool locked, uint256 returnPercent) {
         require(plan < plansLength, "Invalid plan");
         Plan memory tempPlan = plans[plan];
-        time = getDecreaseDays(tempPlan.time).div(TIME_STEP);
-        percent = getPercent(plan);
         locked = tempPlan.locked;
+        uint256 profit;
+        uint256 tempInvest = 1 ether;
+        (percent, profit,, time) = getResult(plan, tempInvest);
+        returnPercent = profit.mul(PERCENTS_DIVIDER).div(tempInvest);
+        time = time.div(TIME_STEP);
     }
 
     function getPlans() external view returns(Plan[] memory _plans) {
         _plans = new Plan[] (plansLength);
         for(uint256 i; i < plansLength; i++) {
-            (_plans[i].time, _plans[i].percent, _plans[i].locked) = getPlanInfo(i);
+            (_plans[i].time, _plans[i].percent, _plans[i].locked, _plans[i].returnPercent) = getPlanInfo(i);
         }
     }
 
@@ -393,7 +397,7 @@ contract FomoStake2 {
         return getPercentFrom(reinvestPercent);
     }
 
-    function getResult(uint8 plan, uint256 deposit) public view
+    function getResult(uint256 plan, uint256 deposit) public view
         returns (
             uint256 percent,
             uint256 profit,
