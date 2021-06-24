@@ -1,0 +1,296 @@
+.mainDiscription {
+  text-align: left;
+  font: normal normal medium 16px/28px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.firstColStyle {
+  background: rgb(1, 4, 64, 0.8) 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 30px;
+}
+.secondColStyle {
+  background: rgb(1, 4, 64, 0.8) 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* First Column */
+
+.firstColHeading1 {
+  text-align: left;
+  font: normal normal 600 18px/22px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.firstColValue1 {
+  text-align: left;
+  font: normal normal 800 32px/39px Montserrat;
+  letter-spacing: 0px;
+  color: #f3ba2f;
+  opacity: 1;
+}
+
+.firstColHeading2 {
+  text-align: left;
+  font: normal normal 600 18px/22px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.firstColValue2 {
+  text-align: left;
+  font: normal normal 800 32px/39px Montserrat;
+  letter-spacing: 0px;
+  color: #f3ba2f;
+  opacity: 1;
+}
+.firstColButton {
+  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  border: #f3ba2f !important;
+  border-radius: 3px;
+  opacity: 1;
+  text-align: center;
+  font: normal normal bold 14px/19px Open Sans;
+  letter-spacing: 0px;
+  color: #ffffff;
+  width: 166px;
+  height: 39px;
+}
+
+/* Second Column */
+
+.secondColMainHeading {
+  text-align: left;
+  font: normal normal 600 17px/24px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.secondColMainHeadingReinvestment {
+  text-align: left;
+  font: normal normal 600 28px/30px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.secondHeadingReinvestment {
+  text-align: left;
+  font: normal normal 600 20px/24px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+  padding-top: 20px;
+}
+.secondColMainInputSet {
+  display: flex;
+  flex-direction: row;
+}
+
+.secondColInput {
+  height: 40px;
+  width: 75%;
+  border: 2px solid #ffffff;
+  border-radius: 5px 0px 0px 5px;
+  opacity: 1;
+  text-align: left;
+  font: normal normal bold 18px/22px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  background-color: transparent !important;
+  border-right: 0px solid #ffffff;
+}
+
+.secondColInputImg {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 0px 5px 5px 0px;
+  opacity: 1;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.secondColButton {
+  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  border: #f3ba2f !important;
+  border-radius: 3px;
+  opacity: 1;
+  width: 98px;
+  height: 39px;
+  margin-left: 20px;
+}
+
+.headingss {
+  text-align: center;
+  font: normal normal medium 14px/18px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.valuess {
+  text-align: center;
+  font: normal normal bold 24px/29px Montserrat;
+  letter-spacing: 0px;
+  color: #f3ba2f;
+  opacity: 1;
+}
+
+.paragraphss {
+  text-align: left;
+  font-size: 14px;
+  font-family: Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+
+/* Your Stake */
+
+.stakeMainHeading {
+  text-align: left;
+  font: normal normal bold 35px/61px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.stakeImages {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 1196px) {
+  .secondColButton {
+    margin-left: 10px !important;
+  }
+}
+@media screen and (max-width: 1084px) {
+  .secondColButton {
+    margin-left: 2px !important;
+  }
+}
+@media screen and (max-width: 700px) {
+  .secondColButton {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 765px) {
+  .img1 {
+    width: 70% !important;
+    height: 35px !important;
+  }
+  .img2 {
+    width: 70% !important;
+    height: 35px !important;
+  }
+  .img3 {
+    width: 72% !important;
+    height: 35px !important;
+    margin-top: 20px !important;
+  }
+  .img4 {
+    width: 72% !important;
+    height: 35px !important;
+    margin-top: 20px !important;
+  }
+  .img5 {
+    width: 52% !important;
+    height: 35px !important;
+    margin-top: 20px !important;
+  }
+  .img6 {
+    width: 42% !important;
+    height: 30px !important;
+    margin-top: 20px !important;
+    margin-left: 18px !important;
+  }
+}
+.secondColInputImage {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 0px 5px 5px 0px;
+  opacity: 1;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.stakeImages img {
+  object-fit: contain;
+}
+@media screen and (min-width: 768px) {
+  .showOnSmallStake {
+    display: none !important;
+  }
+  .PL0 {
+    padding-left: 0px !important;
+  }
+}
+@media screen and (max-width: 768px) {
+  .showOnLargeStake {
+    display: none !important;
+  }
+}
+.plansCustomDropdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3ba2f;
+  height: 40px;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 30px;
+  color: #ffffff;
+  font: normal normal bold 18px/19px Open Sans;
+  cursor: pointer;
+}
+.plansCustomDropdownItemsParent {
+  background-color: #f3ba2f;
+  border-radius: 5px;
+  margin-top: 2px;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+}
+.plansCutomDropdownItem {
+  margin: 5px 0px;
+  padding: 15px 20px;
+  border-bottom: 1px solid gray;
+  cursor: pointer;
+  color: #ffffff;
+  font: normal normal 16px/19px Open Sans;
+}
+.plansCutomDropdownItem:hover {
+  background-color: #eec96a;
+  margin: 5px 0px;
+  padding: 15px 20px;
+  border-bottom: 1px solid gray;
+  cursor: pointer;
+  color: #ffffff;
+  font: normal normal 16px/19px Open Sans;
+}
+.reinvestButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3ba2f !important;
+  height: 40px;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 30px;
+  color: #ffffff;
+  font: normal normal bold 18px/19px Open Sans;
+  cursor: pointer;
+  border: 0px !important;
+}

@@ -20,11 +20,7 @@ export default function Header() {
             />
             Connect Wallet
           </Button>
-        </div>
-        <div className="header_one_BNB ml-auto">
-          1 BNB =&nbsp;
-          <span className="header_one_BNB_value"> $523.14</span>
-        </div>
+        </div>        
         <div className="header_buttons_parent ml-auto">
           <Button className="header_telegram_button">
             <div>

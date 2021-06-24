@@ -1,0 +1,57 @@
+.mainInfo__BNB_yield_card {
+  padding: 30px;
+  background: rgb(1, 4, 64, 0.8) 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  width: 100% !important;
+}
+.mainInfo__BNB_yield_heading {
+  text-align: left;
+  font: normal normal 600 17px/24px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.mainInfo__BNB_yield_second_heading {
+  margin-top: 40px !important;
+}
+.mainInfo__BNB_yield_points {
+  text-align: left;
+  font: normal normal normal 16px/24px Montserrat regular;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+li {
+  font-size: 28px;
+  margin-top: 10px;
+}
+li span {
+  margin-top: 50px !important;
+  font: normal normal normal 16px/24px Montserrat regular;
+}
+li::marker {
+  font-size: 24px;
+}
+.mainInfo__BNB_yield_Value {
+  text-align: left;
+  font: normal normal 800 42px/52px Montserrat;
+  letter-spacing: 0px;
+  color: #f3ba2f;
+  opacity: 1;
+  margin-top: 17px;
+}
+.mainInfo__BNB_yield_card_button_parent {
+  display: flex;
+  margin-top: 30px;
+  flex-wrap: nowrap !important;
+}
+.mainInfo__BNB_yield_card_button {
+  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  border-radius: 3px !important;
+  text-align: center !important;
+  font: normal normal bold 14px Open Sans !important;
+  letter-spacing: 0px !important;
+  color: #ffffff !important;
+  border: 0px !important;
+  width: 50%;
+}

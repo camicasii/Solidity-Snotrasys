@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./stake.css";
 import { Row, Col, Button, Image } from "react-bootstrap";
 import Swal from "sweetalert2";
+import BasicData from "../component/basicData/index";
+import UserData from "../component/UserDAta/UserData";
 export default function Stack() {
   const [referralLink, setReferralLink] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -44,118 +46,8 @@ export default function Stack() {
         </div>
       </div>
       <Row className=" ml-0 mr-0 " style={{ marginTop: "20px" }}>
-        <Col
-          style={{ paddingLeft: "0px" }}
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          xl={12}
-        >
-          <div className="secondColStyle">
-            <div className="secondColMainHeading mt-4">
-              Your Referral Link
-            </div>
-            <div className="secondColMainInputSet mt-2">
-              <input
-                type="text"
-                placeholder="    ...."
-                className="secondColInput"
-                onChange={(e) => {
-                  setReferralLink(e.target.value);
-                }}
-              />
-              <div className="secondColInputImage">
-                <Image
-                  src="./images/copy .png"
-                  onClick={handleCopy}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-              <Button
-                className="secondColButton "
-                onClick={handleCopy}
-              >
-                Copy
-              </Button>
-            </div>
-
-            <Row>
-              <Col xs={12} sm={12} md={7} lg={7}>
-                <Row>
-                  <Col sm={6} md={6} lg={6} className="p-0">
-                    <div className="headingss mt-3">
-                      Referral Boost
-                    </div>
-                    <div className="valuess mt-2">...</div>
-                  </Col>
-                  <Col sm={6} md={6} lg={6} className="p-0">
-                    <div className="headingss mt-3">
-                      Lottery Bonus
-                    </div>
-                    <div className="valuess mt-2">...</div>
-                  </Col>
-                  <Col sm={6} md={6} lg={6} className="p-0">
-                    <div className="headingss mt-3">
-                      Total Referral Earned
-                    </div>
-                    <div className="valuess mt-2">...</div>
-                  </Col>
-                  <Col sm={6} md={6} lg={6} className="p-0">
-                    <div className="headingss mt-3">
-                      Total Referral Withdrawn
-                    </div>
-                    <div className="valuess mt-2">...</div>
-                  </Col>
-                </Row>
-                <div className="headingss mt-4">
-                  Total Referral Withdrawn
-                </div>
-                <div className="valuess mt-2 mb-3">...</div>
-              </Col>
-              <Col
-                style={{ paddingRight: "35px" }}
-                xs={12}
-                sm={12}
-                md={5}
-                lg={5}
-              >
-                <div className="paragraphss mt-4 mb-3">
-                  Earn for promotion Locked BNB <br /> You will
-                  receive: <br />
-                  <br /> 5% from each level 1 referral deposits 2.5%
-                  from each level 2 referral deposits 0.5% from each
-                  level 3 referral deposits Note! You need to have at
-                  least 1 deposit to start receive earnings
-                </div>
-              </Col>
-            </Row>
-          </div>
-        </Col>
-
-        <Col
-          style={{ paddingLeft: "0px" }}
-          xs={12}
-          sm={12}
-          md={4}
-          lg={4}
-          className="d-flex align-items-stretch w-100"
-        >
-          <div className="firstColStyle ">
-            <div className="firstColHeading1 mt-4">
-              Total Stake BNB
-            </div>
-            <div className="firstColValue1 mt-3">...</div>
-            <div className="firstColHeading2 mt-4">
-              Available BNB for withdrawal
-            </div>
-            <div className="firstColValue2 mt-3 mb-3">...</div>
-            <Button className="firstColButton mt-5 mb-5">
-              Withdraw BNB
-            </Button>
-          </div>
-        </Col>
-
+        <UserData />
+      <BasicData />
         <Col
           style={{ paddingLeft: "0px" }}
           xs={12}

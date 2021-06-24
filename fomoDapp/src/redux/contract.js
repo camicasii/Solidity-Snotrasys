@@ -11,6 +11,29 @@ const initialState = {
     title: 0,
     description:0,
     type: 0
+  },
+  public:{
+    totalInvested_:0,
+		totalReinvested_:0,
+		totalWithdrawn_:0,
+		totalDeposits_:0,
+		balance_:0,
+		minDeposit:0,
+		daysFormdeploy:0,
+    reinvestPercent_:0,
+  },
+  user:{
+    totalDeposits_:0,
+		totalBonus_:0,
+		totalreinvest_:0,
+		balance_:0,
+		reinvestBonus:0,
+		amountOfDeposits:0,
+		checkpoint:0,
+		referralTotalBonus:0,
+		referalBonus:0,
+		referrer_:0,
+		referrerCount_:[0,0,0]
   }
 
 };

@@ -1,7 +1,18 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Col, Row, Button } from "react-bootstrap";
+import {useSelector  } from "react-redux";
+import BasicData from "../component/basicData/index";
 import "./mainInfo.css";
 export default function MainInfo() {
+  const state = useSelector(state => state.contract)
+
+  useEffect(() => {
+    console.log(state.public.balance_,'state');
+
+    return () => {
+      
+    }
+  }, [state.public.balance_])
   return (
     <div>
       <Row>
@@ -54,33 +65,7 @@ export default function MainInfo() {
             </div>
           </div>
         </Col>
-        <Col
-          xl={4}
-          lg={4}
-          md={4}
-          sm={12}
-          xs={12}
-          className="d-flex align-items-stretch PL0"
-        >
-          <div className="mainInfo__BNB_yield_card">
-            <div className="mainInfo__BNB_yield_heading">
-              Total Stake BNB
-            </div>
-            <div className="mainInfo__BNB_yield_Value">...</div>
-            <div className="mainInfo__BNB_yield_heading mainInfo__BNB_yield_second_heading">
-              Available BNB for withdrawal
-            </div>
-            <div className="mainInfo__BNB_yield_Value">...</div>
-            <div className="mainInfo__BNB_yield_card_button_parent">
-              <Button className="mainInfo__BNB_yield_card_button">
-                Check Audit PDF
-              </Button>
-              <Button className="mainInfo__BNB_yield_card_button ml-1">
-                Check Audit PDF
-              </Button>
-            </div>
-          </div>
-        </Col>
+        <BasicData/>
       </Row>
     </div>
   );
