@@ -17,8 +17,8 @@ contract FomoStake2 {
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant WITHDRAW_FEE_PERCENT = 100;
     uint256 public constant PERCENTS_DIVIDER = 1000;
-    uint256 public constant TIME_STEP = 1 days;//10 seconds; for test
-    uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
+    uint256 public constant TIME_STEP = 4 seconds;//1 days;//10 seconds; for test
+    uint256 public constant DECREASE_DAY_STEP = 2 seconds;//0.5 days;//5 seconds; for test
     uint256 public constant FORCE_PERCENT = 300;
     uint256 public constant SECURE_ADRESS_WITHDRAW_FEE = 200;
     uint256 public constant INVEST_FEE = 120;
@@ -361,22 +361,22 @@ contract FomoStake2 {
         return address(this).balance;
     }
 
-    function getPlanInfo(uint8 plan) external view returns (uint256 time, uint256 percent, bool locked) {
+    function getPlanInfo(uint256 plan) public view returns (uint256 time, uint256 percent, bool locked) {
         require(plan < plansLength, "Invalid plan");
         Plan memory tempPlan = plans[plan];
-        time = tempPlan.time;
-        percent = tempPlan.percent;
+        time = getDecreaseDays(tempPlan.time).div(TIME_STEP);
+        percent = getPercent(plan);
         locked = tempPlan.locked;
     }
 
     function getPlans() external view returns(Plan[] memory _plans) {
         _plans = new Plan[] (plansLength);
         for(uint256 i; i < plansLength; i++) {
-            _plans[i] = plans[i];
+            (_plans[i].time, _plans[i].percent, _plans[i].locked) = getPlanInfo(i);
         }
     }
 
-    function getPercent(uint8 plan) public view returns (uint256) {
+    function getPercent(uint256 plan) public view returns (uint256) {
         require(plan < plansLength, "Invalid plan");
         return getPercentFrom(plans[plan].percent);
     }
