@@ -366,11 +366,10 @@ contract FomoStake2 {
 
 	function getUserData(address userAddress) external view returns(uint256 totalWithdrawn_,
 		uint256 totalDeposits_,
-		uint256 totalBonus_,
+        uint256 totalInvested,
 		uint256 totalreinvest_,
 		uint256 balance_,
 		uint256 reinvestBonus,
-		uint256 amountOfDeposits,
 		uint256 checkpoint,
 		uint256 referralTotalBonus,
 		uint256 referalBonus,
@@ -383,13 +382,12 @@ contract FomoStake2 {
 		(balance_, reinvestBonus) = getUserDividends(userAddress);
 		balance_ = balance_.add(reinvestBonus);
 		totalreinvest_ = user.reinvested;
-		totalBonus_ = user.bonus;
-		amountOfDeposits = user.depositsLength;
 		checkpoint = getlastActionDate(user);
 		referrer_ = user.referrer;
 		referrerCount_ = user.levels;
 		referralTotalBonus = getUserReferralTotalBonus(userAddress);
         referalBonus = getUserReferralBonus(userAddress);
+        totalInvested = getUserTotalStacked(userAddress);
 	}
 
     function getContractBalance() public view returns(uint256) {
