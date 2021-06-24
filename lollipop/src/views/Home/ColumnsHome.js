@@ -25,7 +25,7 @@ const ColumnsHome = (  ) => (
        
           <div>
  <div className="flex justify-center	">
-              <img src="/home/Grupo_1059.svg" className="w-20"/>
+              <img src="/home/Grupo_1059.svg" alt="Grupo_1059" className="w-20"/>
 
 
             </div>
@@ -47,7 +47,7 @@ const ColumnsHome = (  ) => (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
           <div className="bg-white shadow-sm rounded-lg overflow-hidden sm:p-8 p-5 h-auto sm:space-x-5 space-x-0 sm:space-y-0 space-y-5 items-center sm:text-left text-center">
  <div className=" ml-3">
-              <img src="/home/Recurso_1.svg" className=" w-8"/>
+              <img src="/home/Recurso_1.svg" alt="Recurso_1" className=" w-8"/>
             </div>
             <div className=" py-2 font-semibold text-pink-500">
               <div className="font-normal text-blue-400 text-xs">Valor total bloqueado (TVL)</div>
@@ -57,7 +57,7 @@ const ColumnsHome = (  ) => (
           </div>
  <div className="bg-white shadow-sm rounded-lg overflow-hidden sm:p-8 p-5 h-auto sm:space-x-5 space-x-0 sm:space-y-0 space-y-5 items-center sm:text-left text-center">
  <div className=" ml-3">
-              <img src="/home/choco.svg" className=" w-6"/>
+              <img src="/home/choco.svg" alt="choco" className=" w-6"/>
             </div>
             <div className=" py-2 font-semibold text-pink-500">
               <div className="font-normal text-blue-400 text-xs">Valor total bloqueado (TVL)</div>
@@ -76,7 +76,7 @@ const ColumnsHome = (  ) => (
           {/*Candy Stats*/}
           <div>    
             <div className="flex sm:space-x-4 space-x-24  text-center">
-              <img src="/home/Recurso_1.svg" className="w-12"/>
+              <img src="/home/Recurso_1.svg" alt="Recurso_1" className="w-12"/>
   <h1 className="text-blue-400 mt-3 font-bold text-xl ">Candy Stats</h1>
 
             </div>
@@ -89,9 +89,9 @@ const ColumnsHome = (  ) => (
             </div>
           </div>
 
-          <div className="	">
+          <div >
             <div className="flex sm:space-x-4 space-x-24  text-center">
-              <img src="/home/metamask.svg" className="w-6"/>
+              <img src="/home/metamask.svg" alt="metamask" className="w-6"/>
   <h1 className="text-yellow-500 mt-3 font-normal text-sm ">Add Candy to Metamask</h1>
 
             </div>
@@ -111,7 +111,7 @@ const ColumnsHome = (  ) => (
  <div className="bg-white dark:bg-gray-800 dark:text-gray-200 shadow-sm rounded-lg overflow-hidden sm:p-8 p-5 h-auto flex flex sm:flex-row flex-col sm:space-x-5 space-x-0 sm:space-y-0 space-y-5 items-center sm:text-left text-center">
       <div>    
             <div className="flex sm:space-x-4 space-x-1  text-center">
-              <img src="/home/choco.svg" className="w-8"/>
+              <img src="/home/choco.svg" alt="choco" className="w-8"/>
   <h1 className="text-blue-400 mt-3 font-bold text-xl ">Choco Stats</h1>
 
             </div>
@@ -126,7 +126,7 @@ const ColumnsHome = (  ) => (
 
      <div className="px-6">
             <div className="flex sm:space-x-4 space-x-1  text-center mt-2">
-              <img src="/home/metamask.svg" className="w-7 "/>
+              <img src="/home/metamask.svg" alt="metamask" className="w-7 "/>
   <h1 className="text-yellow-500  font-normal text-sm ">Add Candy to Metamask</h1>
 
             </div>
@@ -149,7 +149,7 @@ const ColumnsHome = (  ) => (
       <div className="flex flex-col justify-center sm:pr-10 sm:pt-0 pt-5">
  <div className="flex sm:space-x-4 space-x-1  text-center">
               <img src="/home/poker.svg" alt="poker"/>
-   <img src="/home/Grupo_960.svg" alt="poker"/>
+   <img src="/home/Grupo_960.svg" alt="Grupo_960"/>
 
 
             </div>
@@ -158,7 +158,7 @@ tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim</div>
            <Link to="/" className="font-medium py-2 px-0  mt-4    cursor-pointer bg-blue-500  text-white rounded text-xs text-center w-48 ">Approve Candy</Link>
       </div>
       <div>
-        <img src="/home/Grupo_854.svg" alt="image1"/>
+        <img src="/home/Grupo_854.svg" alt="Grupo_854"/>
       </div>
     </div></div>
     {/*CasinoEnd*/}

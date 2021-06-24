@@ -11,7 +11,7 @@ export default function FocusTrap({ children, isActive }) {
     return () => document.removeEventListener('focusin', trapFocus)
 
     function trapFocus(event) {
-      // Only trap focus in modal form
+    
       if (!isActive) return
 
       let elements

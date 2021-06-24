@@ -95,9 +95,14 @@ const SidebarMenu = ({ setClosed, isStatic }) => {
                     </NavLink>
                   </li>
                   <li className="pt-4 pb-8">
-                    <span className="flex items-center sm:ml-[90px] ml-24 mt-4">
+                    <NavLink
+                      onClick={()=> setClosed(true)}
+                      to="/airdrop"
+                    >
+                      <span className="flex items-center sm:ml-[90px] ml-24 mt-4">
                       <img src="/Menu/lanzamiento.svg" alt="cohete" />
                     </span>
+              </NavLink>
                   </li>
                   <li></li>
                 </ul>

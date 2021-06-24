@@ -19,7 +19,7 @@ const AnnounceAndTokenomics = (  ) => (
 
       </div>
       <div className=" h-full bg-cover bg-center bg-fixed bg-white group block rounded-md w-full h-full overflow-hidden text-center shadow-sm  h-auto row-span-2 w-full "  style={{ backgroundImage: `url(/Grupo_998.svg)`}}>
-        <img src="/home/Grupo_15890.svg" className="absolute sm:ml-[220px] ml-40 -mt-6 w-20" alt="image"/>
+        <img src="/home/Grupo_15890.svg" className="absolute sm:ml-[220px] ml-40 -mt-6 w-20" alt="Grupo_15890"/>
           <div className="mt-14 text-blue-400 font-bold text-2xl">Tokenomics</div>
         <p className="text-xs mt-4 px-8 text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,

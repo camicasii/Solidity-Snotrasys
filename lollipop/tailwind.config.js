@@ -18,6 +18,7 @@ module.exports = {
     extend: {
       colors:{
         'pink-primary': '#e84a94',
+        'blue-primary': '#57baeb',
       },
  screens: {
         xs: '375px',
@@ -30,9 +31,6 @@ module.exports = {
         print: {raw: 'print'},
       },
 
-      lineHeight: {
-        tighter: 1.1,
-      },
       margin: {
         '-full': '-100%',
         full: '100%',

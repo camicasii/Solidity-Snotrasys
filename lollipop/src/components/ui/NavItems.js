@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 const NavItems = ({ isStatic, isClosed, setClosed }) => {
      
 
- const [isOpen,setIsOpen] = React.useState(false)
+
  const [scroll] = React.useState(false)
     return(
   <>
@@ -46,7 +46,7 @@ const NavItems = ({ isStatic, isClosed, setClosed }) => {
             </button>
           ))}
    <Link to="/" >
-  <img  src="/logo.svg" className="ml-4 w-20"/>
+  <img  src="/logo.svg" alt="logo" className="ml-4 w-20"/>
  
             </Link>
 
@@ -64,12 +64,12 @@ const NavItems = ({ isStatic, isClosed, setClosed }) => {
 
       <ConnectModal />
 <div className="flex sm:space-x-2 space-x-1  text-center mt-2 px-3 py-2">
-              <img src="/home/choco.svg" className="w-4"/>
+              <img src="/home/choco.svg" alt="choco" className="w-4"/>
   <h1 className="text-gray-800 bg-blue-200 rounded  font-normal text-sm ">20.00</h1>
 
             </div>
  <div className="flex sm:space-x-2 space-x-1  text-center mt-2 px-3 py-2">
-              <img src="/home/Recurso_1.svg" className="w-4"/>
+              <img src="/home/Recurso_1.svg" alt="Recurso_1" className="w-4"/>
   <h1 className="text-gray-800 bg-pink-200 rounded  font-normal text-sm ">10.00</h1>
 
             </div>
