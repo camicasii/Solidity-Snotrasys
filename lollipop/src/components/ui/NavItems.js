@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {ConnectModal} from '../modal/ConnectModal'
+
 
 import {Link} from 'react-router-dom'
 const NavItems = ({ isStatic, isClosed, setClosed }) => {
@@ -59,10 +59,7 @@ const NavItems = ({ isStatic, isClosed, setClosed }) => {
 
     <div className="flex items-center justify-end">
       
-    
-
-
-      <ConnectModal />
+     
 <div className="flex sm:space-x-2 space-x-1  text-center mt-2 px-3 py-2">
               <img src="/home/choco.svg" alt="choco" className="w-4"/>
   <h1 className="text-gray-800 bg-blue-200 rounded  font-normal text-sm ">20.00</h1>

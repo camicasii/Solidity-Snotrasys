@@ -32,3 +32,15 @@ overflow-x:hidden;
 ::-webkit-scrollbar-thumb:window-inactive {
     background: #F9A8D4; 
 }
+
+
+
+
+[data-reach-dialog-overlay] {
+  
+
+}
+
+[data-reach-dialog-content] {
+   @apply sm:w-[400px] w-full !important;
+}
