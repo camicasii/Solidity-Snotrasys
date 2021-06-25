@@ -13,27 +13,28 @@ const initialState = {
     type: 0
   },
   public:{
-    totalInvested_:0,
-		totalReinvested_:0,
-		totalWithdrawn_:0,
-		totalDeposits_:0,
-		balance_:0,
-		minDeposit:0,
-		daysFormdeploy:0,
-    reinvestPercent_:0,
+    balance_: "880000000000000000",
+    daysFormdeploy: "27076240",
+minDeposit: "25000000000000000",
+reinvestPercent_: "100",
+totalDeposits_: "1",
+totalInvested_: "1000000000000000000",
+totalReinvested_: "0",
+totalUsers_: "1",
+totalWithdrawn_: 0,
   },
   user:{
-    totalDeposits_:0,
-		totalBonus_:0,
-		totalreinvest_:0,
-		balance_:0,
-		reinvestBonus:0,
-		amountOfDeposits:0,
-		checkpoint:0,
-		referralTotalBonus:0,
-		referalBonus:0,
-		referrer_:0,
-		referrerCount_:[0,0,0]
+    balance_: "0",
+    checkpoint: "1",
+    referalBonus: "0",
+    referralTotalBonus: "0",
+    referrerCount_: ["0", "0", "0"],
+    referrer_: "0x0000000000000000000000000000000000000000",
+    reinvestBonus: "0",
+    totalDeposits_: "1",
+    totalInvested: "1000000000000000000",
+    totalWithdrawn_: "0",
+    totalreinvest_: "0"
   }
 
 };
@@ -63,6 +64,14 @@ export const counterSlice = createSlice({
     },    
     setWeb3Load: (state,action) => {      
         state.web3Load = action.payload
+      },
+      setPublicData: (state,action) => {      
+        const data= JSON.parse(action.payload)
+        state.public = data        
+      },
+      setUserData: (state,action) => {      
+        const data= JSON.parse(action.payload)
+        state.user = data        
       },
     addToasts:(state,action) => {          
         const now = Date.now();    
@@ -94,7 +103,7 @@ export const counterSlice = createSlice({
   },*/
 });
 
-export const { setAddress,setLoad,setWeb3Load,addToasts } = counterSlice.actions;
+export const { setAddress,setLoad,setWeb3Load,addToasts,setPublicData,setUserData} = counterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

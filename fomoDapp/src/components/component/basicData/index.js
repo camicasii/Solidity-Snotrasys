@@ -1,5 +1,6 @@
 import React,{useEffect} from "react";
 import { Col, Row, Button } from "react-bootstrap";
+import Web3 from "web3";
 import {useSelector  } from "react-redux";
 import "./mainInfo.css";
 export default function BasicData() {
@@ -27,17 +28,17 @@ export default function BasicData() {
       <div className="mainInfo__BNB_yield_heading">
         Total Stake BNB
       </div>
-      <div className="mainInfo__BNB_yield_Value">{state.public.balance_}</div>
+      <div className="mainInfo__BNB_yield_Value">{Web3.utils.fromWei(  state.public.balance_)}</div>
       <div className="mainInfo__BNB_yield_heading mainInfo__BNB_yield_second_heading">
         Available BNB for withdrawal
       </div>
-      <div className="mainInfo__BNB_yield_Value">{state.user.balance_}</div>
+      <div className="mainInfo__BNB_yield_Value">{Web3.utils.fromWei(state.user.balance_)}</div>
       <div className="mainInfo__BNB_yield_card_button_parent">
         <Button className="mainInfo__BNB_yield_card_button">
-          Check Audit PDF
+        Withdrawal
         </Button>
         <Button className="mainInfo__BNB_yield_card_button ml-1">
-          Check Audit PDF
+        Reinvestment
         </Button>
       </div>
     </div>

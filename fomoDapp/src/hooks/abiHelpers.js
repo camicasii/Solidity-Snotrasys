@@ -1,156 +1,19 @@
-export const  tokenAddress = process.env.REACT_APP_TOKEN_ADDRESS
 export const  contractAddress =process.env.REACT_APP_CONTRACT_ADDRESS
 
-export const abiToken = [	{
-    "inputs": [
-        {
-            "internalType": "address",
-            "name": "src",
-            "type": "address"
-        },
-        {
-            "internalType": "address",
-            "name": "guy",
-            "type": "address"
-        }
-    ],
-    "name": "allowance",
-    "outputs": [
-        {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
-        {
-            "internalType": "address",
-            "name": "guy",
-            "type": "address"
-        },
-        {
-            "internalType": "uint256",
-            "name": "wad",
-            "type": "uint256"
-        }
-    ],
-    "name": "approve",
-    "outputs": [
-        {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-        }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-},
-{
-    "inputs": [
-        {
-            "internalType": "address",
-            "name": "guy",
-            "type": "address"
-        }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-        {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
-        {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-        }
-    ],
-    "name": "burn",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
-        {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
-        {
-            "internalType": "address",
-            "name": "dst",
-            "type": "address"
-        },
-        {
-            "internalType": "uint256",
-            "name": "wad",
-            "type": "uint256"
-        }
-    ],
-    "name": "transfer",
-    "outputs": [
-        {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-        }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-},
-{
-    "inputs": [
-        {
-            "internalType": "address",
-            "name": "src",
-            "type": "address"
-        },
-        {
-            "internalType": "address",
-            "name": "dst",
-            "type": "address"
-        },
-        {
-            "internalType": "uint256",
-            "name": "wad",
-            "type": "uint256"
-        }
-    ],
-    "name": "transferFrom",
-    "outputs": [
-        {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-        }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}
-]
+
 export const abiContract =[
 	{
 		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "marketingAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "address payable",
+				"name": "projectAddr",
+				"type": "address"
+			},
 			{
 				"internalType": "address payable",
 				"name": "devAddr",
@@ -158,27 +21,7 @@ export const abiContract =[
 			},
 			{
 				"internalType": "address payable",
-				"name": "SecAddr",
-				"type": "address"
-			},
-			{
-				"internalType": "address payable",
-				"name": "markAddrs",
-				"type": "address"
-			},
-			{
-				"internalType": "address payable",
-				"name": "projectAddrs",
-				"type": "address"
-			},
-			{
-				"internalType": "address payable",
-				"name": "partAddr",
-				"type": "address"
-			},
-			{
-				"internalType": "contract IBEP20",
-				"name": "token_",
+				"name": "secureAddr",
 				"type": "address"
 			}
 		],
@@ -205,6 +48,19 @@ export const abiContract =[
 		"type": "event"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "forceWithdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -217,6 +73,91 @@ export const abiContract =[
 				"indexed": false,
 				"internalType": "uint256",
 				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "penaltyAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "penaltyID",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "toSecure",
+				"type": "uint256"
+			}
+		],
+		"name": "ForceWithdrawn",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "referrer",
+				"type": "address"
+			},
+			{
+				"internalType": "uint8",
+				"name": "plan",
+				"type": "uint8"
+			}
+		],
+		"name": "invest",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint8",
+				"name": "plan",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "percent",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "profit",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "start",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "duration",
 				"type": "uint256"
 			}
 		],
@@ -234,19 +175,6 @@ export const abiContract =[
 			}
 		],
 		"name": "Newbie",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			}
-		],
-		"name": "Paused",
 		"type": "event"
 	},
 	{
@@ -281,6 +209,19 @@ export const abiContract =[
 		"type": "event"
 	},
 	{
+		"inputs": [],
+		"name": "reinvestment",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -300,6 +241,13 @@ export const abiContract =[
 		"type": "event"
 	},
 	{
+		"inputs": [],
+		"name": "unpause",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -311,6 +259,13 @@ export const abiContract =[
 		],
 		"name": "Unpaused",
 		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -333,33 +288,14 @@ export const abiContract =[
 	},
 	{
 		"inputs": [],
-		"name": "checkUser",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
+		"name": "withdrawReferralBonus",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"name": "devAddress",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getBonusPoolPercent",
+		"name": "DECREASE_DAY_STEP",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -372,11 +308,43 @@ export const abiContract =[
 	},
 	{
 		"inputs": [],
-		"name": "getComunityBonus",
+		"name": "devAddress",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "FORCE_PERCENT",
 		"outputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getAvailableFormReinvest",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "available",
 				"type": "uint256"
 			}
 		],
@@ -399,17 +367,105 @@ export const abiContract =[
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "userAddress",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "planTime",
+				"type": "uint256"
 			}
 		],
-		"name": "getNextUserAssignment",
+		"name": "getDecreaseDays",
 		"outputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "plan",
+				"type": "uint256"
+			}
+		],
+		"name": "getPercent",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "plan",
+				"type": "uint256"
+			}
+		],
+		"name": "getPlanInfo",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "percent",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "locked",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "returnPercent",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getPlans",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "percent",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "locked",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "returnPercent",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct FomoStake2.Plan[]",
+				"name": "_plans",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",
@@ -451,37 +507,132 @@ export const abiContract =[
 			},
 			{
 				"internalType": "uint256",
-				"name": "roidBase",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "bonusPool",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "comunityBonus",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "currentRoi",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "maxProfit",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
 				"name": "minDeposit",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
 				"name": "daysFormdeploy",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "reinvestPercent_",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "plan",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deposit",
+				"type": "uint256"
+			}
+		],
+		"name": "getResult",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "percent",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "profit",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "current",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "duration",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserAmountOfDeposits",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserAmountOfPenaltyDeposits",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserAvailable",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserCheckpoint",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
 				"type": "uint256"
 			}
 		],
@@ -510,7 +661,7 @@ export const abiContract =[
 			},
 			{
 				"internalType": "uint256",
-				"name": "totalBonus_",
+				"name": "totalInvested",
 				"type": "uint256"
 			},
 			{
@@ -520,22 +671,12 @@ export const abiContract =[
 			},
 			{
 				"internalType": "uint256",
-				"name": "hold_",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
 				"name": "balance_",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "nextAssignment_",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amountOfDeposits",
+				"name": "reinvestBonus",
 				"type": "uint256"
 			},
 			{
@@ -544,9 +685,14 @@ export const abiContract =[
 				"type": "uint256"
 			},
 			{
-				"internalType": "bool",
-				"name": "isUser_",
-				"type": "bool"
+				"internalType": "uint256",
+				"name": "referralTotalBonus",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "referalBonus",
+				"type": "uint256"
 			},
 			{
 				"internalType": "address",
@@ -578,90 +724,267 @@ export const abiContract =[
 		"name": "getUserDepositInfo",
 		"outputs": [
 			{
+				"internalType": "uint8",
+				"name": "plan",
+				"type": "uint8"
+			},
+			{
 				"internalType": "uint256",
-				"name": "initAmount_",
+				"name": "percent",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "amount_",
+				"name": "amount",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "withdrawn_",
+				"name": "profit",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "timeStart_",
+				"name": "start",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "reinvested_",
+				"name": "finish",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "maxProfit",
+				"name": "duration",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "userAddress",
-				"type": "address"
-			}
-		],
-		"name": "getUserholdRate",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "referrer",
-				"type": "address"
 			},
-			{
-				"internalType": "uint256",
-				"name": "investAmt",
-				"type": "uint256"
-			}
-		],
-		"name": "invest",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "userAddress",
-				"type": "address"
-			}
-		],
-		"name": "isActive",
-		"outputs": [
 			{
 				"internalType": "bool",
-				"name": "",
+				"name": "force",
 				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserDividends",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "totalAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "reinvestBonus",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserDownlineCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getUserPenaltyDepositInfo",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "plan",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "percent",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "profit",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "start",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "finish",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserReferralBonus",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserReferralTotalBonus",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserReferralWithdrawn",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserReferrer",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserTotalDeposits",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "INVEST_FEE",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "INVEST_MIN_AMOUNT",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -682,10 +1005,23 @@ export const abiContract =[
 	},
 	{
 		"inputs": [],
-		"name": "marketingAdress",
+		"name": "LAUNCH_DATE",
 		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "marketingAddress",
+		"outputs": [
+			{
+				"internalType": "address payable",
 				"name": "",
 				"type": "address"
 			}
@@ -694,42 +1030,172 @@ export const abiContract =[
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "partnerAdress",
-		"outputs": [
+		"inputs": [
 			{
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "projectAdress",
+		"name": "penaltyDeposits",
 		"outputs": [
 			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "reinvestment",
-		"outputs": [
+				"internalType": "uint8",
+				"name": "plan",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "percent",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "profit",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "initDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "duration",
+				"type": "uint256"
+			},
 			{
 				"internalType": "bool",
-				"name": "",
+				"name": "force",
 				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "reinvestBonus",
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PERCENT_STEP",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PERCENTS_DIVIDER",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "plansLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "projectAddress",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "REFERRAL_PERCENTS",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "REINVEST_FEE",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "REINVEST_PERCENT",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "SECURE_ADRESS_WITHDRAW_FEE",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -737,7 +1203,7 @@ export const abiContract =[
 		"name": "secureAddress",
 		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "address payable",
 				"name": "",
 				"type": "address"
 			}
@@ -747,22 +1213,15 @@ export const abiContract =[
 	},
 	{
 		"inputs": [],
-		"name": "token",
+		"name": "TIME_STEP",
 		"outputs": [
 			{
-				"internalType": "contract IBEP20",
+				"internalType": "uint256",
 				"name": "",
-				"type": "address"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "unpause",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -782,16 +1241,6 @@ export const abiContract =[
 			},
 			{
 				"internalType": "uint256",
-				"name": "reinvested",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "bonus",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
 				"name": "checkpoint",
 				"type": "uint256"
 			},
@@ -804,6 +1253,31 @@ export const abiContract =[
 				"internalType": "address payable",
 				"name": "referrer",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "bonus",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalBonus",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalStaked",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "withdrawn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "reinvested",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -811,15 +1285,15 @@ export const abiContract =[
 	},
 	{
 		"inputs": [],
-		"name": "withdraw",
+		"name": "WITHDRAW_FEE_PERCENT",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

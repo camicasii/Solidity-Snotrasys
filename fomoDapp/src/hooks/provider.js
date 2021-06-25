@@ -6,7 +6,7 @@ const  BSCmain =[
       chainName: 'Binance Smart Chain Mainnet',
       nativeCurrency: {
         name: 'BNB',
-        symbol: 'bnb',
+        symbol: 'BNB',
         decimals: 18,
       },
       rpcUrls: ['https://bsc-dataseed.binance.org/'],
@@ -20,7 +20,7 @@ const  BSCTest =[
       chainName: 'Binance Smart Chain Testnet',
       nativeCurrency: {
         name: 'BNB',
-        symbol: 'bnb',
+        symbol: 'BNB',
         decimals: 18,
       },
       rpcUrls: ['https://data-seed-prebsc-2-s1.binance.org:8545/'],

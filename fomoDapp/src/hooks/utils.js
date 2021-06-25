@@ -1,6 +1,5 @@
 import Web3 from 'web3';
-import {abiToken as tokenAbi, abiContract as contractAbi,
-contractAddress,tokenAddress   } from "./abiHelpers";
+import {abiContract as contractAbi,contractAddress } from "./abiHelpers";
 import PROVIDER from './provider'
 
 const getWeb3 = () => {
@@ -47,17 +46,14 @@ const getWeb3 = () => {
 };
 
 const getContracts = web3 => {    
-
-  console.log(tokenAddress,'tokenAddress');
-  const token = new web3.eth.Contract(
-    tokenAbi,
-    tokenAddress
-  );
-  const smartContract = new web3.eth.Contract(
+  const smartContract = new window.web3.eth.Contract(
     contractAbi,
     contractAddress
   );
-  return { token, smartContract };
+  console.log(contractAddress,'contractAddress');
+  
+  return smartContract;
+  
 }
 
 export { getWeb3, getContracts };
