@@ -268,9 +268,9 @@ contract FomoStake2 {
             if (user.checkpoint < finishDate) {
                 Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
-                    user.deposits[i].force = false;
+                    delete user.deposits[i].force;
                 } else if (block.timestamp > finishDate) {
-                    user.deposits[i].force = false;
+                    delete user.deposits[i].force;
                 }
             }
         }
@@ -302,7 +302,7 @@ contract FomoStake2 {
         uint256 toDistribute = Math.min(depositAmount, contractBalance);
         uint256 toUser = toDistribute.mul(FORCE_PERCENT).div(PERCENTS_DIVIDER);
         uint256 toSecure = toDistribute.mul(SECURE_ADRESS_WITHDRAW_FEE).div(PERCENTS_DIVIDER);
-
+        user.deposits[index].profit = toDistribute;
         penaltyDeposits[msg.sender].push(user.deposits[index]);
 
         user.deposits[index] = user.deposits[user.depositsLength - 1];
@@ -348,6 +348,7 @@ contract FomoStake2 {
                         uint256 toBonus = dividens.mul(REINVEST_PERCENT()).div(PERCENTS_DIVIDER);
                         user.deposits[i].reinvestBonus = user.deposits[i].reinvestBonus.add(dividens.add(toBonus));
                         totalAmount = totalAmount.add(dividens.add(toBonus));
+                        delete user.deposits[i].force;
                     }
                 }
             }
@@ -392,6 +393,7 @@ contract FomoStake2 {
 		referralTotalBonus = getUserReferralTotalBonus(userAddress);
         referalBonus = getUserReferralBonus(userAddress);
         totalInvested = getUserTotalStacked(userAddress);
+
 	}
 
     function getContractBalance() public view returns(uint256) {
@@ -681,5 +683,18 @@ contract FomoStake2 {
 		}
 		return amount;
 	}
+
+    function getPlansToForce(address userAddress) public view returns(uint256[] memory toForce) {
+        User storage user = users[userAddress];
+        uint256 toForceLength;
+        for(uint256 i; i < user.depositsLength; i++) {
+            if(!user.deposits[i].force){
+                continue;
+            }
+            toForce[toForceLength] = i;
+            toForceLength++;
+        }
+
+    }
 
 }
