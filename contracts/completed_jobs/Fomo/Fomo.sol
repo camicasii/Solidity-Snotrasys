@@ -574,7 +574,8 @@ contract FomoStake2 {
             uint256 start,
             uint256 finish,
             uint256 duration,
-            bool force
+            bool force,
+            uint256 reinvestBonus
         ) {
         User storage user = users[userAddress];
 
@@ -589,6 +590,7 @@ contract FomoStake2 {
         finish = getFinishDeposit(deposit);
         duration = deposit.duration;
         force = deposit.force;
+        reinvestBonus = deposit.reinvestBonus;
     }
 
     function getUserPenaltyDepositInfo(address userAddress, uint256 index) external view returns (
