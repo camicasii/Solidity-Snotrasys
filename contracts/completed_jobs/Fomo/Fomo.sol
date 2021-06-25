@@ -597,7 +597,8 @@ contract FomoStake2 {
             uint256 amount,
             uint256 profit,
             uint256 start,
-            uint256 finish
+            uint256 finish,
+            uint256 reinvestBonus
         ) {
 		Deposit[] memory userPenaltyDeposit = penaltyDeposits[userAddress];
         require(index < userPenaltyDeposit.length, "Invalid index");
@@ -609,6 +610,7 @@ contract FomoStake2 {
         profit = deposit.profit;
         start = getInintDeposit(deposit.initDate);
         finish = getFinishDeposit(deposit);
+        reinvestBonus = deposit.reinvestBonus;
     }
 
     function isContract(address addr) internal view returns (bool) {
