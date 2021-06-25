@@ -684,15 +684,21 @@ contract FomoStake2 {
 		return amount;
 	}
 
-    function getPlansToForce(address userAddress) public view returns(uint256[] memory toForce) {
+    function getPlansToForce(address userAddress) public view returns(uint256[] memory toForceView) {
         User storage user = users[userAddress];
+        require(user.depositsLength > 0, 'No deposits');
+        uint256[] memory toForce = new uint256[](user.depositsLength);
         uint256 toForceLength;
-        for(uint256 i; i < user.depositsLength; i++) {
+        for(uint256 i; i < toForce.length; i++) {
             if(!user.deposits[i].force){
                 continue;
             }
             toForce[toForceLength] = i;
             toForceLength++;
+        }
+        toForceView = new uint256[] (toForceLength);
+        for(uint256 i; i < toForceLength; i++) {
+            toForceView[i] = toForce[i];
         }
 
     }
