@@ -1,11 +1,14 @@
+import social from "./data/social.json";
+
 function App() {
+  const { telegram, twitter } = social;
+
   return (
     <>
       <div
         className="h-full bg-cover  bg-fixed bg-[#fbf8fa] "
         style={{ backgroundImage: `url(/background.svg)` }}
       >
-       
         <div className="hidden md:block">
           <img
             src="/start_1.svg"
@@ -40,7 +43,7 @@ function App() {
           <img
             src="/Grupo_3.svg"
             alt="group"
-            className="absolute left-[4.32%] right-[82.64%] top-[82.48%] bottom-[2.15%] w-20"
+            className="absolute left-[4.32%] right-[82.64%] top-[87.48%] bottom-[2.15%] w-20"
           />
           <img
             src="/start_1.svg"
@@ -78,17 +81,17 @@ function App() {
           <img
             src="/Grupo_1.svg"
             alt="group"
-            className="absolute left-[9.72%] right-[79.6%] top-[108.48%] bottom-[5.15%]  w-12"
+            className="absolute left-[9.72%] right-[79.6%] top-[120.48%] bottom-[5.15%]  w-12"
           />
           <img
             src="/Grupo_4.svg"
             alt="group"
-            className="absolute left-[47.72%] right-[79.6%] top-[110.48%] bottom-[5.15%]  w-8"
+            className="absolute left-[47.72%] right-[79.6%] top-[115.48%] bottom-[5.15%]  w-8"
           />
           <img
             src="/start_1.svg"
             alt="group"
-            className="absolute left-[87.72%] right-[79.6%] top-[110.48%] bottom-[5.15%]  w-8"
+            className="absolute left-[87.72%] right-[79.6%] top-[118.48%] bottom-[5.15%]  w-8"
           />
         </div>
 
@@ -110,6 +113,19 @@ function App() {
               className=" sm:-mt-12 -mt-0  md:w-[520px] w-[420px] "
             />
             <div className="hidden md:block">
+              <div className="flex space-x-12  mx-20">
+                <a href={telegram}>
+                  <div className="rounded-full px-3 py-3 border border-pink-600 hover:bg-pink-100">
+                    <img src="/telegram.svg" className="w-[40px]" />
+                  </div>
+                </a>
+                <a href={twitter}>
+                  <div className="rounded-full px-3 py-3 border border-pink-600 hover:bg-pink-100">
+                    <img src="/twitter.svg" className="w-[40px]" />
+                  </div>
+                </a>
+              </div>
+
               <h1 className=" text-gray-600 text-7xl font-bold z-40">
                 Get Notified,
               </h1>
@@ -135,6 +151,18 @@ function App() {
             <h4 className="text-blue-primary text-2xl text-center">
               Don’t worry not spam you :D
             </h4>
+          </div>
+          <div className="flex space-x-12  mx-24 py-2 md:hidden block">
+            <a href={telegram}>
+              <div className="rounded-full px-3 py-3 border border-pink-600 hover:bg-pink-100">
+                <img src="/telegram.svg" className="w-[120px]" />
+              </div>
+            </a>
+            <a href={twitter}>
+              <div className="rounded-full px-3 py-3 border border-pink-600 hover:bg-pink-100 ">
+                <img src="/twitter.svg" className="w-[120px]" />
+              </div>
+            </a>
           </div>
         </div>
       </div>
