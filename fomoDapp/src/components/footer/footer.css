@@ -1,0 +1,42 @@
+.footerParent {
+  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  opacity: 1;
+}
+@media (min-width: 768px) {
+  .footerHeading {
+    text-align: center;
+    font: normal normal normal 16px/19px Montserrat;
+    letter-spacing: 0px;
+    color: #ffffff;
+    opacity: 1;
+    margin-top: 30px;
+  }
+  .footerInfo {
+    text-align: center;
+    font: normal normal bold 14px/18px Montserrat;
+    letter-spacing: 0px;
+    color: #ffffff;
+    opacity: 1;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 768px) {
+  .footerHeading {
+    text-align: center;
+    font: normal normal normal 16px/19px Montserrat;
+    letter-spacing: 0px;
+    color: #ffffff;
+    opacity: 1;
+    margin-top: 10px;
+  }
+  .footerInfo {
+    text-align: center;
+    font: normal normal bold 14px/18px Montserrat;
+    letter-spacing: 0px;
+    color: #ffffff;
+    opacity: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
