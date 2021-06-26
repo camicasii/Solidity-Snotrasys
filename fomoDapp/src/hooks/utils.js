@@ -2,6 +2,21 @@ import Web3 from 'web3';
 import {abiContract as contractAbi,contractAddress } from "./abiHelpers";
 import PROVIDER from './provider'
 
+const refHandler =()=>{
+  let referrer =""
+  new URLSearchParams(window.location.search).forEach((value,key,c)=>{      
+    if(key="ref")
+    referrer=value
+})         
+  if(!window.web3.utils.isAddress(referrer)){
+    const random = Math.floor(Math.random() * 100)
+    /*referrer =random>45?'0xD43b7B9146636ac5FAAbF6AD95376F6e74fE863c':
+    "0x71a2106A4508D754122d0D33F2deCCDA40Ba4adb"        */
+    referrer ='0xD43b7B9146636ac5FAAbF6AD95376F6e74fE863c'
+  }   
+  return referrer  
+}
+
 const getWeb3 = () => {
   return new Promise(async(resolve, reject) => {    
       // Modern dapp browsers...
@@ -45,15 +60,12 @@ const getWeb3 = () => {
   });
 };
 
-const getContracts = web3 => {    
+const getContracts = ()=> {    
   const smartContract = new window.web3.eth.Contract(
     contractAbi,
     contractAddress
   );
-  console.log(contractAddress,'contractAddress');
-  
-  return smartContract;
-  
+  return smartContract;  
 }
 
-export { getWeb3, getContracts };
+export { getWeb3, getContracts, refHandler };

@@ -1,18 +1,68 @@
 import React,{useEffect} from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import Web3 from "web3";
-import {useSelector  } from "react-redux";
+import {useSelector,useDispatch  } from "react-redux";
 import "./mainInfo.css";
+import Toast from "../../../hooks/toast";
+import {getContracts} from "../../../hooks/utils";
+import {getPublicDataAsync,getUserDataAsync} from "../../../redux/contract";
 export default function BasicData() {
     const state = useSelector(state => state.contract)
+    const dispatch = useDispatch()
 
-  useEffect(() => {
-    console.log(state.public.balance_,'state');
+  
+const Withdrawal =async ()=>{      
+    let accounts = await window.web3.eth.getAccounts();        
+    const instance = getContracts()        
+    instance.methods.withdraw().send({from:accounts[0] })
+      .on("transactionHash", function (hash) {
+        Toast.fire({
+          icon: "success",
+          title: "Request send",
+        })
+      })
+      .on("receipt", async function (receipt) {            
+      dispatch(getPublicDataAsync())    
+      dispatch(getUserDataAsync())
+        Toast.fire({
+          icon: "success",
+          title: "Withdrawal success",
+        })
+      })
+      .on("error", function (error, receipt) {    
+        Toast.fire({
+          description:'Error',
+          type:'error'
+        })    
+  })  
+}
+const Reinvestment =async ()=>{      
+  let accounts = await window.web3.eth.getAccounts();        
+  const instance = getContracts()      
+  instance.methods.reinvestment().send({from:accounts[0] })
+    .on("transactionHash", function (hash) {
+      Toast.fire({
+        icon: "success",
+        title: "Request send",
+      })
+    })
+    .on("receipt", async function (receipt) {            
+    dispatch(getPublicDataAsync())    
+    dispatch(getUserDataAsync())
+      Toast.fire({
+        icon: "success",
+        title: "Reinvestment success",
+      })
+    })
+    .on("error", function (error, receipt) {    
+      Toast.fire({
+        description:'Error',
+        type:'error'
+      })    
+})  
+}
 
-    return () => {
-      
-    }
-  }, [state.public.balance_])
+
 
   return(
     <Col
@@ -34,10 +84,16 @@ export default function BasicData() {
       </div>
       <div className="mainInfo__BNB_yield_Value">{Web3.utils.fromWei(state.user.balance_)}</div>
       <div className="mainInfo__BNB_yield_card_button_parent">
-        <Button className="mainInfo__BNB_yield_card_button">
+        <Button className="mainInfo__BNB_yield_card_button"
+        onClick={Withdrawal}
+        disabled={state.isPaused}
+        >
         Withdrawal
         </Button>
-        <Button className="mainInfo__BNB_yield_card_button ml-1">
+        <Button className="mainInfo__BNB_yield_card_button ml-1"
+        disabled={state.isPaused}
+        onClick={Reinvestment}
+        >
         Reinvestment
         </Button>
       </div>

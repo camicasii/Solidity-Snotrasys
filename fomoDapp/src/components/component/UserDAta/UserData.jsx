@@ -1,43 +1,34 @@
 import React, { useState,useEffect } from "react";
 import "./stake.css";
 import Web3 from "web3";
-import { Row, Col, Button, Image } from "react-bootstrap";
+import { Row, Col} from "react-bootstrap";
 import {useSelector  } from "react-redux";
-import Swal from "sweetalert2";
+import InputRef from "./InputRef";
+
 export default function UserData() {
-    const [referralLink, setReferralLink] = useState("asdfasdf");
-    
+    const [referralLink, setReferralLink] = useState("asdfasdf");    
     const state = useSelector(state => state.contract)
-
-    useEffect(() => {
-        console.log(state.user.balance_,'state');
-    
+    useEffect(() => {      
+      let time
+      if(state.load){
+        console.log(state.user.balance_,'state');    
+      time = setTimeout(async() => {
+        let accounts = await window.web3.eth.getAccounts();        
+        let ref = window.location.origin
+         ref += '/?ref='
+         ref += accounts[0]
+         setReferralLink(ref)
+          
+        },);
+      }
         return () => {          
+          clearTimeout(time)
         }
-      }, [state.user])
+      }, [state.load])
 
-
-    const handleCopy = () => {
-        navigator.clipboard.writeText(referralLink);
     
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-    
-        Toast.fire({
-          icon: "success",
-          title: "Referral Link Copied",
-        });
-      };
-    return(<Col
+    return(         
+    <Col
         style={{ paddingLeft: "0px" }}
         xs={12}
         sm={12}
@@ -45,34 +36,9 @@ export default function UserData() {
         lg={12}
         xl={12}
       >
+         {parseInt(state.user.totalDeposits_) > 0?
         <div className="secondColStyle">
-          <div className="secondColMainHeading mt-4">
-            Your Referral Link
-          </div>
-          <div className="secondColMainInputSet mt-2">
-            <input
-              type="text"
-              placeholder="    ...."
-              className="secondColInput"
-              onChange={(e) => {
-                setReferralLink(e.target.value);
-              }}
-            />
-            <div className="secondColInputImage">
-              <Image
-                src="./images/copy .png"
-                onClick={handleCopy}
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-            <Button
-              className="secondColButton "
-              onClick={handleCopy}
-            >
-              Copy
-            </Button>
-          </div>
-
+        <InputRef referralLink={referralLink}/>
           <Row>
             <Col xs={12} sm={12} md={7} lg={7}>
               <Row>
@@ -82,6 +48,8 @@ export default function UserData() {
                   </div>
                   <div className="valuess mt-2">
                     {Web3.utils.fromWei( state.user.totalInvested)} BNB
+                    { } BNB
+                    
                     </div>
                 </Col>
                 <Col sm={6} md={6} lg={6} className="p-0">
@@ -96,12 +64,11 @@ export default function UserData() {
                   <div className="headingss mt-3">
                   Referrer Count
                   </div>
-                  <div className="valuess mt-2" 
-                  style={{'letter-spacing': '0.3rem'}}>
-                    {state.user.referrerCount_[0]}/
-                    {state.user.referrerCount_[1]}/
-                    {state.user.referrerCount_[2]}
-                    
+                  <div className="valuess mt-2  h6 font-weight-light"                   
+                  >
+                    <p> level 1: {state.user.referrerCount_[0]}</p>
+                    <p> level 2: {state.user.referrerCount_[1]}</p>
+                    <p> level 3: {state.user.referrerCount_[2]}</p>
                     
                     </div>
                 </Col>
@@ -129,7 +96,7 @@ export default function UserData() {
               lg={5}
             >
               <div className="paragraphss mt-4 mb-3">
-                Earn for promotion Locked BNB <br /> You will
+                Earn for promotion FomoStake 2 <br /> You will
                 receive: <br />
                 <br /> 5% from each level 1 referral deposits 2.5%
                 from each level 2 referral deposits 0.5% from each
@@ -137,9 +104,12 @@ export default function UserData() {
                 least 1 deposit to start receive earnings
               </div>
             </Col>
+          
           </Row>
         </div>
-      </Col>)
+        :null} 
+      </Col>
+    )
 
 
 }

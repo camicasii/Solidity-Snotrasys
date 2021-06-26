@@ -1,6 +1,9 @@
 .footerParent {
-  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  
+  background: rgba(214, 172, 34, 0.7) 0% 0% no-repeat padding-box;
+
   opacity: 1;
+  z-index: -1;
 }
 @media (min-width: 768px) {
   .footerHeading {

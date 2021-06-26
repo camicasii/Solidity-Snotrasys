@@ -1,5 +1,7 @@
 .mainHeader {
   padding: 40px 0px 40px 0px !important;
+  background: rgba(157, 129, 196, 0.5) 0% 0% no-repeat padding-box;
+
 }
 
 .header_one_BNB {
@@ -74,8 +76,7 @@
   }
 
   .logo {
-    width: 200px;
-    height: 70px;
+    width: 20rem;    
     object-fit: contain;
   }
   .connectWalletButton {
@@ -103,8 +104,8 @@
     display: none;
   }
   .logo {
-    width: 180px;
-    height: 60px;
+    width: 15rem;
+    
     object-fit: contain;
   }
   .connectWalletButton {

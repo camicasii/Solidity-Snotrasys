@@ -4,6 +4,7 @@ import Header from "../components/header/header";
 import MainInfo from "../components/mainInfo/mainInfo";
 import Plans from "../components/plans/plans";
 import Stack from "../components/stake/stake";
+import ControlledCarousel from "../components/Info/Info";
 import "./main.css";
 export default function MainPage() {
   return (
@@ -11,7 +12,10 @@ export default function MainPage() {
       className="main "
       style={{ backgroundImage: "URL(./images/background.png)" }}
     >
+      
       <Header />
+      
+      <ControlledCarousel/>
       <div className="customContainer">
         <MainInfo />
         <Plans />
