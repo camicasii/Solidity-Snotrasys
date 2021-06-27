@@ -1,4 +1,4 @@
-import React,{useRef,useState} from 'react'
+import React,{useRef,useState,useEffect} from 'react'
 import { Col, Row, Button, Image } from "react-bootstrap";
 import "./plans.css";
 import {useSelector,useDispatch  } from "react-redux";
@@ -12,6 +12,17 @@ export default function CardPlan({type,percent,time,returnPercent}) {
   const dispatch = useDispatch()
   const ref = useRef(0.025)
   const [amount, setAmount] = useState('0.025')
+  const [calculate, setcalculate] = useState('0')
+
+  useEffect(() => {
+
+    const res = parseFloat(amount * ((parseInt(returnPercent)/10) /100) ).toFixed(3)
+    setcalculate(res)
+    
+    return () => {
+    
+    }
+  }, [returnPercent,amount])
 
 
   const invest = async (e)=>{
@@ -106,8 +117,8 @@ export default function CardPlan({type,percent,time,returnPercent}) {
               </div>
             </div>
 
-            <div className="planInfo d-none">
-              In 10 days you will get 0 BNB
+            <div className="planInfo font-weight-bold">
+              In {time} days you will get {calculate} BNB
             </div>
             <div>
               <div className="d-flex plans_cards_input_parent">
