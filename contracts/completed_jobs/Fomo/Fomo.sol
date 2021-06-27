@@ -18,7 +18,7 @@ contract FomoStake2 {
     uint256 public constant WITHDRAW_FEE_PERCENT = 100;
     uint256 public constant PERCENTS_DIVIDER = 1000;
     uint256 public constant TIME_STEP = 1 days; 
-    uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
+    uint256 public constant DECREASE_DAY_STEP = 0.5 days;
     uint256 public constant FORCE_PERCENT = 300;
     uint256 public constant SECURE_ADRESS_WITHDRAW_FEE = 200;
     uint256 public constant INVEST_FEE = 120;
