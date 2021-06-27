@@ -3,6 +3,8 @@ import {Redirect, Route, Switch} from 'react-router-dom'
 import Loaded from '../components/loaded';
 import useBreakpoint from '../hooks/useBreakpoint';
 import AirdropScreen from '../views/Airdrop/AirdropScreen';
+import FarmsScreen from '../views/Farms/FarmsSreen';
+import PoolsScreen from '../views/Pools/PoolsScreen';
 import SweetGamesScreen from '../views/SweetGames/SweetGamesScreen';
 const TradeScreen = React.lazy(()=> import ('../views/Trade/TradeScreen'));
 const Menu = React.lazy(() => import('../components/ui/Menu'));
@@ -23,10 +25,13 @@ const DashboardRoutes = (  ) => {
     
     <div>
       <Switch>
-
+        <Route exact path='/farms' component={FarmsScreen} />
+        <Route exact path='/pools' component={PoolsScreen} />
         <Route exact path='/home' component={HomeScreen} />
         <Route exact path='/trade' component={TradeScreen} />
         <Route exact path='/sweet-games' component={SweetGamesScreen} />
+        
+      
         <Route exact path='/airdrop' component={AirdropScreen} />
       <Redirect to="/home" />
       </Switch>

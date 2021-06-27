@@ -46,7 +46,7 @@ const NavItems = ({ isStatic, isClosed, setClosed }) => {
             </button>
           ))}
    <Link to="/" >
-  <img  src="/logo.svg" alt="logo" className="ml-4 w-20"/>
+  <img  src="/logo.svg" alt="logo" className="ml-4 w-20 invisible md:visible"/>
  
             </Link>
 
@@ -71,7 +71,7 @@ const NavItems = ({ isStatic, isClosed, setClosed }) => {
 
             </div>
       <div className="px-2">
-        <Link className="bg-gradient-to-br from-pink-500 to-red-600  md:border border-transparent text-white text-text px-3 leading-tight py-2  rounded-lg transition-colors ease-in-out duration-150">0x3f...359E</Link>
+        <Link className="bg-gradient-to-br from-pink-500 to-red-600  md:border border-transparent text-white sm:text-md text-xs px-3 leading-tight py-2  rounded-lg transition-colors ease-in-out duration-150">0x3f...359E</Link>
       </div>
    
     </div>

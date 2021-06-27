@@ -6,6 +6,6 @@ const Tailwind = resolveConfig(tailwindConfig)
 
 export default function useBreakpoint(breakpoint) {
   return useMediaQuery({
-    query: `(min-width: ${Tailwind.theme.screens[breakpoint]})`,
+    query: `(min-width: 920px)`,
   })
 }

@@ -37,7 +37,8 @@ overflow-x:hidden;
 
 
 [data-reach-dialog-overlay] {
-  
+     @apply px-12  !important;
+
 
 }
 
