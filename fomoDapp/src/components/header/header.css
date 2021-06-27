@@ -1,0 +1,243 @@
+.mainHeader {
+  padding: 40px 0px 40px 0px !important;
+}
+
+.header_one_BNB {
+  font: normal normal bold 16px/19px Open Sans;
+  letter-spacing: 0px;
+  color: #f3ba2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header_one_BNB_value {
+  font: normal normal bold 16px/19px Open Sans;
+  letter-spacing: 0px;
+  color: #ffffff;
+}
+.header_one_BNB_value_small {
+  font: normal normal bold 16px/19px Open Sans;
+  letter-spacing: 0px;
+  color: #000;
+}
+.header_buttons_parent {
+  display: flex;
+  justify-content: space-between;
+}
+.header_telegram_button {
+  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  border-radius: 3px !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center;
+  font: normal normal bold 14px/19px Open Sans !important;
+  height: 40px !important;
+  padding: 0px 12px 0px 12px !important;
+  margin: 0px 5px 0px 5px;
+}
+.header_twitter_button {
+  background: #157ffb 0% 0% no-repeat padding-box !important;
+  border-radius: 3px !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center;
+  font: normal normal bold 14px/19px Open Sans !important;
+  padding: 0px 12px 0px 12px !important;
+  height: 40px !important;
+  margin: 0px 5px 0px 5px;
+}
+.headwr_support_button {
+  background: #d1391c 0% 0% no-repeat padding-box !important;
+  margin: 0px 5px 0px 5px;
+  border-radius: 3px !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center;
+  font: normal normal bold 14px/19px Open Sans !important;
+  padding: 0px 13px 0px 13px !important;
+  height: 40px !important;
+}
+.custom_button {
+  width: 120px;
+}
+.mainHeaderParent {
+  display: flex;
+  height: auto;
+  align-items: center;
+}
+.mainHeaderParentSmall {
+  display: flex;
+}
+@media (min-width: 1070px) {
+  .showOnSmall {
+    display: none;
+  }
+
+  .logo {
+    width: 200px;
+    height: 70px;
+    object-fit: contain;
+  }
+  .connectWalletButton {
+    font: normal normal bold 14px/19px Open Sans !important;
+    letter-spacing: 0px;
+    color: #000000 !important;
+    background: #f3ba2f 0% 0% no-repeat padding-box !important;
+    border-radius: 3px !important;
+    border: none !important;
+    height: 39px;
+    width: 166px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .smallConnectWalletButtonImage {
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+  }
+}
+@media (max-width: 1070px) {
+  .showOnLarge {
+    display: none;
+  }
+  .logo {
+    width: 180px;
+    height: 60px;
+    object-fit: contain;
+  }
+  .connectWalletButton {
+    font: normal normal bold 14px/19px Open Sans !important;
+    letter-spacing: 0px;
+    color: #000000 !important;
+    background: #f3ba2f 0% 0% no-repeat padding-box !important;
+    border-radius: 3px !important;
+    border: none !important;
+    height: 39px;
+    width: 166px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .smallConnectWalletButtonImage {
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+  }
+}
+@media (max-width: 350px) {
+  .logo {
+    width: 150px;
+    height: 60px;
+    object-fit: contain;
+  }
+  .connectWalletButton {
+    font: normal normal bold 12px Open Sans !important;
+    letter-spacing: 0px;
+    color: #000000 !important;
+    background: #f3ba2f 0% 0% no-repeat padding-box !important;
+    border-radius: 3px !important;
+    border: none !important;
+    height: 34px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .smallConnectWalletButtonImage {
+    margin-right: 5px;
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* .menu-btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 30px;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+.menu-btn__burger {
+  width: 30px;
+  height: 5px;
+  padding-right: 30px;
+  background: #ffffff;
+  border-radius: 5px;
+  line-height: 4px;
+  transition: all 0.5s ease-in-out;
+}
+.menu-btn__burger::before,
+.menu-btn__burger::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 5px;
+  background: #ffffff;
+  color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0;
+  transition: all 0.5s ease-in-out;
+  line-height: 4px;
+}
+.menu-btn__burger::before {
+  transform: translateY(-10px);
+}
+.menu-btn__burger::after {
+  transform: translateY(10px);
+} */
+/* ANIMATION */
+/* .menu-btn.open .menu-btn__burger {
+  transform: translateX(-50px);
+  background: transparent;
+  box-shadow: none;
+}
+.menu-btn.open .menu-btn__burger::before {
+  transform: rotate(45deg) translate(35px, -35px);
+}
+.menu-btn.open .menu-btn__burger::after {
+  transform: rotate(-45deg) translate(35px, 35px);
+}
+button:focus {
+  outline: 0px dotted;
+  outline: 0px auto -webkit-focus-ring-color;
+}
+.navbar-toggler {
+  line-height: 1;
+  background-color: transparent;
+  border: 0px solid transparent;
+}
+.animate {
+  transition: all 0.5s ease-in-out;
+}
+.dropdown_small_menu {
+  width: 100%;
+  display: flex;
+
+  flex-direction: column;
+  position: absolute;
+  top: 80px;
+  background-color: #ffffff;
+  height: auto;
+  z-index: 50;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  opacity: 1;
+}
+.dropdown_items {
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 32px;
+  color: #000000;
+  height: 50px;
+  width: 100%;
+  margin-top: 10px;
+  padding-left: 30px;
+} */

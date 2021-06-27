@@ -19,20 +19,27 @@ contract FomoStake2 {
     uint256 public constant PERCENTS_DIVIDER = 1000;
     uint256 public constant TIME_STEP = 1 days;//10 seconds; for test
     uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
-    uint256 public constant PENALTY_FEE = 700;
-    uint256 public constant MARKETING_FEE = 40;
-    uint256 public constant PROJECT_FEE = 40;
-    uint256 public constant DEV_FEE = 40;
+    uint256 public constant FORCE_PERCENT = 300;
+    uint256 public constant SECURE_ADRESS_WITHDRAW_FEE = 200;
+    uint256 public constant INVEST_FEE = 120;
+    uint256 public constant REINVEST_FEE = 100;
 
-    uint256 public totalStaked;
+    uint256 internal constant reinvestPercent = 100;
+
+    uint256 internal totalUsers;
+    uint256 internal totalStaked;
+    uint256 internal totalReinvested;
+	uint256 internal totalWithdrawn;
+	uint256 internal totalDeposits;
 
     struct Plan {
         uint256 time;
         uint256 percent;
         bool locked;
+        uint256 returnPercent;
     }
 
-    mapping(uint256 => Plan) plans;
+    mapping(uint256 => Plan) internal plans;
     uint256 public plansLength;
 
     struct Deposit {
@@ -43,17 +50,21 @@ contract FomoStake2 {
         uint256 initDate;
         uint256 duration;
         bool force;
+        uint256 reinvestBonus;
     }
 
     struct User {
 		mapping(uint256 => Deposit) deposits;
 		uint256 depositsLength;
         uint256 checkpoint;
+		uint256 lasReinvest;
         address payable referrer;
         uint256[3] levels;
         uint256 bonus;
         uint256 totalBonus;
-		uint256 withdraw;
+        uint256 totalStaked;
+		uint256 withdrawn;
+		uint256 reinvested;
     }
 
     mapping(address => User) public users;
@@ -62,6 +73,7 @@ contract FomoStake2 {
     address payable public marketingAddress;
     address payable public projectAddress;
 	address payable public devAddress;
+	address payable public secureAddress;
 
     event Newbie(address user);
     event NewDeposit(
@@ -74,11 +86,15 @@ contract FomoStake2 {
         uint256 duration
     );
     event Withdrawn(address indexed user, uint256 amount);
+
+    event Reinvestment(address indexed user, uint256 amount);
+
     event ForceWithdrawn(
         address indexed user,
         uint256 amount,
         uint256 penaltyAmount,
-        uint256 penaltyID
+        uint256 penaltyID,
+        uint256 toSecure
     );
     event RefBonus(
         address indexed referrer,
@@ -114,14 +130,21 @@ contract FomoStake2 {
 		return (LAUNCH_DATE == 0);
 	}
 
-    constructor(address payable marketingAddr, address payable projectAddr, address payable devAddr) {
+    modifier isUser() {
+        require(users[msg.sender].checkpoint > 0, 'is not user');
+        _;
+    }
+
+    constructor(address payable marketingAddr, address payable projectAddr, address payable devAddr, address payable secureAddr) {
         require(!isContract(marketingAddr), "!marketingAddr");
         require(!isContract(projectAddr), "!projectAddr");
 		require(!isContract(devAddr), "!devAddr");
+        require(!isContract(secureAddr), "!secureAddr");
 
         marketingAddress = marketingAddr;
         projectAddress = projectAddr;
 		devAddress = devAddr;
+		secureAddress = secureAddr;
 
 
         plans[0].time = 14;
@@ -158,13 +181,15 @@ contract FomoStake2 {
         require(msg.value >= INVEST_MIN_AMOUNT, "insufficient deposit");
         require(plan < plansLength, "Invalid plan");
 
-        marketingAddress.transfer(msg.value.mul(MARKETING_FEE).div(PERCENTS_DIVIDER));
+		uint256 investFee = msg.value.mul(INVEST_FEE).div(PERCENTS_DIVIDER);
+        uint256 feeToTransfer = investFee.div(3);
+        marketingAddress.transfer(feeToTransfer);
 
-        projectAddress.transfer(msg.value.mul(PROJECT_FEE).div(PERCENTS_DIVIDER));
+        projectAddress.transfer(feeToTransfer);
 
-        devAddress.transfer(msg.value.mul(DEV_FEE).div(PERCENTS_DIVIDER));
+        devAddress.transfer(feeToTransfer);
 
-        emit FeePayed(msg.sender, msg.value.mul(MARKETING_FEE.add(PROJECT_FEE).add(DEV_FEE)).div(PERCENTS_DIVIDER));
+        emit FeePayed(msg.sender, investFee);
 
         User storage user = users[msg.sender];
 		uint256 referalLength = REFERRAL_PERCENTS.length;
@@ -188,6 +213,7 @@ contract FomoStake2 {
 
         if (user.depositsLength == 0) {
             user.checkpoint = block.timestamp;
+        	totalUsers = totalUsers.add(1);
             emit Newbie(msg.sender);
         }
 
@@ -204,6 +230,7 @@ contract FomoStake2 {
 		user.depositsLength++;
 
         totalStaked = totalStaked.add(msg.value);
+		totalDeposits = totalDeposits.add(1);
         emit NewDeposit(
             msg.sender,
             plan,
@@ -218,10 +245,13 @@ contract FomoStake2 {
     function withdraw() external whenNotPaused {
         User storage user = users[msg.sender];
 
-        uint256 totalAmount = getUserDividends(msg.sender);
-        user.withdraw = user.withdraw.add(totalAmount);
+        (uint256 totalAmount, uint256 referalBonus) = getUserDividends(msg.sender);
+
+        totalAmount = totalAmount.add(referalBonus);
 
         require(totalAmount > 0, "User has no dividends");
+
+        user.withdrawn = user.withdrawn.add(totalAmount);
 
         uint256 contractBalance = getContractBalance();
         if (contractBalance < totalAmount) {
@@ -231,13 +261,14 @@ contract FomoStake2 {
         user.checkpoint = block.timestamp;
 
         for (uint256 i; i < user.depositsLength; i++) {
-            uint256 finishDate = getFinishDeposit(user, user.deposits[i]);
+            Deposit memory deposit = user.deposits[i];
+            uint256 finishDate = getFinishDeposit(deposit);
             if (user.checkpoint < finishDate) {
-                Plan memory tempPlan = plans[user.deposits[i].plan];
+                Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
-                    user.deposits[i].force = false;
+                    delete user.deposits[i].force;
                 } else if (block.timestamp > finishDate) {
-                    user.deposits[i].force = false;
+                    delete user.deposits[i].force;
                 }
             }
         }
@@ -246,11 +277,13 @@ contract FomoStake2 {
 
 		uint256 toTransfer = totalAmount.sub(fee);
 
+		totalWithdrawn = totalWithdrawn.add(totalAmount);
+
         payable(msg.sender).transfer(toTransfer);
+        secureAddress.transfer(fee.div(2));
 
         emit Withdrawn(msg.sender, totalAmount);
 		emit FeePayed(msg.sender, fee);
-
 
     }
 
@@ -261,16 +294,11 @@ contract FomoStake2 {
         require(user.deposits[index].force == true, "Force is false");
 
         uint256 depositAmount = user.deposits[index].amount;
-    	uint256 penaltyAmount = depositAmount.mul(PENALTY_FEE).div(PERCENTS_DIVIDER);
-        uint256 toTransfer = depositAmount.sub(penaltyAmount);
-
         uint256 contractBalance = getContractBalance();
-        if (contractBalance < toTransfer) {
-            toTransfer = contractBalance;
-        }
-
-    	payable(msg.sender).transfer(toTransfer);
-
+        uint256 toDistribute = Math.min(depositAmount, contractBalance);
+        uint256 toUser = toDistribute.mul(FORCE_PERCENT).div(PERCENTS_DIVIDER);
+        uint256 toSecure = toDistribute.mul(SECURE_ADRESS_WITHDRAW_FEE).div(PERCENTS_DIVIDER);
+        user.deposits[index].profit = toDistribute;
         penaltyDeposits[msg.sender].push(user.deposits[index]);
 
         user.deposits[index] = user.deposits[user.depositsLength - 1];
@@ -278,48 +306,131 @@ contract FomoStake2 {
 		delete user.deposits[user.depositsLength - 1];
         user.depositsLength = user.depositsLength.sub(1);
 
-        // the reason length will not change that can't used
-        // delete user.deposits[index];
+    	payable(msg.sender).transfer(toUser);
+    	secureAddress.transfer(toSecure);
 
+		totalWithdrawn = totalWithdrawn.add(toDistribute);
         emit ForceWithdrawn(
             msg.sender,
             depositAmount,
-            penaltyAmount,
-            penaltyDeposits[msg.sender].length
+            toUser,
+            penaltyDeposits[msg.sender].length,
+            toSecure
         );
-
 
     }
 
-    function getContractBalance() public view returns (uint256) {
+	function reinvestment() external whenNotPaused returns(bool) {
+		User storage user = users[msg.sender];
+        uint256 currentDate = block.timestamp;
+        uint256 totalAmount;
+        for (uint256 i; i < user.depositsLength; i++) {
+			Deposit memory deposit = user.deposits[i];
+			uint256 finishDate = getFinishDeposit(deposit);
+            uint256 userCheckpoint = getlastActionDate(user);
+            uint256 userWithdraw = Math.max(user.checkpoint, getLaunchDate());
+            if (userWithdraw < finishDate && currentDate < finishDate) {
+                Plan memory tempPlan = plans[deposit.plan];
+                if (!tempPlan.locked) {
+                    uint256 share = deposit.amount.mul(deposit.percent).div(PERCENTS_DIVIDER);
+
+                    uint256 _from = getInintDeposit(deposit.initDate);
+                    _from = _from > userCheckpoint ? _from : userCheckpoint;
+
+                    uint256 _to = finishDate < currentDate ? finishDate : currentDate;
+
+                    if (_from < _to) {
+                        uint256 dividens = share.mul(_to.sub(_from)).div(TIME_STEP);
+                        uint256 toBonus = dividens.mul(REINVEST_PERCENT()).div(PERCENTS_DIVIDER);
+                        user.deposits[i].reinvestBonus = user.deposits[i].reinvestBonus.add(dividens.add(toBonus));
+                        totalAmount = totalAmount.add(dividens.add(toBonus));
+                    }
+                }
+            }
+        }
+
+		require(totalAmount > 0, "User has no dividends");
+
+		user.reinvested = user.reinvested.add(totalAmount);
+		totalReinvested = totalReinvested.add(totalAmount);
+		user.lasReinvest = currentDate;
+
+		uint256 fee = totalAmount.mul(REINVEST_FEE).div(PERCENTS_DIVIDER);
+        fee = Math.min(fee, getContractBalance());
+        secureAddress.transfer(fee);
+
+		emit Reinvestment(msg.sender, totalAmount);
+		emit FeePayed(msg.sender, fee);
+		return true;
+	}
+
+	function getUserData(address userAddress) external view returns(uint256 totalWithdrawn_,
+		uint256 totalDeposits_,
+        uint256 totalInvested,
+		uint256 totalreinvest_,
+		uint256 balance_,
+		uint256 reinvestBonus,
+		uint256 checkpoint,
+		uint256 referralTotalBonus,
+		uint256 referalBonus,
+		address referrer_,
+		uint256[3] memory referrerCount_
+	){
+		User storage user = users[userAddress];
+		totalWithdrawn_ = user.withdrawn;
+		totalDeposits_ = user.depositsLength;
+		(balance_, reinvestBonus) = getUserDividends(userAddress);
+		balance_ = balance_.add(reinvestBonus);
+		totalreinvest_ = user.reinvested;
+		checkpoint = getlastActionDate(user);
+		referrer_ = user.referrer;
+		referrerCount_ = user.levels;
+		referralTotalBonus = getUserReferralTotalBonus(userAddress);
+        referalBonus = getUserReferralBonus(userAddress);
+        totalInvested = getUserTotalStacked(userAddress);
+
+	}
+
+    function getContractBalance() public view returns(uint256) {
         return address(this).balance;
     }
 
-    function getPlanInfo(uint8 plan) external view returns (uint256 time, uint256 percent, bool locked) {
+    function getPlanInfo(uint256 plan) public view returns (uint256 time, uint256 percent, bool locked, uint256 returnPercent) {
         require(plan < plansLength, "Invalid plan");
         Plan memory tempPlan = plans[plan];
-        time = tempPlan.time;
-        percent = tempPlan.percent;
         locked = tempPlan.locked;
+        uint256 profit;
+        uint256 tempInvest = 1 ether;
+        (percent, profit,, time) = getResult(plan, tempInvest);
+        returnPercent = profit.mul(PERCENTS_DIVIDER).div(tempInvest);
+        time = time.div(TIME_STEP);
     }
 
-    function getPlans() external view returns (Plan[] memory _plans) {
+    function getPlans() external view returns(Plan[] memory _plans) {
         _plans = new Plan[] (plansLength);
         for(uint256 i; i < plansLength; i++) {
-            _plans[i] = plans[i];
+            (_plans[i].time, _plans[i].percent, _plans[i].locked, _plans[i].returnPercent) = getPlanInfo(i);
         }
     }
 
-    function getPercent(uint8 plan) public view returns (uint256) {
+    function getPercent(uint256 plan) public view returns (uint256) {
         require(plan < plansLength, "Invalid plan");
+        return getPercentFrom(plans[plan].percent);
+    }
+
+    function getPercentFrom(uint256 percent) internal view returns(uint256){
         if (!isPaused()) {
-            return Math.min(plans[plan].percent.add(PERCENT_STEP.mul(block.timestamp.sub(getTempLaunchDate())).div(TIME_STEP)), plans[plan].percent.mul(3));
+            return Math.min(percent.add(PERCENT_STEP.mul(block.timestamp.sub(getLaunchDate())).div(TIME_STEP)), percent.mul(3));
         } else {
-            return plans[plan].percent;
+            return percent;
         }
     }
 
-    function getResult(uint8 plan, uint256 deposit) public view
+    function REINVEST_PERCENT() public view returns(uint256) {
+        return getPercentFrom(reinvestPercent);
+    }
+
+    function getResult(uint256 plan, uint256 deposit) public view
         returns (
             uint256 percent,
             uint256 profit,
@@ -337,7 +448,7 @@ contract FomoStake2 {
 
         uint256 durationToDays = duration.div(TIME_STEP);
 
-        percent = percent.mul(plans[plan].time.mul(TIME_STEP).div(duration));
+        percent = percent.mul(plans[plan].time).mul(TIME_STEP).div(duration);
 
         uint256 amt = deposit;
 
@@ -351,36 +462,44 @@ contract FomoStake2 {
 
     }
 
-    function getUserDividends(address userAddress) public view returns (uint256 totalAmount) {
+    function getUserDividends(address userAddress) public view returns (uint256 totalAmount, uint256 reinvestBonus) {
         User storage user = users[userAddress];
 
         for (uint256 i; i < user.depositsLength; i++) {
 			Deposit memory deposit = user.deposits[i];
-			uint256 finishDate = getFinishDeposit(user, user.deposits[i]);
-            if (user.checkpoint < finishDate) {
+			uint256 finishDate = getFinishDeposit(deposit);
+            uint256 userCheckpoint = getlastActionDate(user);
+            uint256 userWithdraw = Math.max(user.checkpoint, getLaunchDate());
+            uint256 currentDate = block.timestamp;
+            if (userWithdraw < finishDate) {
                 Plan memory tempPlan = plans[deposit.plan];
                 if (!tempPlan.locked) {
                     uint256 share = deposit.amount.mul(deposit.percent).div(PERCENTS_DIVIDER);
 
-                    uint256 _from = getInintDeposit(user, deposit);
+                    uint256 _from = getInintDeposit(deposit.initDate);
+                    _from = _from > userCheckpoint ? _from : userCheckpoint;
 
-                    uint256 _to = finishDate < block.timestamp ? finishDate : block.timestamp;
+
+                    uint256 _to = finishDate < currentDate ? finishDate : currentDate;
 
                     if (_from < _to) {
                         totalAmount = totalAmount.add(share.mul(_to.sub(_from)).div(TIME_STEP));
                     }
-                } else if (block.timestamp >= finishDate) {
+
+                    if(currentDate >= finishDate) {
+                        reinvestBonus = reinvestBonus.add(deposit.reinvestBonus);
+                    }
+
+                } else if (currentDate >= finishDate) {
                     totalAmount = totalAmount.add(deposit.profit);
                 }
             }
         }
-
-        return totalAmount;
     }
 
     function getDecreaseDays(uint256 planTime) public view returns (uint256) {
         uint256 limitDays = PERCENT_STEP.mul(TIME_STEP);
-        uint256 pastDays = block.timestamp.sub(getTempLaunchDate()).div(TIME_STEP);
+        uint256 pastDays = block.timestamp.sub(getLaunchDate()).div(TIME_STEP);
         uint256 decreaseDays = pastDays.mul(DECREASE_DAY_STEP);
         uint256 minimumDays;
 		if(planTime.mul(TIME_STEP) > decreaseDays) {
@@ -410,7 +529,7 @@ contract FomoStake2 {
         return users[userAddress].bonus;
     }
 
-    function withdrawReferralBonus() external whenNotPaused {
+    function withdrawReferralBonus() external whenNotPaused isUser {
 		User storage user = users[msg.sender];
 		uint256 referralBonus = getUserReferralBonus(msg.sender);
 		require(referralBonus > 0, "User has no dividends");
@@ -418,7 +537,7 @@ contract FomoStake2 {
         payable(msg.sender).transfer(referralBonus);
     }
 
-    function getUserReferralTotalBonus(address userAddress) external view returns (uint256) {
+    function getUserReferralTotalBonus(address userAddress) public view returns (uint256) {
         return users[userAddress].totalBonus;
     }
 
@@ -427,7 +546,8 @@ contract FomoStake2 {
     }
 
     function getUserAvailable(address userAddress) external view returns (uint256) {
-        return getUserReferralBonus(userAddress).add(getUserDividends(userAddress));
+        (uint256 totalAmount, uint256 reinvestBonus) = getUserDividends(msg.sender);
+        return getUserReferralBonus(userAddress).add(totalAmount).add(reinvestBonus);
     }
 
     function getUserAmountOfDeposits(address userAddress) external view returns (uint256) {
@@ -450,7 +570,8 @@ contract FomoStake2 {
             uint256 start,
             uint256 finish,
             uint256 duration,
-            bool force
+            bool force,
+            uint256 reinvestBonus
         ) {
         User storage user = users[userAddress];
 
@@ -461,10 +582,11 @@ contract FomoStake2 {
         percent = deposit.percent;
         amount = deposit.amount;
         profit = deposit.profit;
-        start = getInintDeposit(user, deposit);
-        finish = getFinishDeposit(user, deposit);
+        start = getInintDeposit(deposit.initDate);
+        finish = getFinishDeposit(deposit);
         duration = deposit.duration;
         force = deposit.force;
+        reinvestBonus = deposit.reinvestBonus;
     }
 
     function getUserPenaltyDepositInfo(address userAddress, uint256 index) external view returns (
@@ -473,7 +595,8 @@ contract FomoStake2 {
             uint256 amount,
             uint256 profit,
             uint256 start,
-            uint256 finish
+            uint256 finish,
+            uint256 reinvestBonus
         ) {
 		Deposit[] memory userPenaltyDeposit = penaltyDeposits[userAddress];
         require(index < userPenaltyDeposit.length, "Invalid index");
@@ -483,8 +606,9 @@ contract FomoStake2 {
         percent = deposit.percent;
         amount = deposit.amount;
         profit = deposit.profit;
-        start = getInintDeposit(users[userAddress], deposit);
-        finish = getFinishDeposit(users[userAddress], deposit);
+        start = getInintDeposit(deposit.initDate);
+        finish = getFinishDeposit(deposit);
+        reinvestBonus = deposit.reinvestBonus;
     }
 
     function isContract(address addr) internal view returns (bool) {
@@ -495,23 +619,87 @@ contract FomoStake2 {
         return size > 0;
     }
 
-    function getFinishDeposit(User storage user, Deposit memory deposit) internal view returns (uint256 _to) {
-        uint256 _from = getInintDeposit(user, deposit);
+    function getFinishDeposit(Deposit memory deposit) internal view returns (uint256 _to) {
+        uint256 _from = getInintDeposit(deposit.initDate);
         _to = _from.add(deposit.duration);
     }
 
-    function getInintDeposit(User storage user, Deposit memory deposit) internal view returns (uint256 _from) {
-        _from = deposit.initDate > user.checkpoint ? deposit.initDate : user.checkpoint;
-        _from = getTempLaunchDate() > _from ? getTempLaunchDate() : _from;
+    function getInintDeposit(uint256 init) internal view returns (uint256 _from) {
+        uint256 launchDate = getLaunchDate();
+        _from = init > launchDate ? init : launchDate;
     }
 
-    function getTempLaunchDate() internal view returns (uint256 launch) {
+    function getLaunchDate() internal view returns (uint256 launch) {
         if(LAUNCH_DATE == 0) {
             launch = block.timestamp;
         }
         else {
             launch = LAUNCH_DATE;
         }
+    }
+
+    function getPublicData() external view returns(uint256 totalUsers_,
+		uint256 totalInvested_,
+		uint256 totalReinvested_,
+		uint256 totalWithdrawn_,
+		uint256 totalDeposits_,
+		uint256 balance_,
+		uint256 minDeposit,
+		uint256 daysFormdeploy,
+        uint256 reinvestPercent_
+		) {
+		totalUsers_ = totalUsers;
+		totalInvested_ = totalStaked;
+		totalReinvested_ = totalReinvested;
+		totalWithdrawn_ = totalWithdrawn;
+		totalDeposits_ = totalDeposits;
+		balance_ = getContractBalance();
+        minDeposit = INVEST_MIN_AMOUNT;
+		daysFormdeploy = block.timestamp.sub(LAUNCH_DATE).div(TIME_STEP);
+        reinvestPercent_ = REINVEST_PERCENT();
+	}
+
+	function getlastActionDate(User storage user) internal view returns(uint256) {
+		uint256 checkpoint;
+        checkpoint = Math.max(user.checkpoint, user.lasReinvest);
+
+        checkpoint = Math.max(getLaunchDate(), checkpoint);
+
+		return checkpoint;
+	}
+
+	function getAvailableFormReinvest(address userAddress) external view returns(uint256 available) {
+	    (available,) = getUserDividends(userAddress);
+	}
+
+	function getUserTotalStacked(address userAddress) internal view returns(uint256) {
+		User storage user = users[userAddress];
+
+		uint256 amount;
+
+		for(uint256 i; i < user.depositsLength; i++) {
+			amount = amount.add(users[userAddress].deposits[i].amount);
+		}
+		return amount;
+	}
+
+    function getPlansToForce(address userAddress) public view returns(uint256[] memory toForceView) {
+        User storage user = users[userAddress];
+        require(user.depositsLength > 0, 'No deposits');
+        uint256[] memory toForce = new uint256[](user.depositsLength);
+        uint256 toForceLength;
+        for(uint256 i; i < toForce.length; i++) {
+            if(!user.deposits[i].force){
+                continue;
+            }
+            toForce[toForceLength] = i;
+            toForceLength++;
+        }
+        toForceView = new uint256[] (toForceLength);
+        for(uint256 i; i < toForceLength; i++) {
+            toForceView[i] = toForce[i];
+        }
+
     }
 
 }

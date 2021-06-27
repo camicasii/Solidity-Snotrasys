@@ -1,0 +1,144 @@
+.plans_parent {
+  margin-top: 50px;
+}
+.plans_heading {
+  text-align: left;
+  font: normal normal bold 50px/61px Montserrat;
+  letter-spacing: 0px;
+  color: #ffffff;
+}
+.plans_cards {
+  padding: 20px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+}
+.plans_cards_locked {
+  padding: 20px;
+  background: #f3ba2f 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+}
+.plans_cards_heading {
+  text-align: center;
+  font: normal normal bold 24px/29px Montserrat;
+  letter-spacing: 0px;
+  color: #000000;
+}
+.plans_cards_first_info_parent {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  justify-content: space-around;
+  text-align: center;
+  flex-direction: column;
+}
+.plans_cards_first_info_paragrapg {
+  text-align: center;
+  font: normal normal medium 16px/19px Montserrat;
+  letter-spacing: 0px;
+  color: #000000;
+}
+.plans_cards_first_info_heading {
+  text-align: center;
+  font: normal normal bold 24px/29px Montserrat;
+  letter-spacing: 0px;
+  color: #000000;
+  margin-top: 13px;
+}
+.planInfo {
+  text-align: center;
+  font: normal normal normal 16px/19px Montserrat;
+  letter-spacing: 0px;
+  color: #000000;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+}
+.plans_cards_stakeBNB_button_parent {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+.plans_cards_stakeBNB_button {
+  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  border-radius: 3px !important;
+  border: none !important;
+  padding: 0px 30px !important;
+  height: 40px;
+}
+.plans_cards_input_parent {
+  margin-top: 10px;
+}
+.plans_cards_input {
+  height: 40px;
+  width: 100%;
+  margin-top: 10px;
+  border: 2px solid black;
+}
+.plans_cards_input:focus {
+  outline-offset: 0px;
+  outline: -webkit-focus-ring-color auto 0px;
+}
+.plans_cards_input_parent img {
+  width: 25px;
+  height: 25px;
+}
+.plans_cards_locked_input_parent img {
+  width: 25px;
+  height: 25px;
+}
+.plans_cards_input_img_parent {
+  margin-top: 10px;
+  height: 40px;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+}
+.plans_card_padding {
+  padding: 30px 30px !important;
+}
+.plans_cards_locked_image {
+  width: 45px;
+  height: 55px;
+  object-fit: contain;
+  margin-right: 10px;
+}
+.plans_cards_locked_heading {
+  text-align: center;
+  font: normal normal bold 24px/29px Montserrat;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+  border-bottom: 2px solid #ffffff;
+  height: 34px;
+}
+
+.plans_cards_locked_stakeBNB_button {
+  background: #010440 0% 0% no-repeat padding-box !important;
+  border-radius: 3px !important;
+  border: none !important;
+  padding: 0px 30px !important;
+  height: 40px;
+}
+.plans_cards_input_parent input::placeholder {
+  font: normal normal bold 18px Montserrat;
+  color: #000000;
+  opacity: 0.65;
+}
+.plans_cards_input_parent input {
+  padding-left: 10px;
+  font: normal normal bold 18px Montserrat;
+  color: #000000;
+  opacity: 0.65;
+}
+.plans_cards_locked_input_parent input::placeholder {
+  font: normal normal bold 18px Montserrat;
+  color: #000000;
+}
+.plans_cards_locked_input_parent input {
+  padding-left: 10px;
+  font: normal normal bold 18px Montserrat;
+  color: #000000;
+}
