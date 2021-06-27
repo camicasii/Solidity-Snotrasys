@@ -158,6 +158,7 @@ border-bottom: 1px solid #faca15 !important;
   opacity: 1;
 }
 
+
 /* Your Stake */
 
 .stakeMainHeading {
@@ -190,7 +191,7 @@ border-bottom: 1px solid #faca15 !important;
   }
 }
 
-@media screen and (max-width: 765px) {
+@media screen and (max-width: 768px) {
   .img1 {
     width: 70% !important;
     height: 35px !important;
@@ -220,6 +221,11 @@ border-bottom: 1px solid #faca15 !important;
     margin-top: 20px !important;
     margin-left: 18px !important;
   }
+  .Image2{
+ margin-left: 1rem !important;
+
+  }
+
 }
 .secondColInputImage {
   background: #ffffff 0% 0% no-repeat padding-box;

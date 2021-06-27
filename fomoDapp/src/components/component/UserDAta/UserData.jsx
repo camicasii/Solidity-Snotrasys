@@ -47,9 +47,7 @@ export default function UserData() {
                   Total Deposits
                   </div>
                   <div className="valuess mt-2">
-                    {Web3.utils.fromWei( state.user.totalInvested)} BNB
-                    { } BNB
-                    
+                    {parseFloat(Web3.utils.fromWei( state.user.totalInvested)).toFixed(4)} BNB
                     </div>
                 </Col>
                 <Col sm={6} md={6} lg={6} className="p-0">
@@ -57,7 +55,7 @@ export default function UserData() {
                    Referal Bonus
                   </div>
                   <div className="valuess mt-2">
-                  {Web3.utils.fromWei( state.user.referalBonus)} BNB
+                  {parseFloat(Web3.utils.fromWei( state.user.referalBonus)).toFixed(4)} BNB
                   </div>
                 </Col>
                 <Col sm={6} md={6} lg={6} className="p-0">
@@ -77,17 +75,18 @@ export default function UserData() {
                     Total Reinvest
                   </div>
                   <div className="valuess mt-2">
-                  {Web3.utils.fromWei( state.user.totalreinvest_)} BNB
+                  {parseFloat(Web3.utils.fromWei( state.user.totalreinvest_)).toFixed(4)} BNB
                   </div>
-                </Col>
-              </Row>
               <div className="headingss mt-4">
                 Total Withdrawn
               </div>
               <div className="valuess mt-2 mb-3">
-              {Web3.utils.fromWei( state.user.totalWithdrawn_)} BNB
+              {parseFloat(Web3.utils.fromWei( state.user.totalWithdrawn_)).toFixed(4)} BNB
               </div>
-            </Col>
+                </Col>
+
+              </Row>
+               </Col>
             <Col
               style={{ paddingRight: "35px" }}
               xs={12}
@@ -96,12 +95,11 @@ export default function UserData() {
               lg={5}
             >
               <div className="paragraphss1 mt-4 mb-3">
-                Earn for promotion FomoStake 2 <br /> You will
-                receive: <br />
-                <br /> 5% from each level 1 referral deposits 2.5%
-                from each level 2 referral deposits 0.5% from each
-                level 3 referral deposits Note! You need to have at
-                least 1 deposit to start receive earnings
+                <p>Earn for promotion FomoStake 2 <br /> You will
+                  receive: <br /></p>
+                <p>Level 1: 5%</p>
+                <p>Level 2: 2,5%</p>
+                <p>Level 3: 0,5%</p>
               </div>
             </Col>
           

@@ -98,9 +98,6 @@ useEffect(() => {
           <div className="secondColMainHeadingReinvestment mt-4">
             Force withdraw
           </div>
-          <div className="secondHeadingReinvestment">
-            Locked BNB 
-          </div>
           <div
             className="plansCustomDropdown z5"
             onClick={() => {

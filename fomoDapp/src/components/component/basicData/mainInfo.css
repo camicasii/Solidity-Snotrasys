@@ -5,7 +5,7 @@
   width: 100% !important;
 }
 .mainInfo__BNB_yield_heading {
-  text-align: left;
+  text-align: left !important;
   font: normal normal 600 17px/24px Montserrat;
   letter-spacing: 0px;
   color: #ffffff;

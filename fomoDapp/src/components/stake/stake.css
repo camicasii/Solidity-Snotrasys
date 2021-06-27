@@ -1,13 +1,20 @@
 .mainDiscription {
   text-align: left;
-  font: normal normal medium 16px/28px Montserrat;
-  font-weight: 700;
-  font-size: 1.5em;
+  font: normal normal medium 14px/28px Montserrat;
+  background: #0e182a 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;  
+  font-weight: 500;
+  font-size: 1.25em;
   letter-spacing: 0px;
   opacity: 1;
 }
 .firstColStyle {
-  background: rgb(51, 24, 89, 0.8) 0% 0% no-repeat padding-box;
+  background: rgba(14,24,42,0.9) 0% 0% no-repeat padding-box;
   border-radius: 5px;
   width: 100%;
   display: flex;
@@ -15,7 +22,7 @@
   padding-left: 30px;
 }
 .secondColStyle {
-  background: rgb(51, 24, 89, 0.8) 0% 0% no-repeat padding-box;
+  background: rgba(14,24,42,0.9) 0% 0% no-repeat padding-box;
   border-radius: 5px;
 
   padding-left: 30px;

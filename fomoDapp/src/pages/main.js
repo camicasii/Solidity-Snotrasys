@@ -6,6 +6,7 @@ import Plans from "../components/plans/plans";
 import Stack from "../components/stake/stake";
 import ControlledCarousel from "../components/Info/Info";
 import "./main.css";
+import Banner from "../components/Banner/Banner";
 export default function MainPage() {
   return (
     <div
@@ -14,7 +15,7 @@ export default function MainPage() {
     >
       
       <Header />
-      
+      <Banner /> 
       <ControlledCarousel/>
       <div className="customContainer">
         <MainInfo />

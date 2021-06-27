@@ -10,12 +10,12 @@ export default function Stack() {
 
   return (
     <div>      
-      <div className="mt-4 mb-4">
+      <div className="mt-4 mb-4" >
         <div className="mainDiscription">
         1. Important: Plans return are float and daily profit for a new deposit will increase by 0.5% daily
         </div>
         <div className="mainDiscription">
-        2. Minimum deposit amount is 0.05 BNB and you can have multiple deposits {" "}
+        2. Minimum deposit amount is 0.05 BNB and you can have multiple deposits 
         </div>
         <div className="mainDiscription">
         3. Earnings every moment, withdraw instantly any time (if you did not use capitalization of interest in Locked BNB Plan
