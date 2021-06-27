@@ -1,0 +1,40 @@
+.responsive-banner {
+	margin: 80px auto;
+	width: 100%;
+
+
+	border-radius: 8px !important;
+	overflow: hidden;
+	background-image: linear-gradient(to bottom right, #D45BA1, #A784E0);
+}
+
+.img2{
+	display: none !important;
+	margin: 10px auto;
+	width: 100%;
+}
+
+.img1 {
+	padding: 10px 10px;
+	border-radius: 10px !important;
+	width: 100%;
+	position: relative;
+}
+
+@media (max-width: 900px) {
+
+	.img1{
+		
+		display: none !important;
+		
+}
+
+.img2{
+	border-radius: 8px;
+	height: 100% !important;
+	display: block !important;
+	width: 100%;
+	position: relative;
+}
+}
+

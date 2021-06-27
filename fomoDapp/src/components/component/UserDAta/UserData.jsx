@@ -62,7 +62,7 @@ export default function UserData() {
                   <div className="headingss mt-3">
                   Referrer Count
                   </div>
-                  <div className="valuess mt-2  h6 font-weight-light"                   
+                  <div className="values_referrer mt-2  "                   
                   >
                     <p> level 1: {state.user.referrerCount_[0]}</p>
                     <p> level 2: {state.user.referrerCount_[1]}</p>
@@ -77,15 +77,16 @@ export default function UserData() {
                   <div className="valuess mt-2">
                   {parseFloat(Web3.utils.fromWei( state.user.totalreinvest_)).toFixed(4)} BNB
                   </div>
-                </Col>
-              </Row>
               <div className="headingss mt-4">
                 Total Withdrawn
               </div>
               <div className="valuess mt-2 mb-3">
               {parseFloat(Web3.utils.fromWei( state.user.totalWithdrawn_)).toFixed(4)} BNB
               </div>
-            </Col>
+                </Col>
+
+              </Row>
+               </Col>
             <Col
               style={{ paddingRight: "35px" }}
               xs={12}
@@ -93,13 +94,12 @@ export default function UserData() {
               md={5}
               lg={5}
             >
-              <div className="paragraphss mt-4 mb-3">
-                Earn for promotion FomoStake 2 <br /> You will
-                receive: <br />
-                <br /> 5% from each level 1 referral deposits 2.5%
-                from each level 2 referral deposits 0.5% from each
-                level 3 referral deposits Note! You need to have at
-                least 1 deposit to start receive earnings
+              <div className="paragraphss1 mt-4 mb-3">
+                <p>Earn for promotion FomoStake 2 <br /> You will
+                  receive: <br /></p>
+                <p>Level 1: 5%</p>
+                <p>Level 2: 2,5%</p>
+                <p>Level 3: 0,5%</p>
               </div>
             </Col>
           

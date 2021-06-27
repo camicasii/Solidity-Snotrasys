@@ -1,8 +1,8 @@
 .mainHeader {
   padding: 40px 0px 40px 0px !important;
-  background: rgba(157, 129, 196, 0.5) 0% 0% no-repeat padding-box;
-
-}
+ background: url("../assets/image.svg") center center/cover no-repeat;
+  border-bottom: 2px solid rgba(79, 70, 229,1) !important;
+   }
 
 .header_one_BNB {
   font: normal normal bold 16px/19px Open Sans;
@@ -27,7 +27,8 @@
   justify-content: space-between;
 }
 .header_telegram_button {
-  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  background: #FCD535 0% 0% no-repeat padding-box !important;
+color: #1E2329 !important;
   border-radius: 3px !important;
   border: none !important;
   display: flex !important;
@@ -35,9 +36,30 @@
   font: normal normal bold 14px/19px Open Sans !important;
   height: 40px !important;
   padding: 0px 12px 0px 12px !important;
-  margin: 0px 5px 0px 5px;
-  width: auto;
+   box-shadow: inset 0 0 0 1000px rgba(0,0,0, 0.1);
+    justify-content: center;
+    width: 100%;
 }
+
+.header_telegrames_button {
+  background: #f3ba2f  0% 0% no-repeat padding-box !important;
+color: #1E2329 !important;
+  border-radius: 3px !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center;
+  font: normal normal bold 14px/19px Open Sans !important;
+  height: 40px !important;
+  padding: 0px 12px 0px 12px !important;
+
+    justify-content: center;
+    width: 100%;
+}
+
+.navbar-toggler collapsed{
+  padding: 20px;
+}
+
 .header_twitter_button {
   background: #157ffb 0% 0% no-repeat padding-box !important;
   border-radius: 3px !important;
@@ -50,8 +72,8 @@
   margin: 0px 5px 0px 5px;
 }
 .headwr_support_button {
-  background: #d1391c 0% 0% no-repeat padding-box !important;
-  margin: 0px 5px 0px 5px;
+   background: #d1391c 0% 0% no-repeat padding-box !important;
+  margin: 0px 5px 0px 0px;
   border-radius: 3px !important;
   border: none !important;
   display: flex !important;
@@ -59,6 +81,9 @@
   font: normal normal bold 14px/19px Open Sans !important;
   padding: 0px 13px 0px 13px !important;
   height: 40px !important;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 .custom_button {
   width: 120px;
@@ -71,6 +96,25 @@
 .mainHeaderParentSmall {
   display: flex;
 }
+
+
+  .connectWalletButton {
+    font: normal normal bold 14px/19px Open Sans !important;
+    letter-spacing: 0px;
+    color: #000000 !important;
+    background: #f3ba2f 0% 0% no-repeat padding-box !important;
+    border-radius: 3px !important;
+    border: none !important;
+    height: 39px;
+    width: 166px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+
+
 @media (min-width: 1070px) {
   .showOnSmall {
     display: none;
@@ -109,20 +153,7 @@
     
     object-fit: contain;
   }
-  .connectWalletButton {
-    font: normal normal bold 14px/19px Open Sans !important;
-    letter-spacing: 0px;
-    color: #000000 !important;
-    background: #f3ba2f 0% 0% no-repeat padding-box !important;
-    border-radius: 3px !important;
-    border: none !important;
-    height: 39px;
-    width: 166px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
+
   .smallConnectWalletButtonImage {
     margin-right: 10px;
     width: 15px;
@@ -135,24 +166,13 @@
     height: 60px;
     object-fit: contain;
   }
-  .connectWalletButton {
-    font: normal normal bold 12px Open Sans !important;
-    letter-spacing: 0px;
-    color: #000000 !important;
-    background: #f3ba2f 0% 0% no-repeat padding-box !important;
-    border-radius: 3px !important;
-    border: none !important;
-    height: 34px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
+
   .smallConnectWalletButtonImage {
     margin-right: 5px;
     width: 12px;
     height: 12px;
   }
+
 }
 
 /* .menu-btn {

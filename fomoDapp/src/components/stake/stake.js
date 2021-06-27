@@ -10,7 +10,7 @@ export default function Stack() {
 
   return (
     <div>      
-      <div className="mt-4 mb-4">
+      <div className="mt-4 mb-4" >
         <div className="mainDiscription">
         1. Important: Plans return are float and daily profit for a new deposit will increase by 0.5% daily
         </div>

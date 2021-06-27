@@ -6,7 +6,7 @@
   opacity: 1;
 }
 .firstColStyle {
-  background: rgb(51, 24, 89, 0.8) 0% 0% no-repeat padding-box;
+  background: #141422 no-repeat padding-box;
   border-radius: 5px;
   width: 100%;
   display: flex;
@@ -14,7 +14,7 @@
   padding-left: 30px;
 }
 .secondColStyle {
-  background: rgb(51, 24, 89, 0.8) 0% 0% no-repeat padding-box;
+  background: rgba(14,24,42,0.9) 0% 0% no-repeat padding-box;
   border-radius: 5px;
 
   padding-left: 30px;
@@ -145,6 +145,10 @@
   opacity: 1;
 }
 
+.card_title{
+border-bottom: 1px solid #faca15 !important;
+}
+
 .paragraphss {
   text-align: left;
   font-size: 14px;
@@ -153,6 +157,7 @@
   color: #ffffff;
   opacity: 1;
 }
+
 
 /* Your Stake */
 
@@ -186,7 +191,7 @@
   }
 }
 
-@media screen and (max-width: 765px) {
+@media screen and (max-width: 768px) {
   .img1 {
     width: 70% !important;
     height: 35px !important;
@@ -216,6 +221,11 @@
     margin-top: 20px !important;
     margin-left: 18px !important;
   }
+  .Image2{
+ margin-left: 1rem !important;
+
+  }
+
 }
 .secondColInputImage {
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -297,6 +307,28 @@
 
 
 .carouselBack{
-  background: rgb(51, 24, 89, 0.8) 0% 0% no-repeat padding-box !important;  
+  background: rgba(14,24,42,0.9) 0% 0% no-repeat padding-box !important;  
   color: #ffffff;
+}
+
+.buttom_audited {
+  background: #f6a21f 0% 0% no-repeat padding-box !important;
+  border: #f3ba2f !important;
+  border-radius: 3px;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  opacity: 1;
+  text-align: center;
+    letter-spacing: 0px;
+  color: #ffffff;
+  width: 166px;
+  height: 54px;
+
+}
+
+.buttom_audited:hover{
+  transition-property: all !important;
+  transition-timing-function: cubic-bezier(.4,0,.2,1) !important;
+  transition-duration: .15s !important;
+
 }
