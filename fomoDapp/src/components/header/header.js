@@ -8,7 +8,8 @@ export default function Header() {
         <div>
           <Image src="./images/logo.png" className="logo" />
         </div>       
-        <a src={process.env.REACT_APP_CONTRACT_URL} className="ml-auto pl-5 mr-auto">
+        <a href={process.env.REACT_APP_CONTRACT_URL} className="ml-auto pl-5 mr-auto"
+        target="_blank">
           
           <Button className="connectWalletButton ml-auto  text-uppercase">
             <Image
@@ -24,7 +25,7 @@ export default function Header() {
           
         </a> 
         <div className="header_buttons_parent ml-auto">
-          <a src={process.env.TELEGRAM}>
+          <a href={process.env.REACT_APP_TELEGRAM} target="_blank">
           <Button className="header_telegram_button" >
             
             <div>
@@ -34,13 +35,13 @@ export default function Header() {
             <div>Telegram &nbsp;</div>
           </Button>          
           </a>
-          <a src={process.env.TELEGRAM}>
+          <a href={process.env.REACT_APP_WHITEPAPER} target="_blank">
           <Button className="headwr_support_button">
             <i class="fas fa-headset"></i>
             &nbsp;&nbsp;About&nbsp;
           </Button>
           </a>
-          <a src={process.env.TELEGRAM_ES}>
+          <a href={process.env.REACT_APP_TELEGRAM_ES} target="_blank">
           <Button className="header_telegram_button custom_button">
             <div>
               <i class="fab fa-telegram-plane"></i>
@@ -62,7 +63,7 @@ export default function Header() {
           
         </div>
         <div className="ml-auto">
-        <a src={process.env.TELEGRAM}>
+        <a href={process.env.REACT_APP_TELEGRAM} target="_blank">
           <Button className="header_telegram_button custom_button">
             <div>
               <i class="fab fa-telegram-plane"></i>
@@ -71,7 +72,7 @@ export default function Header() {
             <div>Telegram &nbsp; EN</div>
           </Button>     
           </a>
-          <a src={process.env.TELEGRAM_ES}>
+          <a href={process.env.REACT_APP_TELEGRAM_ES} target="_blank">
           <Button className="header_telegram_button custom_button">
             <div>
               <i class="fab fa-telegram-plane"></i>
@@ -80,7 +81,7 @@ export default function Header() {
             <div>Telegram &nbsp; ES</div>
           </Button>     
           </a>
-          <a src={process.env.TELEGRAM}>
+          <a href={process.env.REACT_APP_WHITEPAPER} target="_blank">
           <Button className="headwr_support_button mt-3 custom_button">
             <i class="fas fa-headset"></i>
             &nbsp;&nbsp;About&nbsp;

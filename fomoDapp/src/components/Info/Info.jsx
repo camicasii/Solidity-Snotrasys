@@ -26,7 +26,7 @@ export default function ControlledCarousel() {
           </Col>              
               <Col xs={6} className="h-100 text-center">
                   <h4 >Hazecrypto</h4>
-                  <a src={process.env.AUDIT}  className='btn btn-primary'  >Audited</a>  
+                  <a href={process.env.REACT_APP_AUDIT} target="_blank"  className='btn btn-primary'  >Audited</a>  
               </Col>              
               
             </Row>          
