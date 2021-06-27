@@ -6,7 +6,10 @@
 
   body {
 overflow-x:hidden;
-background: '#fbf8fa'
+background: '#fbf8fa';
+  background-image: url("./assets/images/background.svg");
+  background-repeat: repeat-x;
+  background-position: 0 0;
 }
 
 

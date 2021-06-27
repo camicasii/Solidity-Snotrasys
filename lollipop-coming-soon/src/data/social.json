@@ -1,4 +1,5 @@
 {
- "telegram" : "https://localhost:3000",
- "twitter": "https://localhost:3000"
+ "sugarswapEN" : "https://t.me/SugarSwapES",
+ "sugarswapES": "https://t.me/SugarSwapEN",
+ "sugarswapfi": "https://t.me/SugarSwapfi"
 }
