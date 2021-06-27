@@ -14,29 +14,29 @@ const plansInit = [
   time: "14"
 },
 {locked: false,
-  percent: "80",
-  returnPercent: "1120",
-  time: "14"
+  percent: "68",
+  returnPercent: "1365",
+  time: "21"
 },
 {locked: false,
-  percent: "80",
-  returnPercent: "1120",
+  percent: "50",
+  returnPercent: "1400",
+  time: "28"
+},
+{locked: true,
+  percent: "384",
+  returnPercent: "1937",
   time: "14"
 },
-{locked: false,
-  percent: "80",
-  returnPercent: "1120",
-  time: "14"
+{locked: true,
+  percent: "550",
+  returnPercent: "2752",
+  time: "21"
 },
-{locked: false,
-  percent: "80",
-  returnPercent: "1120",
-  time: "14"
-},
-{locked: false,
-  percent: "80",
-  returnPercent: "1120",
-  time: "14"
+{locked: true,
+  percent: "584",
+  returnPercent: "2920",
+  time: "28"
 },
 
 ]

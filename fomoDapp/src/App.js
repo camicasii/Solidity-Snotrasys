@@ -3,39 +3,36 @@ import {useSelector,useDispatch  } from "react-redux";
 import MainPage from "./pages/main";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastProvider} from 'react-toast-notifications';
-import { getWeb3,getContracts } from "./hooks/utils";
-import {setLoad  ,setPublicData,setUserData} from "./redux/contract";
+import { getWeb3} from "./hooks/utils";
+import {setLoad ,getPublicDataAsync,getUserDataAsync,isPaused} from "./redux/contract";
 function App() {
   const state = useSelector(state => state.contract)
   const dispatch = useDispatch()
   useEffect(() => {
-    console.log('hola 1');   
-    window.addEventListener("load",async  function (event) {
+          window.addEventListener("load",async  function (event) {
      const load = await getWeb3()
-      if(load != undefined){
-        console.log('load')
+      if(load != undefined){        
         dispatch(setLoad(true))
       }
     })        
   }, [])
 
-  useEffect(() => {   
-    
+  useEffect(() => {       
     if(state.load){
-      const a= async ()=>{    
-    const con = getContracts(window.web3)    
-    const getPublicData =await con.methods.getPublicData().call()
-    dispatch(setPublicData(JSON.stringify(getPublicData)))
-    let accounts = await window.web3.eth.getAccounts();    
-    const userData = await con.methods.getUserData(accounts[0]).call()
-    dispatch(setUserData(JSON.stringify(userData)))
-    console.log(userData,'userData');    
-  }  
-  a()
-    }
-    
+      dispatch(getPublicDataAsync())    
+      dispatch(getUserDataAsync())
+      dispatch(isPaused())
+      
 
-    return () => {
+      if(window.ethereum){        
+        window.ethereum.on("accountsChanged", async () => {                    
+          console.log("accountsChanged");      
+          dispatch(getUserDataAsync())
+        });
+        window.ethereum.on("disconnect", () => {
+          //On disconect
+          console.log("disconnect");      
+        });}      
       
     }
   }, [state.load])

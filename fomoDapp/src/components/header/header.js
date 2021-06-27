@@ -7,9 +7,11 @@ export default function Header() {
       <div className="mainHeaderParent showOnLarge customContainer">
         <div>
           <Image src="./images/logo.png" className="logo" />
-        </div>
-        <div className="ml-auto pl-5 mr-auto">
-          <Button className="connectWalletButton ml-auto ">
+        </div>       
+        <a href={process.env.REACT_APP_CONTRACT_URL} className="ml-auto pl-5 mr-auto"
+        target="_blank">
+          
+          <Button className="connectWalletButton ml-auto  text-uppercase">
             <Image
               src="./images/connectWallet.png"
               style={{
@@ -18,25 +20,37 @@ export default function Header() {
                 marginRight: "10px",
               }}
             />
-            Connect Wallet
+            Bscscan
           </Button>
-        </div>        
+          
+        </a> 
         <div className="header_buttons_parent ml-auto">
-          <Button className="header_telegram_button">
+          <a href={process.env.REACT_APP_TELEGRAM} target="_blank">
+          <Button className="header_telegram_button" >
+            
             <div>
               <i class="fab fa-telegram-plane"></i>
               &nbsp;&nbsp;
             </div>
             <div>Telegram &nbsp;</div>
-          </Button>
-          <Button className="header_twitter_button">
-            <i class="fab fa-twitter"></i>
-            &nbsp;&nbsp;Twitter&nbsp;
-          </Button>
+          </Button>          
+          </a>
+          <a href={process.env.REACT_APP_WHITEPAPER} target="_blank">
           <Button className="headwr_support_button">
             <i class="fas fa-headset"></i>
-            &nbsp;&nbsp;Support&nbsp;
+            &nbsp;&nbsp;About&nbsp;
           </Button>
+          </a>
+          <a href={process.env.REACT_APP_TELEGRAM_ES} target="_blank">
+          <Button className="header_telegram_button custom_button">
+            <div>
+              <i class="fab fa-telegram-plane"></i>
+              &nbsp;&nbsp;
+            </div>
+            <div>Telegram &nbsp; ES</div>
+          </Button>     
+          </a>
+          
         </div>
       </div>
       <div className="mainHeaderParentSmall showOnSmall p-2">
@@ -45,35 +59,34 @@ export default function Header() {
             <div>
               <Image src="./images/logo.png" className="logo" />
             </div>
-          </div>
-          <Button className="connectWalletButton ml-auto mt-3">
-            <Image
-              src="./images/connectWallet.png"
-              className="smallConnectWalletButtonImage "
-            />
-            Connect Wallet
-          </Button>
-          <div className="header_one_BNB ml-auto mt-3">
-            1 BNB =&nbsp;
-            <span className="header_one_BNB_value"> $523.14</span>
-          </div>
+          </div>         
+          
         </div>
         <div className="ml-auto">
+        <a href={process.env.REACT_APP_TELEGRAM} target="_blank">
           <Button className="header_telegram_button custom_button">
             <div>
               <i class="fab fa-telegram-plane"></i>
               &nbsp;&nbsp;
             </div>
-            <div>Telegram &nbsp;</div>
-          </Button>
-          <Button className="header_twitter_button mt-3 custom_button">
-            <i class="fab fa-twitter"></i>
-            &nbsp;&nbsp;Twitter&nbsp;
-          </Button>
+            <div>Telegram &nbsp; EN</div>
+          </Button>     
+          </a>
+          <a href={process.env.REACT_APP_TELEGRAM_ES} target="_blank">
+          <Button className="header_telegram_button custom_button">
+            <div>
+              <i class="fab fa-telegram-plane"></i>
+              &nbsp;&nbsp;
+            </div>
+            <div>Telegram &nbsp; ES</div>
+          </Button>     
+          </a>
+          <a href={process.env.REACT_APP_WHITEPAPER} target="_blank">
           <Button className="headwr_support_button mt-3 custom_button">
             <i class="fas fa-headset"></i>
-            &nbsp;&nbsp;Support&nbsp;
+            &nbsp;&nbsp;About&nbsp;
           </Button>
+          </a>
         </div>
       </div>
     </div>

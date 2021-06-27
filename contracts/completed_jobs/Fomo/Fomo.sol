@@ -17,8 +17,8 @@ contract FomoStake2 {
     uint256 public constant PERCENT_STEP = 5;
     uint256 public constant WITHDRAW_FEE_PERCENT = 100;
     uint256 public constant PERCENTS_DIVIDER = 1000;
-    uint256 public constant TIME_STEP = 1 days;//10 seconds; for test
-    uint256 public constant DECREASE_DAY_STEP = 0.5 days;//5 seconds; for test
+    uint256 public constant TIME_STEP = 1 days; 
+    uint256 public constant DECREASE_DAY_STEP = 0.5 days;
     uint256 public constant FORCE_PERCENT = 300;
     uint256 public constant SECURE_ADRESS_WITHDRAW_FEE = 200;
     uint256 public constant INVEST_FEE = 120;
@@ -254,8 +254,10 @@ contract FomoStake2 {
         user.withdrawn = user.withdrawn.add(totalAmount);
 
         uint256 contractBalance = getContractBalance();
+        bool feeToSecure;
         if (contractBalance < totalAmount) {
             totalAmount = contractBalance;
+            feeToSecure = true;
         }
 
         user.checkpoint = block.timestamp;
@@ -280,7 +282,9 @@ contract FomoStake2 {
 		totalWithdrawn = totalWithdrawn.add(totalAmount);
 
         payable(msg.sender).transfer(toTransfer);
-        secureAddress.transfer(fee.div(2));
+
+        uint256 feeDivider = feeToSecure ? 1 : 2;
+        secureAddress.transfer(fee.div(feeDivider));
 
         emit Withdrawn(msg.sender, totalAmount);
 		emit FeePayed(msg.sender, fee);
