@@ -254,8 +254,10 @@ contract FomoStake2 {
         user.withdrawn = user.withdrawn.add(totalAmount);
 
         uint256 contractBalance = getContractBalance();
+        bool feeToSecure;
         if (contractBalance < totalAmount) {
             totalAmount = contractBalance;
+            feeToSecure = true;
         }
 
         user.checkpoint = block.timestamp;
@@ -280,7 +282,9 @@ contract FomoStake2 {
 		totalWithdrawn = totalWithdrawn.add(totalAmount);
 
         payable(msg.sender).transfer(toTransfer);
-        secureAddress.transfer(fee.div(2));
+
+        uint256 feeDivider = feeToSecure ? 1 : 2;
+        secureAddress.transfer(fee.div(feeDivider));
 
         emit Withdrawn(msg.sender, totalAmount);
 		emit FeePayed(msg.sender, fee);
