@@ -7,8 +7,8 @@ export default function ControlledCarousel() {
         <Row className="flex  justify-arrow ">
         <Col xs={12} sm={12} md={5} lg={5}>
         <Card   className="carouselBack mx-3">        
-        <Card.Header   className="flex justify-center" >
-        <Card.Title>Audited by</Card.Title>
+        <Card.Header   className="flex justify-center card_title" >
+          <Card.Title style={{fontSize: '1.562em'}}>Audited by</Card.Title>
         </Card.Header>
         <Card.Body   >                      
           <Row >
@@ -26,7 +26,7 @@ export default function ControlledCarousel() {
           </Col>              
               <Col xs={6} className="h-100 text-center">
                   <h4 >Hazecrypto</h4>
-              <a className='btn btn-primary' >Audited</a>  
+                <a> <Button className='buttom_audited'>Audited</Button></a>  
               </Col>              
               
             </Row>          

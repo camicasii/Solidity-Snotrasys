@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row, Col, Button, Image } from "react-bootstrap";
 import Toast from "../../../hooks/toast";
+import './stake.css'
 
 export default function InputRef({referralLink}) {
     const handleCopy = () => {
@@ -29,7 +30,7 @@ export default function InputRef({referralLink}) {
             />
           </div>
           <Button
-            className="secondColButton "
+            className="twoColButton "
             onClick={handleCopy}
           >
             Copy

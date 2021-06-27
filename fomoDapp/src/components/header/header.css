@@ -1,7 +1,7 @@
 .mainHeader {
   padding: 40px 0px 40px 0px !important;
-  background: rgba(157, 129, 196, 0.5) 0% 0% no-repeat padding-box;
-
+  background: rgba(14,24,42,0.6) 0% 0% no-repeat padding-box;
+  backdrop-filter: blur(7px);
 }
 
 .header_one_BNB {
@@ -27,7 +27,8 @@
   justify-content: space-between;
 }
 .header_telegram_button {
-  background: #f3ba2f 0% 0% no-repeat padding-box !important;
+  background: #FCD535 0% 0% no-repeat padding-box !important;
+color: #1E2329 !important;
   border-radius: 3px !important;
   border: none !important;
   display: flex !important;
