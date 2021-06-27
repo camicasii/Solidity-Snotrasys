@@ -34,8 +34,7 @@ export default function CardPricing({title}) {
   const ref = useRef(0)
 
     useEffect(() => {      
-      if(state.web3Load){  
-        
+      if(state.web3Load){          
          let ref = window.location.origin
          ref += '/?ref='
          ref += state.address

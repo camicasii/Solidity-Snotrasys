@@ -36,7 +36,7 @@ export default function UserData() {
         lg={12}
         xl={12}
       >
-         {parseInt(state.user.totalDeposits_) > 0?
+         
         <div className="secondColStyle">
         <InputRef referralLink={referralLink}/>
           <Row>
@@ -107,7 +107,7 @@ export default function UserData() {
           
           </Row>
         </div>
-        :null} 
+        
       </Col>
     )
 

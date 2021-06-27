@@ -93,7 +93,7 @@ useEffect(() => {
         xl={8}
         className="d-flex align-items-stretch w-100"
       >
-        {parseInt(state.user.totalDeposits_) > 0?
+        
         <div className="secondColStyle w-100">
           <div className="secondColMainHeadingReinvestment mt-4">
             Force withdraw
@@ -129,7 +129,7 @@ useEffect(() => {
             </Button>
           </div>:null
 }
-        </div>:null}
+        </div>
       </Col>
         
         )
