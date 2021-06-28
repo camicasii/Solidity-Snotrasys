@@ -78,16 +78,16 @@ const Reinvestment =async ()=>{
 
     <div className="mainInfo__BNB_yield_card">
       <div className="mainInfo__BNB_yield_heading_total">
-        Total Stake BNB
+        Total BNB Staked
       </div>
       <div className="mainInfo__BNB_yield_total_Value">
-        {parseFloat(Web3.utils.fromWei(  state.public.balance_)).toFixed(4)}
+        {parseFloat(Web3.utils.fromWei( state.public.totalInvested_)).toFixed(4)}
         </div>
       <div className="mainInfo__BNB_yield_heading_total mainInfo__BNB_yield_second_heading">
-        Available BNB for withdrawal
+        Total Contract Balance
       </div>
       <div className="mainInfo__BNB_yield_total_Value">
-        {parseFloat(Web3.utils.fromWei(state.user.balance_)).toFixed(4)}</div> 
+        {parseFloat(Web3.utils.fromWei( state.public.balance_)).toFixed(4)}</div> 
     </div>
 
   </Col>

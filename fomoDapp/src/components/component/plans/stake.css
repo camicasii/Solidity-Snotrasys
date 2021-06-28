@@ -254,12 +254,17 @@
   color: #ffffff;
   font: normal normal bold 18px/19px Open Sans;
   cursor: pointer;
+
 }
 .plansCustomDropdownItemsParent {
   background-color: #f3ba2f;
   border-radius: 5px;
+   max-height: 160px;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
   margin-top: 2px;
-  position: absolute;
+  cursor: pointer;
+
   top: 0px;
   width: 100%;
 }
