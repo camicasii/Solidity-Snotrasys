@@ -2,6 +2,7 @@ import React,{useEffect} from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import {useSelector  } from "react-redux";
 import BasicData from "../component/basicData/index";
+import TotalData from "../component/totaldata";
 import "./mainInfo.css";
 export default function MainInfo() {
   const state = useSelector(state => state.contract)
@@ -64,7 +65,7 @@ export default function MainInfo() {
             </div>
           </div>
         </Col>
-        <BasicData/>
+        <TotalData />
       </Row>
     </div>
   );
