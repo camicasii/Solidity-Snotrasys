@@ -1,12 +1,12 @@
 import React,{useEffect} from "react";
-import { Col, Row, Button } from "react-bootstrap";
+import { Col} from "react-bootstrap";
 import Web3 from "web3";
 import {useSelector,useDispatch  } from "react-redux";
 import "./mainInfo.css";
 import Toast from "../../../hooks/toast";
 import {getContracts} from "../../../hooks/utils";
 import {getPublicDataAsync,getUserDataAsync} from "../../../redux/contract";
-export default function BasicData() {
+export default function TotalData() {
     const state = useSelector(state => state.contract)
     const dispatch = useDispatch()
 
@@ -65,6 +65,7 @@ const Reinvestment =async ()=>{
 
 
   return(
+    <>
     <Col
     style={{ paddingLeft: "0px" }}
     xl={4}
@@ -74,34 +75,24 @@ const Reinvestment =async ()=>{
     xs={12}
     className="d-flex align-items-stretch PL0"
   >
+
     <div className="mainInfo__BNB_yield_card">
-      <div className="mainInfo__BNB_yield_heading">
-       Your total Stake BNB
+      <div className="mainInfo__BNB_yield_heading_total">
+        Total BNB Staked
       </div>
-      <div className="mainInfo__BNB_yield_Value">
-        {parseFloat(Web3.utils.fromWei(  state.user.totalInvested)).toFixed(4)}
+      <div className="mainInfo__BNB_yield_total_Value">
+        {parseFloat(Web3.utils.fromWei( state.public.totalInvested_)).toFixed(4)}
         </div>
-      <div className="mainInfo__BNB_yield_heading mainInfo__BNB_yield_second_heading">
-        Available BNB for withdrawal
+      <div className="mainInfo__BNB_yield_heading_total mainInfo__BNB_yield_second_heading">
+        Total Contract Balance
       </div>
-      <div className="mainInfo__BNB_yield_Value">
-        {parseFloat(Web3.utils.fromWei(state.user.balance_)).toFixed(4)}</div>
-      <div className="mainInfo__BNB_yield_card_button_parent">
-   <Button className="mainInfo__BNB_yield_card_button"
-        onClick={Withdrawal}
-        disabled={state.isPaused}
-        >
-        Withdrawal
-        </Button>
-        <Button className="mainInfo__BNB_yield_card_button ml-1"
-        disabled={state.isPaused}
-        onClick={Reinvestment}
-        >
-        Reinvestment
-        </Button>    
-      </div>
+      <div className="mainInfo__BNB_yield_total_Value">
+        {parseFloat(Web3.utils.fromWei( state.public.balance_)).toFixed(4)}</div> 
     </div>
+
   </Col>
+
+      </>
   )
 
 }
